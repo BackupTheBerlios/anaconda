@@ -14,6 +14,7 @@ import java.util.Iterator;
 import fr.umlv.anaconda.GarbageModel;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.tools.*;
 
 /**
  * @author FIGUEROA
