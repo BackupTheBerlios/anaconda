@@ -348,13 +348,8 @@ public class Main {
 		JButton delAdr = new JButton("effacer");
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
-//		final JTextField adrZone = new JTextField(20);
-	//	final JComboBox adrZone = new JComboBox(new AddressBarComboBoxModel());
 		String fileName = model.getFolder().getAbsolutePath();
-	//	adrZone.setText(
-	//	adrZone.addItem(
-	//	adrZone.getEditor().setItem( // TODO ?
-	final JComboBox adrZone = new JComboBox(new AddressBarComboBoxModel(
+		final JComboBox adrZone = new JComboBox(new AddressBarComboBoxModel(
 			fileName
 				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)));
 		adrZone.setEditable(true);
@@ -377,8 +372,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				model.setFolder(oldCurrentFolder);
 				String fileName = oldCurrentFolder.getAbsolutePath();
-	//			adrZone.setText(
-				adrZone.getEditor().setItem( //TODO ?
+				adrZone.getEditor().setItem(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
@@ -391,8 +385,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				model.setFolder(newCurrentFolder);
 				String fileName = newCurrentFolder.getAbsolutePath();
-//				adrZone.setText(
-				adrZone.getEditor().setItem( //TODO ?
+				adrZone.getEditor().setItem(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
@@ -403,9 +396,8 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ACTION".concat(e.toString()));
-	//			File file = new File(adrZone.getText());
-				File file = new File((String)adrZone.getEditor().getItem()); //TODO ?
+				System.out.println("ACTION".concat(e.toString())); //TODO récup le bon évenement
+				File file = new File((String)adrZone.getEditor().getItem()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
 					newCurrentFolder = file;
@@ -422,8 +414,7 @@ public class Main {
 						"Fichier/repertoire non trouve",
 						JOptionPane.ERROR_MESSAGE);
 				String fileName = model.getFolder().getAbsolutePath();
-//				adrZone.setText(
-				adrZone.getEditor().setItem( //TODO ?
+				adrZone.getEditor().setItem( 
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
@@ -433,8 +424,7 @@ public class Main {
 		openAdr.addActionListener((adrZone.getActionListeners())[0]);
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				adrZone.setText("");
-				adrZone.getEditor().setItem(""); //TODO ?
+				adrZone.getEditor().setItem(""); 
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
@@ -476,8 +466,7 @@ public class Main {
 								!= 0) {
 								model.setFolder(file);
 								String fileName = file.getAbsolutePath();
-//								adrZone.setText(
-								adrZone.getEditor().setItem( //TODO ?
+								adrZone.getEditor().setItem( 
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
@@ -532,8 +521,7 @@ public class Main {
 									}
 								}
 								String fileName = file.getAbsolutePath();
-//								adrZone.setText(
-								adrZone.getEditor().setItem( //TODO ?
+								adrZone.getEditor().setItem( 
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
