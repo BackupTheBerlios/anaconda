@@ -345,21 +345,27 @@ public class Main {
 		/* Affichage */
 		JMenuItem reloadItem = new JMenuItem(refreshAction);
 		JMenu subMenuTri = new JMenu("Organiser par...");
-		JMenuItem triName = new JMenuItem(showByNameAction);
-		JMenuItem triType = new JMenuItem(showByTypeAction);
-		JMenuItem triSize = new JMenuItem(showBySizeAction);
-		JMenuItem triDate = new JMenuItem(showByDateAction);
+		JCheckBoxMenuItem triName = new JCheckBoxMenuItem(showByNameAction);
+		JCheckBoxMenuItem triType = new JCheckBoxMenuItem(showByTypeAction);
+		JCheckBoxMenuItem triSize = new JCheckBoxMenuItem(showBySizeAction);
+		JCheckBoxMenuItem triDate = new JCheckBoxMenuItem(showByDateAction);
 		subMenuTri.add(triName);
 		subMenuTri.add(triType);
 		subMenuTri.add(triSize);
 		subMenuTri.add(triDate);
 		JMenu subMenuType = new JMenu("Type d'affichage...");
-		JMenuItem typeBig = new JMenuItem("Grandes icones");
+		ButtonGroup grpType = new ButtonGroup(); // pour activer un seul a la fois
+		JCheckBoxMenuItem typeBig = new JCheckBoxMenuItem("Grandes icones");
+		grpType.add(typeBig);
+		typeBig.setState(true);
 		typeBig.addActionListener(bigIconsAction);
-		JMenuItem typeSmall = new JMenuItem("Petites icones");
+		JCheckBoxMenuItem typeSmall = new JCheckBoxMenuItem("Petites icones");
+		grpType.add(typeSmall);
 		typeSmall.addActionListener(smallIconsAction);
-		JMenuItem typeList = new JMenuItem("Liste");
-		JMenuItem typeDetail = new JMenuItem("Detail");
+		JCheckBoxMenuItem typeList = new JCheckBoxMenuItem("Liste");
+		grpType.add(typeList);
+		JCheckBoxMenuItem typeDetail = new JCheckBoxMenuItem("Detail");
+		grpType.add(typeDetail);
 		subMenuType.add(typeBig);
 		subMenuType.add(typeSmall);
 		subMenuType.add(typeList);
