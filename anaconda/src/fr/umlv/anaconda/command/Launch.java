@@ -1,8 +1,8 @@
 package fr.umlv.anaconda.command;
 
-/* Maitrise info - génie logiciel */
+/* Maitrise info - g?nie logiciel */
 /* Anaconda (Livingstone project) */
-/* Created on 21 févr. 2004 */
+/* Created on 21 f?vr. 2004 */
 
 import java.awt.event.ActionEvent;
 import java.io.*;
@@ -14,6 +14,7 @@ import javax.swing.Action;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.ChoozExec;
+import fr.umlv.anaconda.tools.Tools;
 
 /**
  * Manage to launch files
@@ -61,7 +62,10 @@ public class Launch implements Command {
 				File exec = new ChoozExec().frameChoozRep();
 				if (exec != null) {
 					try {
-						r.exec(exec.getCanonicalPath()+" \""+selected_file.getAbsolutePath()+"\"");
+						if (Tools.isWin())
+							r.exec(exec.getCanonicalPath()+" \""+selected_file.getAbsolutePath()+"\"");
+						else 
+						 r.exec(exec.getCanonicalPath()+" "+selected_file.getAbsolutePath());
 					} catch (IOException e) {
 						new ErrorIOFileException(selected_file).show();
 					}
