@@ -7,13 +7,11 @@ package fr.umlv.anaconda;
 
 import java.io.File;
 import java.util.*;
-import java.util.regex.Pattern;
 
-import javax.swing.MutableComboBoxModel;
+import javax.swing.*;
 import javax.swing.event.*;
 
-import fr.umlv.anaconda.exception.TooMuchFilesException;
-//import java.awt.event.*;
+
 
 /**
  * A model for the Anaconda ComboBox in the address bar
@@ -21,7 +19,7 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
  * @author Anac team
  *
  */
-public class AddressBarComboBoxModel implements MutableComboBoxModel {
+public class AddressBarComboBoxModel /*implements MutableComboBoxModel*/ extends DefaultComboBoxModel {
 	
 	/** List to store the navigation history with an order and no duplicate element **/
 	private LinkedList history;
@@ -41,7 +39,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	public AddressBarComboBoxModel() {
 		super();
 		history = new LinkedList();
-//		history.add("");
 		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
@@ -52,7 +49,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add(path);
-//		history.add(new File("/").getAbsolutePath());
 		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
@@ -63,7 +59,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add(fich);
-//		history.add(new File("/"));
 		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
@@ -106,7 +101,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	public void removeElement(Object obj) {
 		current.remove(obj);
 		for (int i=0; i<list.size(); i++)
-//			((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index));
 			((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, 0, current.size()));
 
 	}
@@ -124,21 +118,23 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
 	public Object getSelectedItem() {
-		if (this.index>=0){
-			return current.get(this.index);
+		if (index>0){
+			return current.get(index);
 		}
-		//TODO lancement auto du bon rep ?
-		return null;
+		return current.get(0);
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
 	 */
 	public void setSelectedItem(Object anItem) {
-		if (current.contains(anItem))	
-			this.index = current.indexOf(anItem);
-		else
-			this.index = 0;
+		if (current.contains(anItem)) {	
+			addElement(anItem);
+			index = current.indexOf(anItem);
+		}
+		else {
+			index = 0;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -159,7 +155,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
 	 */
 	public void addListDataListener(ListDataListener l) {
-		// TODO Je ne suis pas sur...
 		list.add(l);
 	}
 
@@ -167,7 +162,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
 	 */
 	public void removeListDataListener(ListDataListener l) {
-		// TODO Je ne suis pas sur...
 		if (list.contains(l))
 			list.remove(l);
 	}
@@ -181,6 +175,8 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	/** comboBox is wanted to show the history */
 	public void switch2hist() {
 		this.current = this.history; 
+		index=0;
+		fireContentsChanged(this, 0, current.size());
 	}
 
 	
