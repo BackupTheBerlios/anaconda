@@ -94,6 +94,7 @@ public class Main {
 		splitTreeInfo.setOneTouchExpandable(true);
 		splitTreeInfo.setDividerLocation(260);
 		splitTreeInfo.setResizeWeight(1);
+		splitTreeInfo.setDividerSize(2);
 
 		Dimension size = new Dimension(200, 200);
 		infoPanel.setMinimumSize(size);
@@ -106,6 +107,7 @@ public class Main {
 		, /*scrollList*/tabb);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
+		splitPane.setDividerSize(2);
 		/**********************************/
 		/* LES ACTIONS */
 		final Action refreshAction = new AbstractAction("Actualiser"){
@@ -320,9 +322,11 @@ public class Main {
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
 		String fileName = model.getFolder().getAbsolutePath();
-		final JComboBox adrZone = new JComboBox(new AddressBarComboBoxModel(
-			fileName
-				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)));
+		final JComboBox adrZone = new JComboBox(
+					new AddressBarComboBoxModel(
+								fileName
+				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)
+													   ));
 		adrZone.setEditable(true);
 		adrZone.addKeyListener(((AddressBarComboBoxModel)adrZone.getModel()).listenerFactory());
 		
