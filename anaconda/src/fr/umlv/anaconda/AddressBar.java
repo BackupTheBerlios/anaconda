@@ -4,25 +4,13 @@ package fr.umlv.anaconda;
 /* Anaconda (Livingstone project) */
 /* Created on 21 fevr. 2004 */
 
-import java.util.LinkedList;
-import java.util.Vector;
-import java.util.regex.Pattern;
-//import java.util.regex.Pattern;
-
+import java.util.*;
 import javax.swing.*;
-
-import fr.umlv.anaconda.command.Find;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-import fr.umlv.anaconda.exception.TooMuchFilesException;
-
-//import fr.umlv.anaconda.exception.TooMuchFilesException;
-//import java.util.*;
-//import javax.swing.event.*;
-import java.awt.Component;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-//import java.io.File;
+
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 /**
  *
@@ -54,7 +42,6 @@ public class AddressBar extends JComboBox {
 	 */
 	public AddressBar() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -63,7 +50,6 @@ public class AddressBar extends JComboBox {
 	 */
 	public AddressBar(Object[] arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -72,7 +58,6 @@ public class AddressBar extends JComboBox {
 	 */
 	public AddressBar(Vector arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -81,7 +66,6 @@ public class AddressBar extends JComboBox {
 	 */
 	public AddressBar(ComboBoxModel arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**@deprecated */
@@ -91,7 +75,6 @@ public class AddressBar extends JComboBox {
 	}
 
 	public void setText(File fich) {
-		//	this.getEditor().setItem(txt);
 		try {
 			this.getEditor().setItem(fich.getCanonicalPath());
 		} catch (IOException e) {
@@ -99,7 +82,6 @@ public class AddressBar extends JComboBox {
 		}
 	}
 	public String getText() {
-		//		return (String)this.getEditor().getItem();
 		try {
 			return (String) this.getEditor().getItem();
 		} catch (Exception e) {
