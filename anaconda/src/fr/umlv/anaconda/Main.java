@@ -315,7 +315,6 @@ public class Main {
 						}
 				});
 
-		ActionMap am = new ActionMap();//TODO action map...
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
 		initTable();
@@ -332,7 +331,6 @@ public class Main {
 		splitTreeInfo.setDividerSize(2);
 
 		Dimension size = new Dimension(200, 200);
-//		Dimension size = new Dimension(IconsManager.LOGO.getIconWidth(), IconsManager.LOGO.getIconHeight()+200);
 		infoPanel.setMinimumSize(size);
 		infoPanel.setMaximumSize(size);
 		/******************************/
@@ -420,8 +418,6 @@ public class Main {
 				AllCommand.redoLastCommand();
 			}
 		};
-		
-		am.put(new Integer(KeyEvent.VK_F5), refreshAction); //TODO actionMap
 
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
@@ -580,15 +576,7 @@ public class Main {
 		JButton delAdr = new JButton(" X ");
 		JLabel adr = new JLabel(" Adresse : ");
 		JButton openAdr = new JButton(" GO ");
-		//String fileName = currentFolder.getAbsolutePath();
 		adrZone = new AddressBar(currentFolder);
-		/*adrZone =
-			new AddressBar(
-				fileName
-					+ ((fileName.endsWith(File.separator))
-						? ""
-						: File.separator)); */
-//		adrZone.setActionCommand("test");
 		adressBar.add(adr);
 		adressBar.add(adrZone);
 		adressBar.add(openAdr);
@@ -638,20 +626,12 @@ public class Main {
 				else{
 					adrZone.Completion();
 				}
-					//	System.err.println("PROBLEME");
-				//	new DoNotExistFileException(file).show();
-
-		//		((AddressBarComboBoxModel)adrZone.getModel()).switch2hist();
-				adrZone.setText(currentFolder);
-				
+				adrZone.setText(currentFolder);	
 			}
 		});
-//		adrZone.addKeyListener(adrZone.listenerFactory());
-//		adrZone.getEditor().addActionListener(adrZone.actionListenerFactory());
-		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
+		openAdr.addActionListener((adrZone.getActionListeners())[0]);
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				adrZone.setText("");
 				adrZone.getEditor().setItem("");
 				adrZone.getEditor().getEditorComponent().requestFocus();
 				((AddressBarComboBoxModel)adrZone.getModel()).switch2hist();
@@ -668,8 +648,6 @@ public class Main {
 		clickInFile.add(new JSeparator());
 		clickInFile.add(createFile);
 		clickInFile.add(createFolder);
-//		clickInFile.add(
-//			new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
 		clickOutFile.add(new JMenuItem(selectAllAction));
 		clickOutFile.add(new JSeparator());
 		clickOutFile.add(new JMenuItem(copyAction));
@@ -683,7 +661,6 @@ public class Main {
 		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(showPropertiesAction));
 		
-	//	table.add //TODO action map
 		
 		/***********************************************/
 		/* LISTERNER SUR L'ARBRE ET LA LISTE */
