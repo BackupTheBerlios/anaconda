@@ -20,31 +20,34 @@ public class Paste implements Command {
 	protected Delete deleter = new Delete();
 	private NoSelectedFilesException no_selection =
 		new NoSelectedFilesException();
-//	private JProgressBar progress_bar = new JProgressBar();
+	//	private JProgressBar progress_bar = new JProgressBar();
 
 	private static Action act;
-	
+	public static int max;
+	public static int cur;
+
+
 	public Paste() {
 		super();
-		
-//		act = new AbstractAction("Coller Ctrl+V") {
+
+		//		act = new AbstractAction("Coller Ctrl+V") {
 		act = new AbstractAction("Coller") {
 			public void actionPerformed(ActionEvent e) {
 				run();
-			} 
-		public boolean isEnable() {
-			return !PressPaper.isEmpty();
-		}
-		//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
-		//	final String ACCELERATOR_KEY = "Ctrl+V";
-		//	final String NAME = "Coller";
-		//	final String SHORT_DESCRIPTION = "Coller depuis le presse papier";
-		//	final String LONG_DESCRIPTION ="Coller un element prealablement copier ou coupe";
-	
+			}
+			public boolean isEnable() {
+				return !PressPaper.isEmpty();
+			}
+			//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
+			//	final String ACCELERATOR_KEY = "Ctrl+V";
+			//	final String NAME = "Coller";
+			//	final String SHORT_DESCRIPTION = "Coller depuis le presse papier";
+			//	final String LONG_DESCRIPTION ="Coller un element prealablement copier ou coupe";
+
 		};
 		act.setEnabled(false);
 	}
-	
+
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
@@ -174,18 +177,39 @@ public class Paste implements Command {
 					FileInputStream fileInputStream;
 					int[] right;
 					try {
-						right = setReadOnly(child);
-						fileInputStream = new FileInputStream(child);
-						FileOutputStream fileOutputStream =
-							new FileOutputStream(file);
-						byte[] buffer = new byte[1024];
-						while (fileInputStream.available() > 0) {
-							int readNumber = fileInputStream.read(buffer);
-							if (readNumber > 0)
-								fileOutputStream.write(buffer, 0, readNumber);
+						if (!Tools.isWin()) {
+							right = setReadOnly(child);
+							fileInputStream = new FileInputStream(child);
+							FileOutputStream fileOutputStream =
+								new FileOutputStream(file);
+							byte[] buffer = new byte[1024];
+							while (fileInputStream.available() > 0) {
+								int readNumber = fileInputStream.read(buffer);
+								cur+=readNumber;
+								if (readNumber > 0)
+									fileOutputStream.write(
+										buffer,
+										0,
+										readNumber);
+							}
+							unsetReadOnly(child, right);
+							setRight(right, file);
 						}
-						unsetReadOnly(child,right);
-						setRight(right, file);
+						else{
+							fileInputStream = new FileInputStream(child);
+							FileOutputStream fileOutputStream =
+								new FileOutputStream(file);
+							byte[] buffer = new byte[1024];
+							while (fileInputStream.available() > 0) {
+								int readNumber = fileInputStream.read(buffer);
+								cur+=readNumber;
+								if (readNumber > 0)
+									fileOutputStream.write(
+										buffer,
+										0,
+										readNumber);
+							}
+						}
 					} catch (FileNotFoundException e) {
 						throw new DoNotExistFileException(child);
 					} catch (IOException e) {
@@ -225,14 +249,15 @@ public class Paste implements Command {
 
 	public class DoThread extends Thread {
 		public void run() {
+			initMax();
+			cur=0;
 			for (Iterator it = last_selection.iterator(); it.hasNext();) {
 				File file = (File) it.next();
 				if (!file.exists())
 					 (new DoNotExistFileException(file)).show();
 				if (!file.canRead())
 					 (new CanNotReadException(file)).show();
-
-				try {
+				try {		
 					pasteFile(dest_rep, file);
 				} catch (DoNotExistFileException e) {
 					e.show();
@@ -246,10 +271,35 @@ public class Paste implements Command {
 		}
 	}
 
+	private void initMax(){
+		File tmp;
+		max = 0;
+		for(Iterator it = last_selection.iterator();it.hasNext();){
+			tmp = (File)it.next();
+			if(tmp.isFile())
+				max+=tmp.length();
+			else
+				max +=lengthRep(tmp);
+		}
+	}
+	
+	private int lengthRep(File f){
+		int len = 0;
+		File[] list_file = f.listFiles();
+		for(int i=0;i<list_file.length;i++){
+			if(list_file[i].isFile())
+				len+=list_file[i].length();
+			else
+				len+=lengthRep(list_file[i]);
+		}
+		return len;
+	}
+
 	public class UndoThread extends Thread {
 		public void run() {
+			initMax();
+			cur=0;
 			File[] tab_file = dest_rep.listFiles();
-
 			for (int i = 0; i < tab_file.length; i++) {
 				for (Iterator j = last_selection.iterator(); j.hasNext();) {
 					File tmp = (File) j.next();
@@ -292,7 +342,7 @@ public class Paste implements Command {
 			uminus.append("w");
 		else
 			uplus.append("w");
-			
+
 		try {
 			r.exec((uplus.append(" " + file_path)).toString());
 			r.exec((uminus.append(" " + file_path)).toString());
@@ -325,12 +375,13 @@ public class Paste implements Command {
 		}
 	}
 
-	private void unsetReadOnly(File f,int[] right) throws ErrorIOFileException {
+	private void unsetReadOnly(File f, int[] right)
+		throws ErrorIOFileException {
 		Runtime r = Runtime.getRuntime();
 		String file_path = f.getPath();
 		StringBuffer uplus = new StringBuffer("chmod u+");
 		StringBuffer uminus = new StringBuffer("chmod u-");
-	
+
 		if (right[0] == 0)
 			uminus.append("r");
 		if (right[1] == 1)
