@@ -24,7 +24,7 @@ public class ExeFileFilter extends FileFilter {
 	 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
 	 */
 	public boolean accept(File f) {
-		return Launch.isExe(f);
+		return Launch.isExe(f)||f.isDirectory();
 		//f.accept(JFileChooser.DIRECTORIES_ONLY);
 	}
 

@@ -74,7 +74,7 @@ public class Main {
 	/* METHODE MAIN */
 	public static void main(String[] args) throws Exception {
 		IconsManager im = new IconsManager();
-		final JFrame mainFrame = new JFrame("Anaconda");
+		final JFrame mainFrame = new JFrame(" - Anaconda - ");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(800, 600);
 		oldCurrentFolder = newCurrentFolder = model.getFolder();
@@ -375,6 +375,7 @@ public class Main {
 		/* TOOLBAR */
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		toolBar.setBorderPainted(false);
 		final JButton back = new JButton(IconsManager.BACK);
 		back.setRolloverIcon(IconsManager.ONFOCUSBACK);
 		final JButton refresh = new JButton(IconsManager.REFRESH);
@@ -399,9 +400,11 @@ public class Main {
 		toolBar.add(back);
 		toolBar.add(refresh);
 		toolBar.add(next);
+		toolBar.addSeparator();
 		toolBar.add(cut);
 		toolBar.add(copy);
 		toolBar.add(paste);
+		toolBar.addSeparator();
 		toolBar.add(garbage);
 		toolBar.add(find);
 		toolBar.setRollover(true);

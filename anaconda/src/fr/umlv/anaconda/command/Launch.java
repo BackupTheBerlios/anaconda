@@ -22,8 +22,8 @@ import fr.umlv.anaconda.tools.ChoozExec;
  */
 public class Launch implements Command {
 
-	//	a utiliser pour savoir comment lancer...
-	//private static final String os = System.getProperty("os.name");
+	//	a utiliser pour savoir comment lancer ?..
+	private static final String os = System.getProperty("os.name");
 	private Runtime r = Runtime.getRuntime();
 	
 	/**default constructor */
@@ -59,7 +59,7 @@ public class Launch implements Command {
 				File exec = new ChoozExec().frameChoozRep();
 				if (exec != null) {
 					try {
-						r.exec(exec.getCanonicalPath()+" "+selected_file.getCanonicalPath());
+						r.exec(exec.getCanonicalPath()+" \""+selected_file.getAbsolutePath()+"\"");
 					} catch (IOException e) {
 						new ErrorIOFileException(selected_file).show();
 					}
@@ -79,7 +79,12 @@ public class Launch implements Command {
 	}
 	
 	public static boolean isExe(File f) {
-		// comment gérer bien ?
-		return true;
+		if (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"))
+			if (f.getName().endsWith(".exe"))
+				return true;
+			else
+				return false;
+		else // on n'est pas sous windows... a quoi se fier ?
+			return true;
 	}
 }

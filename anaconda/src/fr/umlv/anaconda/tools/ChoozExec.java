@@ -39,15 +39,15 @@ public class ChoozExec {
 		
 		JFileChooser fileChooz = new JFileChooser();
 		FileFilter filter = new ExeFileFilter(); 
-		
+
 		fileChooz.setFileFilter(filter);
 		fileChooz.setAcceptAllFileFilterUsed(false);
-		fileChooz.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fileChooz.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooz.setMultiSelectionEnabled(false);
 		fileChooz.setDialogTitle("Lancement");
 		fileChooz.setApproveButtonText("Lancer");
 		fileChooz.setApproveButtonToolTipText("Lance l'application sélectionnée");
-		fileChooz.setCurrentDirectory(new File(System.getProperty("user.dir")));
+	//	fileChooz.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		
 		int returnVal = fileChooz.showOpenDialog(null); 
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
