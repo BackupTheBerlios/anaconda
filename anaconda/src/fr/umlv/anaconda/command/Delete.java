@@ -69,4 +69,8 @@ public class Delete implements Command {
 
 	public void undo() {
 	}
+
+	public boolean canUndo() {
+		return false;
+	}
 }

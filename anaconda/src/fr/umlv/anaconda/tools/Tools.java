@@ -1,6 +1,8 @@
 package fr.umlv.anaconda.tools;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Tools {
 
@@ -10,6 +12,18 @@ public class Tools {
 			if (((children[i].isDirectory() && file.isDirectory())
 				|| (children[i].isFile() && file.isFile()))
 				&& (file.getName().compareTo(children[i].getName())) == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean contains(ArrayList afile, File file) {
+		for (Iterator i = afile.iterator(); i.hasNext();) {
+			File f = (File) i.next();
+			if (((f.isDirectory() && file.isDirectory())
+				|| (f.isFile() && file.isFile()))
+				&& (file.getName().compareTo(f.getName())) == 0) {
 				return true;
 			}
 		}

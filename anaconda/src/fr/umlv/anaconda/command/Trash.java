@@ -174,4 +174,9 @@ public class Trash extends Thread implements Command {
 
 	}
 
+	public boolean canUndo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

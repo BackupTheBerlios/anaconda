@@ -10,7 +10,13 @@ import fr.umlv.anaconda.command.*;
 
 import java.awt.*;
 import java.awt.event.*;
-
+/*
+ * Ajouter la commande annuler et refaire.
+ * Pour annuler: AllCommand.undoLastCommand();
+ * Pour refaire: AllCommand.redoLastCommand();
+ * Pour savoir si on peut annuler: AllCommand.canUndo() => boolean;
+ * Pour savoir si on peut refaire: AllCommand.canRedo() => boolean;
+ */
 /**
  * 
  */
@@ -46,10 +52,8 @@ public class Main {
 		switch(lastFocused) {
 		case LIST_FOCUS:
 			Object[] o = list.getSelectedValues();
-			for (int i=0;i<o.length;i++){
-				//if (Model.cmp.compare(o[i], model.getFolderParent()) != 0)
+			for (int i=0;i<o.length;i++)
 					selection_items.add(o[i]);
-			}
 		break;
 		case TREE_FOCUS:
 			selection_items.add(((Model) tree.getLastSelectedPathComponent()).getFolder());
@@ -117,14 +121,16 @@ public class Main {
 		};
 		final Action createFile = new AbstractAction("Cree Fichier"){
 			public void actionPerformed(ActionEvent e){
-				(new CreateFile()).run();
+				//(new CreateFile()).run();
+				AllCommand.get("createfile").run();
 				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action createFolder = new AbstractAction("Cree Repertoire"){
 			public void actionPerformed(ActionEvent e){
 				TreePath path = tree.getSelectionPath();
-				(new CreateFolder()).run();
+				//(new CreateFolder()).run();
+				AllCommand.get("createfolder").run();
 				refreshAction.actionPerformed(e);
 				treeModel.reload(model);
 				tree.expandPath(path);
@@ -134,28 +140,32 @@ public class Main {
 		};
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
 			public void actionPerformed(ActionEvent e) {
-				(new Copy()).run();
+				//(new Copy()).run();
+				AllCommand.get("copy").run();
 			}
 		};
 		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
 			public void actionPerformed(ActionEvent e) {
-				(new Cut()).run();
+				//(new Cut()).run();
+				AllCommand.get("cut").run();
 			}
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
-				(new Paste()).run();
+				//(new Paste()).run();
+				AllCommand.get("paste").run();
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO a revoir
 				//(new Clone()).run();
+				AllCommand.get("clone").run();
 			}
 		};
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
-				(new Move()).run();
+				//(new Move()).run();
+				AllCommand.get("move").run();
 			}
 		};
 		final Action selectAllAction = new AbstractAction("Selectionner tout") {
@@ -165,14 +175,16 @@ public class Main {
 		};
 		final Action renameAction = new AbstractAction("Renommer") {
 			public void actionPerformed(ActionEvent e) {
-				(new Rename()).run();
+				//(new Rename()).run();
+				AllCommand.get("rename").run();
 				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
 				//Delete de la corbeille
-				(new Delete()).run();
+				//(new Delete()).run();
+				AllCommand.get("delete").run();
 				refreshAction.actionPerformed(e);
 				//trash.run();
 			}

@@ -56,4 +56,8 @@ public class Cut implements Command {
 	public void redo() {
 	}
 
+	public boolean canUndo() {
+		return false;
+	}
+
 }

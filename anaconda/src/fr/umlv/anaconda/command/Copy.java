@@ -59,4 +59,8 @@ public class Copy implements Command {
 
 	public void redo() {
 	}
+
+	public boolean canUndo() {
+		return false;
+	}
 }

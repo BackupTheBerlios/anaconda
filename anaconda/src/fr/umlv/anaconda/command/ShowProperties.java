@@ -136,4 +136,8 @@ public class ShowProperties implements Command {
 		(new ShowProperties()).run(f);
 
 	}
+
+	public boolean canUndo() {
+		return false;
+	}
 }

@@ -21,4 +21,7 @@ public interface Command {
 
 	/** cancel a command */
 	public void undo();
+	
+	/** tell if the command can be cancelled */
+	public boolean canUndo();
 }

@@ -14,8 +14,7 @@ import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.PressPaper;
 import fr.umlv.anaconda.tools.Tools;
 
-public class Paste /*extends Thread */
-implements Command {
+public class Paste implements Command {
 	private boolean is_cut;
 	private ArrayList last_selection = new ArrayList();
 	private File dest_rep;
@@ -64,12 +63,17 @@ implements Command {
 			(new EmptyPressPaperException()).show();
 			return;
 		}
-
+		ArrayList presspaper = PressPaper.getSelectedFiles();
 		origin_rep =
-			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
+			((File) (presspaper.get(0))).getParentFile();
+
+		if (Tools.contains(presspaper,dest)) {
+			no_selection.show();
+			return;
+		}
 
 		last_selection.clear();
-		last_selection.addAll(PressPaper.getSelectedFiles());
+		last_selection.addAll(presspaper);
 		is_cut = PressPaper.toDelete();
 		(new DoThread()).start();
 	}
@@ -102,8 +106,8 @@ implements Command {
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
 		(new DoThread()).start();
-		if(is_cut)
-			PressPaper.clear();	
+		if (is_cut)
+			PressPaper.clear();
 	}
 
 	/**
@@ -134,8 +138,9 @@ implements Command {
 		if (option == JOptionPane.YES_OPTION) {
 			if (child.isDirectory()) {
 
-				file.mkdir();
 				File[] list = child.listFiles();
+				file.mkdir();
+
 				for (int i = 0; i < list.length; i++)
 					pasteFile(file, list[i]);
 				if (PressPaper.toDelete())
@@ -238,5 +243,9 @@ implements Command {
 				}
 			}
 		}
+	}
+	
+	public boolean canUndo() {
+		return true;
 	}
 }

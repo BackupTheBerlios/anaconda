@@ -112,4 +112,8 @@ public class CreateFolder implements Command {
 			(new CanNotDeleteException(file)).show();
 		}
 	}
+
+	public boolean canUndo() {
+		return true;
+	}
 }

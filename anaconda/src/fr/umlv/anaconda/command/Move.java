@@ -78,4 +78,8 @@ public class Move implements Command {
 		last_paste.undo();
 	}
 
+	public boolean canUndo() {
+		return true;
+	}
+
 }

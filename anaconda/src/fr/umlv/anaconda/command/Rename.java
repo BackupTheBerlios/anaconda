@@ -98,4 +98,8 @@ public class Rename implements Command {
 			(new CanNotWriteException(file)).show();
 		}
 	}
+
+	public boolean canUndo() {
+		return true;
+	}
 }
