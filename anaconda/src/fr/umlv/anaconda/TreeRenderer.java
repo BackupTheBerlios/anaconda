@@ -1,8 +1,5 @@
 /*
  * Created on 9 févr. 2004
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 package fr.umlv.anaconda;
 
@@ -17,18 +14,16 @@ import fr.umlv.anaconda.appearance.Themes;
 
 /**
  * @author FIGUEROA
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class TreeRenderer extends DefaultTreeCellRenderer {
 	
 	private ImageIcon open_node_icon = IconsManager.small_father_icon;
 	private ImageIcon close_node_icon = IconsManager.small_folder_icon;
 	private ImageIcon focus_icon = IconsManager.focus_icon;
+//	protected Color backgroundNonSelectionColor = Themes.getBgColor();
+	
 	
 	public TreeRenderer(){
-		
 	}
 	
 	public Component getTreeCellRendererComponent(
@@ -58,8 +53,10 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 			 ((JLabel) c).setIcon(open_node_icon);
 		else
 			 ((JLabel) c).setIcon(close_node_icon);
+	//	c.setBackground(Themes.getBgColor());
+	//	setBackgroundNonSelectionColor(Themes.getBgColor());
+	//	((JLabel)c).setBackground(Themes.getBgColor());
 		backgroundNonSelectionColor = Themes.getBgColor();
-		((JLabel)c).setBackground(Themes.getBgColor());
 		return c;
 	}
 
