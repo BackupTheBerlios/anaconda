@@ -41,8 +41,8 @@ public class Model implements ListModel, TreeNode {
 				return 1;
 			File file1 = (File) o1;
 			File file2 = (File) o2;
-			
-			return (int) ((file1.length() - file2.length()));	
+
+			return (int) ((file1.length() - file2.length()));
 		}
 		public boolean equals(Object obj) {
 			return this == obj;
@@ -61,7 +61,7 @@ public class Model implements ListModel, TreeNode {
 			Date date2 = new Date(file2.lastModified());
 			return date1.compareTo(date2);
 		}
-		public boolean equals(Object obj) {		
+		public boolean equals(Object obj) {
 			return this == obj;
 		}
 	};
@@ -74,20 +74,22 @@ public class Model implements ListModel, TreeNode {
 				return 1;
 			File file1 = (File) o1;
 			File file2 = (File) o2;
-			if ((file1.isDirectory() && file2.isDirectory())
-				|| (!file1.isDirectory() && !file2.isDirectory()))
-				//TODO comparator par type dans Model.java
-				return file1.getAbsolutePath().compareTo(
-					file2.getAbsolutePath());
-			if (file1.isDirectory())
-				return -1;
-			return 1;
+			String s1 = file1.getName();
+			String s2 = file2.getName();
+			int extIndex1 = s1.lastIndexOf('.');
+			int extIndex2 = s2.lastIndexOf('.');
+
+			if (extIndex1 != -1)
+				s1 = s1.substring(extIndex1);
+			if (extIndex2 != -1)
+				s2 = s2.substring(extIndex2);
+			return s1.compareTo(s2);
 		}
 		public boolean equals(Object obj) {
 			return this == obj;
 		}
 	};
-	
+
 	private ArrayList comp = new ArrayList();
 	public void addCmp(String s) {
 		if (s.equalsIgnoreCase("by_size")) {

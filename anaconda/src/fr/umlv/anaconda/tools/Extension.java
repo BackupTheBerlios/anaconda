@@ -1,19 +1,7 @@
-/*
- * Créé le 1 mars 2004
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package fr.umlv.anaconda.tools;
 
 import java.util.ArrayList;
 
-/**
- * @author ntesevic
- *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 public class Extension {
 
 	private static ArrayList imagesExt = new ArrayList();
@@ -33,6 +21,6 @@ public class Extension {
 
 		}
 		return false;
-		 }
+	}
 
 }

@@ -35,38 +35,40 @@ public class Main {
 	final public static JTree tree = new JTree(treeModel);
 	final public static InfoPanel info_panel = new InfoPanel();
 
-
 	final public static GarbageModel garbage_model = new GarbageModel();
 	final public static FindModel find_model = new FindModel();
-	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model,garbage_model);
-		   final public static ModelListAdapter listModel = tabb.getListModel();
-		   final public static JList list = tabb.getListFiles();
-	final public static ListRenderer listCellRenderer = new ListRenderer(listModel);
+	final public static MyTabbedPane tabb =
+		new MyTabbedPane(model, find_model, garbage_model);
+	final public static ModelListAdapter listModel = tabb.getListModel();
+	final public static JList list = tabb.getListFiles();
+	final public static ListRenderer listCellRenderer =
+		new ListRenderer(listModel);
 	final public static TreeRenderer treeRenderer = new TreeRenderer();
 	final private static int LIST_FOCUS = 0;
 	final private static int TREE_FOCUS = 1;
 	final private static int NONE_FOCUS = 2;
 	private static int lastFocused = NONE_FOCUS;
 	private static ArrayList selection_items = new ArrayList();
-	private static Color bg_color = new Color(210,230,255); 
-	
+	private static Color bg_color = new Color(210, 230, 255);
+
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
 		selection_items.clear();
-		
-		switch(lastFocused) {
-		case LIST_FOCUS:
-			Object[] o = list.getSelectedValues();
-			for (int i=0;i<o.length;i++)
+
+		switch (lastFocused) {
+			case LIST_FOCUS :
+				Object[] o = list.getSelectedValues();
+				for (int i = 0; i < o.length; i++)
 					selection_items.add(o[i]);
-		break;
-		case TREE_FOCUS:
-			selection_items.add(((Model) tree.getLastSelectedPathComponent()).getFolder());
-			break;
+				break;
+			case TREE_FOCUS :
+				selection_items.add(
+					((Model) tree.getLastSelectedPathComponent()).getFolder());
+				break;
 		}
 		return selection_items;
 	}
-	
+
 	public static Color getBgColor() {
 		return bg_color;
 	}
@@ -92,13 +94,12 @@ public class Main {
 		/***********************/
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setSelectedIndex(0);
-		
+
 		list.setCellRenderer(listCellRenderer);
 
 		JScrollPane scrollTree = new JScrollPane(tree);
 		/******************************/
 		final JPanel infoPanel = new JPanel();
-
 
 		JSplitPane splitTreeInfo =
 			new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollTree, info_panel);
@@ -115,26 +116,27 @@ public class Main {
 			new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT,
 				splitTreeInfo /*scrollTree*/
-		, /*scrollList*/tabb);
+		, /*scrollList*/
+		tabb);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
 		splitPane.setDividerSize(2);
 		/**********************************/
 		/* LES ACTIONS */
-		final Action refreshAction = new AbstractAction("Actualiser"){
-					public void actionPerformed(ActionEvent e){
-						model.setFolder(model.getFolder());
-					}
+		final Action refreshAction = new AbstractAction("Actualiser") {
+			public void actionPerformed(ActionEvent e) {
+				model.setFolder(model.getFolder());
+			}
 		};
-		final Action createFile = new AbstractAction("Cree Fichier"){
-			public void actionPerformed(ActionEvent e){
-				//(new CreateFile()).run();
-				AllCommand.get("createfile").run();
+		final Action createFile = new AbstractAction("Cree Fichier") {
+			public void actionPerformed(ActionEvent e) {
+					//(new CreateFile()).run();
+	AllCommand.get("createfile").run();
 				refreshAction.actionPerformed(e);
 			}
 		};
-		final Action createFolder = new AbstractAction("Cree Repertoire"){
-			public void actionPerformed(ActionEvent e){
+		final Action createFolder = new AbstractAction("Cree Repertoire") {
+			public void actionPerformed(ActionEvent e) {
 				TreePath path = tree.getSelectionPath();
 				//(new CreateFolder()).run();
 				AllCommand.get("createfolder").run();
@@ -147,121 +149,130 @@ public class Main {
 		};
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Copy()).run();
-				AllCommand.get("copy").run();
+					//(new Copy()).run();
+	AllCommand.get("copy").run();
 			}
 		};
 		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Cut()).run();
-				AllCommand.get("cut").run();
+					//(new Cut()).run();
+	AllCommand.get("cut").run();
 			}
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Paste()).run();
-				AllCommand.get("paste").run();
+					//(new Paste()).run();
+	AllCommand.get("paste").run();
 			}
 		};
-		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
+		final Action dupAction =
+			new AbstractAction("Dupliquer    Ctrl+Alt+C") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Clone()).run();
-				AllCommand.get("clone").run();
+					//(new Clone()).run();
+	AllCommand.get("clone").run();
 			}
 		};
-		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
+		final Action moveAction =
+			new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Move()).run();
-				AllCommand.get("move").run();
+					//(new Move()).run();
+	AllCommand.get("move").run();
 			}
 		};
-		final Action selectAllAction = new AbstractAction("Selectionner tout") {
+		final Action selectAllAction =
+			new AbstractAction("Selectionner tout") {
 			public void actionPerformed(ActionEvent e) {
 				list.setSelectionInterval(0, listModel.getSize() - 1);
-				info_panel.setAsGeneral(null,listModel.getSize()-1);
+				info_panel.setAsGeneral(null, listModel.getSize() - 1);
 			}
 		};
 		final Action renameAction = new AbstractAction("Renommer") {
 			public void actionPerformed(ActionEvent e) {
-				//(new Rename()).run();
-				AllCommand.get("rename").run();
+					//(new Rename()).run();
+	AllCommand.get("rename").run();
 				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
-				//Delete de la corbeille
-				//(new Delete()).run();
-				//AllCommand.get("delete").run();
-				//refreshAction.actionPerformed(e);
-				AllCommand.get("trash").run();
+					//Delete de la corbeille
+		//(new Delete()).run();
+		//AllCommand.get("delete").run();
+		//refreshAction.actionPerformed(e);
+	AllCommand.get("trash").run();
 			}
 		};
-		final Action findAction = new AbstractAction("Rechercher"){
-			public void actionPerformed(ActionEvent e){
-				//FindPanel find_panel = new FindPanel(find_model);
-				//info_panel.setPanel(FindPanel.getPanel());
-				info_panel.setAsFind(find_model);
+		final Action findAction = new AbstractAction("Rechercher") {
+			public void actionPerformed(ActionEvent e) {
+					//FindPanel find_panel = new FindPanel(find_model);
+		//info_panel.setPanel(FindPanel.getPanel());
+	info_panel.setAsFind(find_model);
 			}
-			
+
 		};
-		final Action bigIconsAction = new AbstractAction("Grandes Icones"){
-			public void actionPerformed(ActionEvent e){
+		final Action bigIconsAction = new AbstractAction("Grandes Icones") {
+			public void actionPerformed(ActionEvent e) {
 				listCellRenderer.setIconsSize(IconsManager.BIG_ICONS);
 				refreshAction.actionPerformed(e);
 			}
 		};
-		final Action smallIconsAction = new AbstractAction("Petites Icones"){
-			public void actionPerformed(ActionEvent e){
+		final Action smallIconsAction = new AbstractAction("Petites Icones") {
+			public void actionPerformed(ActionEvent e) {
 				listCellRenderer.setIconsSize(IconsManager.SMALL_ICONS);
 				refreshAction.actionPerformed(e);
 			}
 		};
 
-		final Action showPropertiesAction = new AbstractAction("Propriétés"){
-			public void actionPerformed(ActionEvent e){
+		final Action showPropertiesAction = new AbstractAction("Proprietes") {
+			public void actionPerformed(ActionEvent e) {
 				AllCommand.get("showproperties").run();
 			}
 		};
 
-		final Action aboutAction = new AbstractAction("A propos"){
-			public void actionPerformed(ActionEvent e){
+		final Action aboutAction = new AbstractAction("A propos") {
+			public void actionPerformed(ActionEvent e) {
 				AllCommand.get("about").run();
 			}
 		};
 
-		final Action helpAction = new AbstractAction("Aide"){
-			public void actionPerformed(ActionEvent e){
+		final Action helpAction = new AbstractAction("Aide") {
+			public void actionPerformed(ActionEvent e) {
 				AllCommand.get("help").run();
 			}
 		};
 
-		final Action showBySizeAction = new AbstractAction("Taille"){
-			public void actionPerformed(ActionEvent e){
+		final Action showBySizeAction = new AbstractAction("Taille") {
+			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_size");
 				model.setFolder(newCurrentFolder);
 			}
 		};
-		
-		final Action showByDateAction = new AbstractAction("Date"){
-			public void actionPerformed(ActionEvent e){
+
+		final Action showByTypeAction = new AbstractAction("Type") {
+			public void actionPerformed(ActionEvent e) {
+				model.addCmp("by_type");
+				model.setFolder(newCurrentFolder);
+			}
+		};
+		final Action showByDateAction = new AbstractAction("Date") {
+			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_date");
 				model.setFolder(newCurrentFolder);
 			}
 		};
-		
-		final Action undoAction = new AbstractAction("Annuler"){
-			public void actionPerformed(ActionEvent e){
+
+		final Action undoAction = new AbstractAction("Annuler") {
+			public void actionPerformed(ActionEvent e) {
 				AllCommand.undoLastCommand();
 			}
 		};
-		
-		final Action redoAction = new AbstractAction("Refaire"){
-			public void actionPerformed(ActionEvent e){
-				AllCommand.redoLastCommand();					
+
+		final Action redoAction = new AbstractAction("Refaire") {
+			public void actionPerformed(ActionEvent e) {
+				AllCommand.redoLastCommand();
 			}
 		};
-		
+
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -288,13 +299,18 @@ public class Main {
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Voulez vous vraiment quitter ?"," Quitter ",JOptionPane.OK_CANCEL_OPTION)==JOptionPane.OK_OPTION)
-					System.exit(1);	
+				if (JOptionPane
+					.showConfirmDialog(
+						null,
+						"Voulez vous vraiment quitter ?",
+						" Quitter ",
+						JOptionPane.OK_CANCEL_OPTION)
+					== JOptionPane.OK_OPTION)
+					System.exit(1);
 				// TODO g?rer proprement, v?rifier si on est pas en train de travailler ?..
 			}
-		}
-				);
-		
+		});
+
 		file.add(findItem);
 		file.add(propertiesItem);
 		file.add(quitter);
@@ -323,7 +339,7 @@ public class Main {
 		JMenuItem reloadItem = new JMenuItem(refreshAction);
 		JMenu subMenuTri = new JMenu("Organiser par...");
 		JMenuItem triName = new JMenuItem("Nom");
-		JMenuItem triType = new JMenuItem("Type");
+		JMenuItem triType = new JMenuItem(showByTypeAction);
 		JMenuItem triSize = new JMenuItem(showBySizeAction);
 		JMenuItem triDate = new JMenuItem(showByDateAction);
 		subMenuTri.add(triName);
@@ -365,7 +381,6 @@ public class Main {
 		JMenuItem itemAbout = new JMenuItem("A propos");
 		itemAbout.addActionListener(aboutAction);
 		help.add(itemAbout);
-		
 
 		menuBar.add(file);
 		menuBar.add(edit);
@@ -417,15 +432,20 @@ public class Main {
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
 		String fileName = model.getFolder().getAbsolutePath();
-/*		final JComboBox adrZone = new JComboBox(
-					new AddressBarComboBoxModel(
-								fileName
-				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)
-													   ));
-
-        adrZone.setEditable(true);
-        */
-		final AddressBar adrZone = new AddressBar(fileName + ((fileName.endsWith(File.separator)) ? "" : File.separator));
+		/*		final JComboBox adrZone = new JComboBox(
+							new AddressBarComboBoxModel(
+										fileName
+						+ ((fileName.endsWith(File.separator)) ? "" : File.separator)
+															   ));
+		
+		        adrZone.setEditable(true);
+		        */
+		final AddressBar adrZone =
+			new AddressBar(
+				fileName
+					+ ((fileName.endsWith(File.separator))
+						? ""
+						: File.separator));
 		//adrZone.addKeyListener(((AddressBarComboBoxModel)adrZone.getModel()).listenerFactory());
 		adrZone.setActionCommand("test");
 		adressBar.add(delAdr);
@@ -441,9 +461,9 @@ public class Main {
 
 		/* Listeners des BAR */
 		home.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						model.setFolder(homeFile);
-					}
+			public void actionPerformed(ActionEvent e) {
+				model.setFolder(homeFile);
+			}
 		});
 		back.setEnabled(false);
 		next.setEnabled(false);
@@ -454,19 +474,19 @@ public class Main {
 				next.setEnabled(true);
 				model.setFolder(oldCurrentFolder);
 				String fileName = oldCurrentFolder.getAbsolutePath();
-		/*		adrZone.getEditor().setItem(
+				/*		adrZone.getEditor().setItem(
+							fileName
+								+ ((fileName.endsWith(File.separator))
+									? ""
+									: File.separator)); */
+				adrZone.setText(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator)); */
-				adrZone.setText(
-						fileName
-						+ ((fileName.endsWith(File.separator))
-								? ""
-								: File.separator));
-				if(backFolderStack.empty())
+							: File.separator));
+				if (backFolderStack.empty())
 					back.setEnabled(false);
-				
+
 			}
 		});
 		next.addActionListener(new ActionListener() {
@@ -476,27 +496,27 @@ public class Main {
 				back.setEnabled(true);
 				model.setFolder(newCurrentFolder);
 				String fileName = newCurrentFolder.getAbsolutePath();
-		/*		adrZone.getEditor().setItem(
+				/*		adrZone.getEditor().setItem(
+							fileName
+								+ ((fileName.endsWith(File.separator))
+									? ""
+									: File.separator)); */
+				adrZone.setText(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator)); */
-				adrZone.setText(
-						fileName
-						+ ((fileName.endsWith(File.separator))
-								? ""
-								: File.separator));
-				
-				if(nextFolderStack.empty())
-				next.setEnabled(false);
+							: File.separator));
+
+				if (nextFolderStack.empty())
+					next.setEnabled(false);
 			}
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(e.getActionCommand());
 				System.out.println(e.paramString());
-			//	if (e.getActionCommand().)
-				File file = new File(adrZone.getText()); 
+				//	if (e.getActionCommand().)
+				File file = new File(adrZone.getText());
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
 					newCurrentFolder = file;
@@ -513,16 +533,16 @@ public class Main {
 						"Fichier/repertoire non trouve",
 						JOptionPane.ERROR_MESSAGE);
 				String fileName = model.getFolder().getAbsolutePath();
-		/*		adrZone.getEditor().setItem( 
+				/*		adrZone.getEditor().setItem( 
+							fileName
+								+ ((fileName.endsWith(File.separator))
+									? ""
+									: File.separator)); */
+				adrZone.setText(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator)); */
-				adrZone.setText(
-						fileName
-						+ ((fileName.endsWith(File.separator))
-								? ""
-								: File.separator));
+							: File.separator));
 			}
 		});
 		adrZone.addKeyListener(adrZone.listenerFactory());
@@ -530,7 +550,7 @@ public class Main {
 		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				adrZone.getEditor().setItem(""); 
+				adrZone.getEditor().setItem("");
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
@@ -541,7 +561,8 @@ public class Main {
 		final JPopupMenu clickInFile = new JPopupMenu();
 		clickInFile.add(new JMenuItem("Nouveau Fichier    Ctrl+T"));
 		clickInFile.add(new JMenuItem("Nouveau Repertoire    Ctrl+R"));
-		clickInFile.add(new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
+		clickInFile.add(
+			new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
 		final JPopupMenu clickOutFile = new JPopupMenu();
 		clickOutFile.add(new JMenuItem(copyAction));
 		clickOutFile.add(new JMenuItem(cutAction));
@@ -561,33 +582,38 @@ public class Main {
 				pasteAction.setEnabled(true);
 				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
 				File file = null;
-				if(path != null) file = ((Model)path.getLastPathComponent()).getFolder();
+				if (path != null)
+					file = ((Model) path.getLastPathComponent()).getFolder();
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 						if (file != null && e.getClickCount() == 1) {
-							if(!tree.isExpanded(path)) tree.expandPath(path);
-							else if(!((Model)path.getLastPathComponent()).equals(treeModel.getRoot()))
+							if (!tree.isExpanded(path))
+								tree.expandPath(path);
+							else if (
+								!((Model) path.getLastPathComponent()).equals(
+									treeModel.getRoot()))
 								tree.collapsePath(path);
 							tree.setSelectionPath(path);
 							tree.scrollPathToVisible(path);
 							oldCurrentFolder = model.getFolder();
-						   	backFolderStack.push(oldCurrentFolder);
+							backFolderStack.push(oldCurrentFolder);
 							back.setEnabled(true);
 							next.setEnabled(false);
-						   
-							if (Model.cmp.compare(oldCurrentFolder, file) != 0) {
+
+							if (Model.cmp.compare(oldCurrentFolder, file)
+								!= 0) {
 								model.setFolder(file);
 								String fileName = file.getAbsolutePath();
-						/*		adrZone.getEditor().setItem( 
+								/*		adrZone.getEditor().setItem( 
+											fileName
+												+ ((fileName.endsWith(File.separator))
+													? ""
+													: File.separator)); */
+								adrZone.setText(
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
-											: File.separator)); */
-								adrZone.setText(
-										fileName
-										+ ((fileName.endsWith(File.separator))
-												? ""
-												: File.separator));
+											: File.separator));
 								list.setSelectedIndex(0);
 							}
 						}
@@ -596,11 +622,17 @@ public class Main {
 						break;
 					case MouseEvent.BUTTON3 :
 						if (file == null) {
-							clickInFile.show(e.getComponent(), e.getX(), e.getY());
+							clickInFile.show(
+								e.getComponent(),
+								e.getX(),
+								e.getY());
 						} else {
 							tree.setSelectionPath(path);
 							tree.scrollPathToVisible(path);
-							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
+							clickOutFile.show(
+								e.getComponent(),
+								e.getX(),
+								e.getY());
 						}
 						break;
 				}
@@ -614,8 +646,9 @@ public class Main {
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 
-						
-						info_panel.setAsGeneral((File) list.getSelectedValue(),getSelectionItems().size());
+						info_panel.setAsGeneral(
+							(File) list.getSelectedValue(),
+							getSelectionItems().size());
 						if (e.getClickCount() == 2) {
 							File file = (File) list.getSelectedValue();
 							oldCurrentFolder = model.getFolder();
@@ -623,39 +656,46 @@ public class Main {
 							back.setEnabled(true);
 							next.setEnabled(false);
 							if (file.isDirectory()) {
-							
+
 								model.setFolder(file);
 								TreePath path = tree.getSelectionPath();
-								if(path != null) {
+								if (path != null) {
 									TreePath parent = path.getParentPath();
-									if(parent != null) {
-										Model parentModel = (Model)parent.getLastPathComponent();
-										if(parentModel.getIndex(model.getParent()) != -1)
-											path = parent.pathByAddingChild(model.getParent());
+									if (parent != null) {
+										Model parentModel =
+											(Model) parent
+												.getLastPathComponent();
+										if (parentModel
+											.getIndex(model.getParent())
+											!= -1)
+											path =
+												parent.pathByAddingChild(
+													model.getParent());
 										else
 											path = parent;
 									}
-									if(((Model)path.getLastPathComponent()).getIndex(model) != -1)
+									if (((Model) path.getLastPathComponent())
+										.getIndex(model)
+										!= -1)
 										path = path.pathByAddingChild(model);
 									tree.expandPath(path);
 									tree.setSelectionPath(path);
 									tree.scrollPathToVisible(path);
 								}
-							//	String fileName = file.getAbsolutePath();
-							String fileName = file.getAbsolutePath();
-							/*	adrZone.getEditor().setItem( 
+								//	String fileName = file.getAbsolutePath();
+								String fileName = file.getAbsolutePath();
+								/*	adrZone.getEditor().setItem( 
+										fileName
+											+ ((fileName.endsWith(File.separator))
+												? ""
+												: File.separator)); */
+								adrZone.setText(
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
-											: File.separator)); */
-								adrZone.setText(
-										fileName
-										+ ((fileName.endsWith(File.separator))
-												? ""
-												: File.separator));
+											: File.separator));
 								list.setSelectedIndex(0);
-							}
-							else {
+							} else {
 								new Launch().run(file);
 							}
 						}
@@ -663,14 +703,21 @@ public class Main {
 					case MouseEvent.BUTTON2 :
 						break;
 					case MouseEvent.BUTTON3 :
-						int index = list.locationToIndex(new Point(e.getX(), e.getY()));
+						int index =
+							list.locationToIndex(new Point(e.getX(), e.getY()));
 						File file = (File) listModel.getElementAt(index);
 						if (file == null) {
-							clickInFile.show(e.getComponent(), e.getX(), e.getY());
+							clickInFile.show(
+								e.getComponent(),
+								e.getX(),
+								e.getY());
 						} else {
 							list.setSelectedIndex(index);
 							pasteAction.setEnabled(file.isDirectory());
-							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
+							clickOutFile.show(
+								e.getComponent(),
+								e.getX(),
+								e.getY());
 						}
 						break;
 				}
