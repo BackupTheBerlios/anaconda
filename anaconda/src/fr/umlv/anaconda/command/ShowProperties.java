@@ -54,20 +54,8 @@ public class ShowProperties implements Command {
 			can_delete = false;
 		}
 
-		try {
-			sm.checkRead(file_path);
-			can_read = true;
-		} catch (SecurityException e) {
-			can_read = false;
-		}
-
-		try {
-			sm.checkWrite(file_path);
-			can_write = true;
-		} catch (SecurityException e) {
-			can_write = false;
-		}
-
+		can_read = f.canRead();
+		can_write = f.canWrite();
 		is_directory = f.isDirectory();
 		is_hidden = f.isHidden();
 		size = f.length();
@@ -98,7 +86,7 @@ public class ShowProperties implements Command {
 	}
 
 	public void run(File selected_file) {
-		
+
 		File f = selected_file;
 		String file_path = f.getPath();
 
@@ -109,20 +97,8 @@ public class ShowProperties implements Command {
 			can_delete = false;
 		}
 
-		try {
-			sm.checkRead(file_path);
-			can_read = true;
-		} catch (SecurityException e) {
-			can_read = false;
-		}
-
-		try {
-			sm.checkWrite(file_path);
-			can_write = true;
-		} catch (SecurityException e) {
-			can_write = false;
-		}
-
+		can_read = f.canRead();
+		can_write = f.canWrite();
 		is_directory = f.isDirectory();
 		is_hidden = f.isHidden();
 		size = f.length();
@@ -156,7 +132,7 @@ public class ShowProperties implements Command {
 		Properties p = System.getProperties();
 		String home = p.getProperty("user.dir");
 		String file_separator = p.getProperty("file.separator");
-		File f = new File(new String(home + file_separator + "test"));
+		File f = new File(new String(home + file_separator + "tmp"));
 		(new ShowProperties()).run(f);
 
 	}
