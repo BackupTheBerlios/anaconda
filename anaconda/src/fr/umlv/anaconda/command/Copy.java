@@ -1,18 +1,21 @@
 /*
  * Created on 1 févr. 2004
  */
-package fr.umlv.anaconda.Command;
+package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import fr.umlv.anaconda.Exception.CanNotDeleteException;
-import fr.umlv.anaconda.Exception.CanNotReadException;
-import fr.umlv.anaconda.Exception.CanNotWriteException;
-import fr.umlv.anaconda.Exception.DoNotExistFileException;
-import fr.umlv.anaconda.Exception.ErrorPastingFileException;
-import fr.umlv.anaconda.Exception.IsNotDirectoryException;
+import javax.swing.AbstractAction;
 
-public class Copy implements Command {
+import fr.umlv.anaconda.exception.CanNotDeleteException;
+import fr.umlv.anaconda.exception.CanNotReadException;
+import fr.umlv.anaconda.exception.CanNotWriteException;
+import fr.umlv.anaconda.exception.DoNotExistFileException;
+import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.IsNotDirectoryException;
+
+public class Copy extends AbstractAction  implements Command {
 	private final static boolean deleted = false;
 
 	/**
@@ -50,5 +53,10 @@ public class Copy implements Command {
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
+	}
+
+	
+	public void actionPerformed(ActionEvent e) {
+		//run(Main.);
 	}
 }

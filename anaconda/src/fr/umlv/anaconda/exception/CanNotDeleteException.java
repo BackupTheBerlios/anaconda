@@ -1,7 +1,7 @@
 /*
  * Created on 1 févr. 2004
  */
-package fr.umlv.anaconda.Exception;
+package fr.umlv.anaconda.exception;
 
 import java.io.File;
 

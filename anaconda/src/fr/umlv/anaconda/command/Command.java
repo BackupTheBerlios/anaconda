@@ -4,14 +4,14 @@
  * Pour changer le modèle de ce fichier généré, allez à :
  * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
  */
-package fr.umlv.anaconda.Command;
+package fr.umlv.anaconda.command;
 
-import fr.umlv.anaconda.Exception.CanNotDeleteException;
-import fr.umlv.anaconda.Exception.CanNotReadException;
-import fr.umlv.anaconda.Exception.CanNotWriteException;
-import fr.umlv.anaconda.Exception.DoNotExistFileException;
-import fr.umlv.anaconda.Exception.ErrorPastingFileException;
-import fr.umlv.anaconda.Exception.IsNotDirectoryException;
+import fr.umlv.anaconda.exception.CanNotDeleteException;
+import fr.umlv.anaconda.exception.CanNotReadException;
+import fr.umlv.anaconda.exception.CanNotWriteException;
+import fr.umlv.anaconda.exception.DoNotExistFileException;
+import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 
 public interface Command {

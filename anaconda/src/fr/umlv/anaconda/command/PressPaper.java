@@ -1,4 +1,4 @@
-package fr.umlv.anaconda.Command;
+package fr.umlv.anaconda.command;
 
 import java.util.*;
 
