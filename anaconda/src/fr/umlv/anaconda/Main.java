@@ -149,21 +149,7 @@ public class Main {
 		/***/
 		/**************************************************************/
 		/* POSITIONNEMENT DU RENDU */
-		tree.setCellRenderer(new DefaultTreeCellRenderer() {
-			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-				Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-				if(value == null) return new JLabel("");
-				File file = (File)value;
-				if(file.getName().compareTo("") == 0) ((JLabel)c).setText(file.getAbsolutePath());
-				else ((JLabel)c).setText(file.getName());
-				if(selected) ((JLabel)c).setIcon(IconsManager.focus_icon);
-				else if(expanded) ((JLabel)c).setIcon(IconsManager.small_father_icon);
-				else ((JLabel)c).setIcon(IconsManager.small_folder_icon);
-			//	((JLabel)c).setBackground(Themes.getBgColor());
-				return c;
-			}
-		}); 
-		((DefaultTreeCellRenderer)tree.getCellRenderer()).setBackgroundNonSelectionColor(Themes.getBgColor());
+		tree.setCellRenderer(new TreeRenderer());
 		/* POSITIONNEMENT DES EVENEMENT SOURIS */
 		tree.addMouseListener(new MouseAdapter() {
 			private TreePath oldPath = null;

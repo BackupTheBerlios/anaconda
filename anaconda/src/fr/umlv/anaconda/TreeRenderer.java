@@ -4,6 +4,7 @@
 package fr.umlv.anaconda;
 
 import java.awt.Component;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -24,6 +25,7 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 	
 	
 	public TreeRenderer(){
+		backgroundNonSelectionColor = Themes.getBgColor();
 	}
 	
 	public Component getTreeCellRendererComponent(
@@ -43,20 +45,15 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 				leaf,
 				row,
 				hasFocus);
-		String name = Main.currentFolder.getName();
-		if (name.compareTo("") == 0)
-			name = Main.currentFolder.getAbsolutePath();
-		((JLabel) c).setText(name);
-		if (selected)
-			 ((JLabel) c).setIcon(focus_icon);
-		else if (expanded)
-			 ((JLabel) c).setIcon(open_node_icon);
-		else
-			 ((JLabel) c).setIcon(close_node_icon);
-	//	c.setBackground(Themes.getBgColor());
-	//	setBackgroundNonSelectionColor(Themes.getBgColor());
-	//	((JLabel)c).setBackground(Themes.getBgColor());
-		backgroundNonSelectionColor = Themes.getBgColor();
+		if(value == null) return new JLabel("");
+		File file = (File)value;
+		if(file.getName().compareTo("") == 0)
+			((JLabel)c).setText(file.getAbsolutePath());
+		else ((JLabel)c).setText(file.getName());
+		((JLabel)c).setToolTipText(file.getAbsolutePath());
+		if(selected) ((JLabel)c).setIcon(focus_icon);
+		else if(expanded) ((JLabel)c).setIcon(open_node_icon);
+		else ((JLabel)c).setIcon(close_node_icon);
 		return c;
 	}
 
