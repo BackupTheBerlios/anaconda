@@ -13,12 +13,7 @@ import fr.umlv.anac.Exception.DoNotExistFileException;
 import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
-/**
- * @author jyam
- *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
+
 public interface Command {
 	public void run(Object o)
 		throws

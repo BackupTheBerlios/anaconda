@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import fr.umlv.anac.Exception.CanNotDeleteException;
@@ -18,7 +19,9 @@ import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
 public class Paste implements Command {
-
+	private static boolean is_cut;
+	private ArrayList last_selection = new ArrayList();
+	private File dest;
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
@@ -39,6 +42,11 @@ public class Paste implements Command {
 			throw new IsNotDirectoryException(dest);
 		if (!dest.canWrite())
 			throw new CanNotWriteException(dest);
+
+		this.dest = dest;
+		last_selection.clear();
+		last_selection.addAll(PressPaper.getSelectedFiles());
+		is_cut = PressPaper.toDelete();
 
 		for (Iterator it = PressPaper.getSelectedFiles().iterator();
 			it.hasNext();
@@ -72,47 +80,61 @@ public class Paste implements Command {
 		} else {
 			if (PressPaper.toDelete())
 				child.renameTo(file);
-			else
-				copyTo(file, child);
-		}
-	}
-
-	/**
-	 * Copies the file "to_read" to the file named "file".
-	 * 
-	 * @param to
-	 *            is the destination.
-	 * @param from
-	 *            is the origin.
-	 * @throws DoNotExistFileException
-	 * @throws ErrorPastingFileException
-	 */
-	public static void copyTo(File to, File from)
-		throws DoNotExistFileException, ErrorPastingFileException {
-		FileInputStream fileInputStream;
-		try {
-			fileInputStream = new FileInputStream(from);
-			FileOutputStream fileOutputStream = new FileOutputStream(to);
-			byte[] buffer = new byte[1024];
-			while (fileInputStream.available() > 0) {
-				int readNumber = fileInputStream.read(buffer);
-				if (readNumber > 0)
-					fileOutputStream.write(buffer, 0, readNumber);
+			else {
+				FileInputStream fileInputStream;
+				try {
+					fileInputStream = new FileInputStream(child);
+					FileOutputStream fileOutputStream =
+						new FileOutputStream(file);
+					byte[] buffer = new byte[1024];
+					while (fileInputStream.available() > 0) {
+						int readNumber = fileInputStream.read(buffer);
+						if (readNumber > 0)
+							fileOutputStream.write(buffer, 0, readNumber);
+					}
+				} catch (FileNotFoundException e) {
+					throw new DoNotExistFileException(child);
+				} catch (IOException e) {
+					throw new ErrorPastingFileException(child);
+				}
 			}
-		} catch (FileNotFoundException e) {
-			throw new DoNotExistFileException(from);
-		} catch (IOException e) {
-			throw new ErrorPastingFileException(from);
 		}
 	}
 
 	public void undo()
 		throws
-			DoNotExistFileException,
 			IsNotDirectoryException,
 			CanNotWriteException,
 			CanNotReadException,
-			CanNotDeleteException {
+			CanNotDeleteException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
+		if (!dest.exists())
+			throw new DoNotExistFileException(dest);
+		if (!dest.isDirectory())
+			throw new IsNotDirectoryException(dest);
+		if (!dest.canWrite())
+			throw new CanNotWriteException(dest);
+
+		File[] tab_file = dest.listFiles();
+
+		for (int i = 0; i < tab_file.length; i++) {
+			File to_replace = tab_file[i];
+
+			if (!to_replace.canRead())
+				throw new CanNotReadException(to_replace);
+
+			File last_site =
+				(File) last_selection.get(last_selection.indexOf(to_replace));
+
+			if (is_cut) {
+				pasteFile(last_site, to_replace);
+				tab_file[i].delete(); //TODO revoir avec supprimer.
+			} else
+				tab_file[i].delete();
+			//TODO revoir avec supprimer.
+
+		}
 	}
 
 	public void redo()
@@ -122,6 +144,12 @@ public class Paste implements Command {
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
+		
+		if (is_cut)
+			 (new Cut()).run(last_selection);
+		else
+			 (new Copy()).run(last_selection);
+		run(dest);
 	}
 
 }
