@@ -138,7 +138,7 @@ public class ShowProperties implements Command {
 		
 		f.setReadOnly();
 		(new ShowProperties()).run(f);
-		Permission file_permission = new Permission("write");
+//		Permission file_permission = new Permission("write"); // ne reconnais pas "permission"
 	}
 
 	public boolean canUndo() {

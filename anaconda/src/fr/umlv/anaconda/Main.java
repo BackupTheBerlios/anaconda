@@ -212,6 +212,12 @@ public class Main {
 			}
 		};
 
+		final Action showPropertiesAction = new AbstractAction("Propriétés"){
+			public void actionPerformed(ActionEvent e){
+					AllCommand.get("showproperties").run();
+			}
+		};
+
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -234,6 +240,7 @@ public class Main {
 		JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
 		findItem.addActionListener(findAction);
 		JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
+		propertiesItem.addActionListener(showPropertiesAction);
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -459,6 +466,7 @@ public class Main {
 		clickOutFile.add(new JMenuItem(selectAllAction));
 		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(deleteAction));
+		clickOutFile.add(new JMenuItem(showPropertiesAction));
 		/***********************************************/
 		/* LISTERNER SUR L'ARBRE ET LA LISTE */
 		tree.addMouseListener(new MouseAdapter() {
@@ -543,7 +551,8 @@ public class Main {
 									tree.setSelectionPath(path);
 									tree.scrollPathToVisible(path);
 								}
-								String fileName = file.getAbsolutePath();
+							//	String fileName = file.getAbsolutePath();
+							String fileName = file.getAbsolutePath();
 							/*	adrZone.getEditor().setItem( 
 									fileName
 										+ ((fileName.endsWith(File.separator))
@@ -555,6 +564,9 @@ public class Main {
 												? ""
 												: File.separator));
 								list.setSelectedIndex(0);
+							}
+							else {
+								new Launch().run(file);
 							}
 						}
 						break;
