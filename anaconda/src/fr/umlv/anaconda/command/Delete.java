@@ -23,14 +23,13 @@ public class Delete {
 	public void delete(File file) {
 		if(file.isDirectory()){
 			File[] children = file.listFiles();
-			for(int i=0;i<children.length;i++){
+			
+			for(int i=0;i<children.length;i++)
 				delete(children[i]);
-			}
-			file.delete();
+			file.delete();		
 		}
-		else{
+		else
 			file.delete();
-		}
 	}
 	
 	public void redo(){

@@ -8,6 +8,7 @@ package fr.umlv.anaconda.command;
 
 import junit.framework.TestCase;
 import java.io.File;
+import java.io.IOException;
 /**
  * @author ofiguero
  *
@@ -25,8 +26,13 @@ public class DeleteTest extends TestCase {
 	}
 	
 	public void testDelete(){
-		File file = new File("/home/main01/ofiguero/tmp/coucou/");
-		Delete delete = new Delete();
-		delete.run(file);
+		File file = new File("C:\\tmp\\poeut.txt");
+		try {
+			file.createNewFile();
+			Delete delete = new Delete();
+			delete.run(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -24,8 +24,11 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 public class Paste extends AbstractAction implements Command {
 	private static boolean is_cut;
-	private ArrayList last_selection = new ArrayList();
-	private File dest;
+	private static ArrayList last_selection = new ArrayList();
+	private static File dest_rep;
+	private static File origin_rep;
+	private static Delete deleter = new Delete();
+
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
@@ -47,7 +50,9 @@ public class Paste extends AbstractAction implements Command {
 		if (!dest.canWrite())
 			throw new CanNotWriteException(dest);
 
-		this.dest = dest;
+		Paste.dest_rep = dest;
+		Paste.origin_rep =
+			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
 		last_selection.clear();
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
@@ -113,28 +118,21 @@ public class Paste extends AbstractAction implements Command {
 			CanNotDeleteException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
-		if (!dest.exists())
-			throw new DoNotExistFileException(dest);
-		if (!dest.isDirectory())
-			throw new IsNotDirectoryException(dest);
-		if (!dest.canWrite())
-			throw new CanNotWriteException(dest);
+		if (!dest_rep.exists())
+			throw new DoNotExistFileException(dest_rep);
+		if (!dest_rep.isDirectory())
+			throw new IsNotDirectoryException(dest_rep);
+		if (!dest_rep.canWrite())
+			throw new CanNotWriteException(dest_rep);
 
-		File[] tab_file = dest.listFiles();
+		File[] tab_file = dest_rep.listFiles();
 
 		for (int i = 0; i < tab_file.length; i++) {
-			File to_replace = tab_file[i];
-
-			if (!to_replace.canRead())
-				throw new CanNotReadException(to_replace);
-
-			File last_site =
-				(File) last_selection.get(last_selection.indexOf(to_replace));
-
-			if (is_cut)
-				pasteFile(last_site, to_replace);
-			tab_file[i].delete(); //TODO revoir avec supprimer.
-
+			System.out.println(tab_file[i].getPath()+ " " + tab_file[i].getName());		
+			/*if (is_cut)
+				pasteFile(origin_rep, tab_file[i]);		*/
+			tab_file[i].delete();
+			deleter.run(tab_file[i]);
 		}
 	}
 
@@ -150,7 +148,7 @@ public class Paste extends AbstractAction implements Command {
 			 (new Cut()).run(last_selection);
 		else
 			 (new Copy()).run(last_selection);
-		run(dest);
+		run(dest_rep);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
