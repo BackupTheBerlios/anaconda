@@ -53,17 +53,18 @@ public class Launch implements Command {
 		if (!selected_file.isDirectory()) {
 			try {
 				r.exec(selected_file.getCanonicalPath());
+				// sinon lancer avec l'appli qui va bien...
 			} catch (IOException ex)
 			{
-				//new ErrorIOFileException(selected_file).show();
 				File exec = new ChoozExec().frameChoozRep();
-				try {
-					r.exec(exec.getCanonicalPath()+" "+selected_file.getCanonicalPath());
-				} catch (IOException e) {
-					new ErrorIOFileException(selected_file).show();
+				if (exec != null) {
+					try {
+						r.exec(exec.getCanonicalPath()+" "+selected_file.getCanonicalPath());
+					} catch (IOException e) {
+						new ErrorIOFileException(selected_file).show();
+					}
 				}
 			}
-			// sinon lancer avec l'appli qui va bien...
 		}
 	}
 	

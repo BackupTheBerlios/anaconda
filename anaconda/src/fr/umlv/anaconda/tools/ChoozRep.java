@@ -32,6 +32,10 @@ public class ChoozRep {
 		fileChooz.setFileFilter(filtre);
 		fileChooz.setAcceptAllFileFilterUsed(false);
 		fileChooz.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooz.setMultiSelectionEnabled(false);
+		fileChooz.setDialogTitle("Choix du repertoire de destination");
+		fileChooz.setApproveButtonText("Valider");
+		fileChooz.setApproveButtonToolTipText("Valide le reperoire sélectionné");
 		
 		int returnVal = fileChooz.showSaveDialog(null); 
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
