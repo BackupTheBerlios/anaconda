@@ -45,11 +45,17 @@ public class About implements Command {
 	public void run() {
 		final JFrame frame = new JFrame("A propos...");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setBackground(Color.WHITE);
+		frame.setResizable(false);
 		
 		frame.getContentPane().add(new JLabel(LOGO), BorderLayout.WEST);
-		frame.getContentPane().add(new JLabel(" - ANACONDA - "), BorderLayout.CENTER);
-		frame.getContentPane().add(new JLabel(" Explorateur de fichier"), BorderLayout.EAST);
+		JLabel lblTitle = new JLabel(" - ANACONDA - ");
+		lblTitle.setBackground(Color.WHITE);
+		lblTitle.setOpaque(true);
+		frame.getContentPane().add(lblTitle, BorderLayout.CENTER);
+		JLabel lblDesc = new JLabel(" Explorateur de fichiers  ");
+		lblDesc.setBackground(Color.WHITE);
+		lblDesc.setOpaque(true);
+		frame.getContentPane().add(lblDesc, BorderLayout.EAST);
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
