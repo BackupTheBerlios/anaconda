@@ -1,8 +1,5 @@
 /*
  * Créé le 3 mars 2004
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
  */
 package fr.umlv.anaconda;
 import java.awt.dnd.*;
@@ -10,9 +7,7 @@ import java.awt.datatransfer.*;
 import java.awt.Component;
 /**
  * @author ntesevic
- *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
+ * @author Anac team
  */
 public class AnacondaDrag {
 
@@ -23,7 +18,7 @@ public class AnacondaDrag {
     
     
     
-	/** Creates a new instance of HierarchyDrag */
+	/** Creates a new instance of AnacondaDrag */
 	public AnacondaDrag(Component comp) {
         
         

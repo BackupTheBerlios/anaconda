@@ -1,8 +1,5 @@
 /*
  * Créé le 3 mars 2004
- *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
  */
 package fr.umlv.anaconda;
 import java.awt.*;
@@ -13,9 +10,7 @@ import java.util.*;
 import java.io.*;
 /**
  * @author ntesevic
- *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
+ * @author Anac team
  */
 public class AnacondaDrop {
  
@@ -34,7 +29,7 @@ public class AnacondaDrop {
 	Component comp;
   
      
-	/** Creates a new instance of HierarchyDrop */
+	/** Creates a new instance of AnacondaDrop */
 	public AnacondaDrop(Component comp) {
 		this.comp=comp;
    
