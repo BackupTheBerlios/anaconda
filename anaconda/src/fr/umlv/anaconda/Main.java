@@ -214,7 +214,7 @@ public class Main {
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action paste
-				(new Paste()).run();
+				(new Paste()).start();
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
