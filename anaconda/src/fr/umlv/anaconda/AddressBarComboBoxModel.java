@@ -17,7 +17,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	/** List to store the navigation history with an order and no duplicate element **/
 	private LinkedList history;
 	/** to store the element of the auto-completion **/
-//	private LinkedList completion;
+	private LinkedList completion;
 	/** the current list */
 	private LinkedList current;
 	/** current selected index */
@@ -142,6 +142,14 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		// TODO Je ne suis pas sur...
 		if (list.contains(l))
 			list.remove(l);
+	}
+
+	public void switch2comp() {
+		this.current = this.completion;
+	}
+
+	public void switch2hist() {
+		this.current = this.history; 
 	}
 
 }
