@@ -1,5 +1,5 @@
 /*
- * Created on 22 févr. 2004
+ * Created on 22 f?vr. 2004
  * 
  * To change the template for this generated file go to Window - Preferences -
  * Java - Code Generation - Code and Comments
@@ -81,8 +81,7 @@ public class InfoPanel extends JPanel {
 		/* Derniere modification */
 		JLabel label_creation =
 			new JLabel(
-				" Derniere modification le "
-					+ (new Date(last_modified)).toString());
+				" "+(new Date(last_modified)).toString());
 		/* Type */
 		String type = " Type : ";
 		if (is_directory)
@@ -104,18 +103,18 @@ public class InfoPanel extends JPanel {
 		add(label_droits);
 		/* Supprimable */
 		JLabel label_supprimable;
-		if (can_delete)
+		/*if (can_delete)
 			label_supprimable = new JLabel(" " + name + " est supprimable");
 		else
 			label_supprimable =
 				new JLabel(" " + name + " n'est pas supprimable");
-		add(label_supprimable);
+		add(label_supprimable);*/
 		/* Cache */
 		if (is_hidden) {
 			JLabel label_cache = new JLabel(" " + name + " est cache");
 			add(label_cache);
 		}
-
+		add(label_creation);	
 		revalidate();
 	}
 

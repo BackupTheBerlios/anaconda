@@ -33,7 +33,7 @@ public class Model implements ListModel, TreeNode {
 		}
 	};
 	/* pour trier par taille */
-	final public static Comparator cmp_by_syze = new Comparator() {
+	final public static Comparator cmp_by_size = new Comparator() {
 		public int compare(Object o1, Object o2) {
 			if (o1 == null)
 				return -1;
@@ -42,10 +42,10 @@ public class Model implements ListModel, TreeNode {
 			File file1 = (File) o1;
 			File file2 = (File) o2;
 			
-			return (int) (file1.length() - (int)file2.length());	
+			return (int) ((file1.length() - file2.length()));	
 		}
 		public boolean equals(Object obj) {
-			return compare(this, obj) == 0;
+			return this == obj;
 		}
 	};
 
@@ -62,7 +62,7 @@ public class Model implements ListModel, TreeNode {
 			return date1.compareTo(date2);
 		}
 		public boolean equals(Object obj) {		
-			return compare(this, obj) == 0;
+			return this == obj;
 		}
 	};
 
@@ -84,17 +84,17 @@ public class Model implements ListModel, TreeNode {
 			return 1;
 		}
 		public boolean equals(Object obj) {
-			return compare(this, obj) == 0;
+			return this == obj;
 		}
 	};
 	
 	private ArrayList comp = new ArrayList();
 	public void addCmp(String s) {
-		if (s.equalsIgnoreCase("by_syze")) {
-			if (comp.contains(cmp_by_syze))
-				comp.remove(cmp_by_syze);
+		if (s.equalsIgnoreCase("by_size")) {
+			if (comp.contains(cmp_by_size))
+				comp.remove(cmp_by_size);
 			else
-				comp.add(cmp_by_syze);
+				comp.add(cmp_by_size);
 		} else if (s.equalsIgnoreCase("by_date")) {
 			if (comp.contains(cmp_by_date))
 				comp.remove(cmp_by_date);
