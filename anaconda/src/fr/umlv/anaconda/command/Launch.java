@@ -1,23 +1,37 @@
 package fr.umlv.anaconda.command;
 
+/* Maitrise info - génie logiciel */
+/* Anaconda (Livingstone project) */
+/* Created on 21 févr. 2004 */
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 import fr.umlv.anaconda.Main;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.exception.*;
+import fr.umlv.anaconda.tools.ChoozExec;
 
+/**
+ * Manage to launch files
+ * 
+ * @author Figeroa Olivier
+ * @author Yam Jean Paul
+ * @author Tesevic Novak
+ * @author Roger Giao Long 
+ * @author Bruneteau Adrien
+ */
 public class Launch implements Command {
 
 	//	a utiliser pour savoir comment lancer...
-	private static final String os = System.getProperty("os.name");
+	//private static final String os = System.getProperty("os.name");
 	private Runtime r = Runtime.getRuntime();
 	
+	/**default constructor */
 	public Launch() {
 		super();
 	}
 	
+	/** to run the command on a selection of files*/
 	public void run() {// pas encore
 		ArrayList selected_file = Main.getSelectionItems();
 
@@ -31,16 +45,26 @@ public class Launch implements Command {
 			run(fich);
 		}
 	}
-
+	/**
+	 * to run the command on a single file
+	 * @param selected_file the selected file
+	 */
 	public void run(File selected_file) {
-		// verifier que c'est un executable
-		try {
-			r.exec(selected_file.getCanonicalPath());
-		} catch (IOException ex)
-		{
-			new ErrorIOFileException(selected_file).show();
+		if (!selected_file.isDirectory()) {
+			try {
+				r.exec(selected_file.getCanonicalPath());
+			} catch (IOException ex)
+			{
+				//new ErrorIOFileException(selected_file).show();
+				File exec = new ChoozExec().frameChoozRep();
+				try {
+					r.exec(exec.getCanonicalPath()+" "+selected_file.getCanonicalPath());
+				} catch (IOException e) {
+					new ErrorIOFileException(selected_file).show();
+				}
+			}
+			// sinon lancer avec l'appli qui va bien...
 		}
-		// sinon lancer avec l'appli qui va bien...
 	}
 	
 	public void redo() {
@@ -51,5 +75,10 @@ public class Launch implements Command {
 
 	public boolean canUndo() {
 		return false;
+	}
+	
+	public static boolean isExe(File f) {
+		// comment gérer bien ?
+		return true;
 	}
 }

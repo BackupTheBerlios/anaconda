@@ -1,21 +1,15 @@
 package fr.umlv.anaconda.command;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import fr.umlv.anaconda.IconsManager;
-import fr.umlv.anaconda.appearance.Themes;
-
 /* Maitrise info - génie logiciel */
 /* Anaconda (Livingstone project) */
 /* Created on 28 févr. 2004 */
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+import fr.umlv.anaconda.IconsManager;
+import fr.umlv.anaconda.appearance.Themes;
 
 /**
  * Manage the view of the "About" window
@@ -31,12 +25,9 @@ public class About implements Command {
 	final public static String images_path = Themes.getCurrentPath();
 	final public static ImageIcon LOGO = new ImageIcon(IconsManager.class.getResource(images_path + "anaconda_logo.gif"));
 
-	/**
-	 * 
-	 */
+	/** default constructor */
 	public About() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)

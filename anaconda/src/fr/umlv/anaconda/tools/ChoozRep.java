@@ -27,7 +27,7 @@ public class ChoozRep {
 	public static File frameChoozRep() {
 		
 		JFileChooser fileChooz = new JFileChooser();
-		RepFileFilter filtre = new RepFileFilter();
+		RepFileFilter filtre = new RepFileFilter(); 
 		
 		fileChooz.setFileFilter(filtre);
 		fileChooz.setAcceptAllFileFilterUsed(false);
