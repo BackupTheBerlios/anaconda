@@ -15,6 +15,7 @@ import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
+import fr.umlv.anaconda.exception.NoSelectedFilesException;
 
 public class Cut extends AbstractAction implements Command {
 	private final static boolean deleted = true;
@@ -60,11 +61,11 @@ public class Cut extends AbstractAction implements Command {
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() < 1)
-			//TODO cas ou on n a rien selectionne.
-			// (new NoSelectedFilesException()).show();
-			// return;
-			;
+		
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
 
 		run(Main.getSelectionItems());
 	}

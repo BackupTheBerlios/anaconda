@@ -37,7 +37,7 @@ public class RenameTest extends TestCase {
 		}
 		Rename rename = new Rename();
 		try {
-			rename.run(f,"fichier3.txt");
+			rename.run(f);
 			rename.undo();
 			rename.redo();
 		} catch (CanNotWriteException e1) {

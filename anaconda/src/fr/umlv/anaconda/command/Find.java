@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-
 import fr.umlv.anaconda.FindModel;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 /**
@@ -20,45 +19,48 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
  * To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class Find implements Command{
-	
+public class Find implements Command {
+
 	private ArrayList list = null;
 
-	
-	public void run(Object o){
-		
+	public void run(Object o) {
+
 	}
-	
-	public void run(Object file,String name,FindModel model) throws TooMuchFilesException{
+
+	public void run(Object file, String name, FindModel model)
+		throws TooMuchFilesException {
 		list = new ArrayList();
-		File root_file = (File)file;
+		File root_file = (File) file;
 		//Pattern file_name = Pattern.compile(name);
-		find(root_file,name,model);
+		find(root_file, name, model);
 	}
-	
-	public void find(File root_file,String name,FindModel model) throws TooMuchFilesException{
+
+	public void find(File root_file, String name, FindModel model)
+		throws TooMuchFilesException {
 		File[] children = root_file.listFiles();
-		for(int i = 0;i< children.length;i++){
-			if(Pattern.matches(name,children[i].getName())){
-				model.add(children[i]);
+		if (children != null) {
+			for (int i = 0; i < children.length; i++) {
+				if (Pattern.matches(name, children[i].getName())) {
+					model.add(children[i]);
+				}
+				if (children[i].isDirectory())
+					find(children[i], name, model);
 			}
-			if(children[i].isDirectory())
-				find(children[i],name,model);
 		}
 	}
-	
-	public void showResult(){
-		for(Iterator it = list.iterator();it.hasNext();){
-			System.out.println(((File)it.next()).toString());
+
+	public void showResult() {
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			System.out.println(((File) it.next()).toString());
 		}
 	}
-	
-	public void undo(){
-		
+
+	public void undo() {
+
 	}
-	
-	public void redo(){
-		
+
+	public void redo() {
+
 	}
 
 }

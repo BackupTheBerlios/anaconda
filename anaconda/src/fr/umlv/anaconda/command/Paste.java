@@ -3,6 +3,7 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
@@ -21,6 +23,8 @@ import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
+import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.exception.TooMuchFilesException;
 
 public class Paste extends AbstractAction implements Command {
 	private static boolean is_cut;
@@ -53,6 +57,7 @@ public class Paste extends AbstractAction implements Command {
 		Paste.dest_rep = dest;
 		Paste.origin_rep =
 			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
+
 		last_selection.clear();
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
@@ -78,33 +83,52 @@ public class Paste extends AbstractAction implements Command {
 	private void pasteFile(File parent, File child)
 		throws DoNotExistFileException, ErrorIOFileException {
 		File file = new File(parent, child.getName());
+		int option = JOptionPane.YES_OPTION;
 
-		if (child.isDirectory()) {
-			file.mkdir();
-			File[] list = child.listFiles();
-			for (int i = 0; i < list.length; i++)
-				pasteFile(file, list[i]);
-			if (PressPaper.toDelete())
-				child.delete();
-		} else {
-			if (PressPaper.toDelete())
-				child.renameTo(file);
-			else {
-				FileInputStream fileInputStream;
-				try {
-					fileInputStream = new FileInputStream(child);
-					FileOutputStream fileOutputStream =
-						new FileOutputStream(file);
-					byte[] buffer = new byte[1024];
-					while (fileInputStream.available() > 0) {
-						int readNumber = fileInputStream.read(buffer);
-						if (readNumber > 0)
-							fileOutputStream.write(buffer, 0, readNumber);
+		if (Tools.contains(parent, child)) {
+			try {
+				option =
+					JOptionPane.showConfirmDialog(
+						null,
+						child.getName()
+							+ " existe deja, voulez vous l'ecraser ?",
+						"Conflit",
+						JOptionPane.YES_NO_OPTION);
+			} catch (HeadlessException e) {
+				option = JOptionPane.NO_OPTION;
+			}
+		}
+		
+		if (option == JOptionPane.YES_OPTION) {
+			if (child.isDirectory()) {
+
+				file.mkdir();
+				File[] list = child.listFiles();
+				for (int i = 0; i < list.length; i++)
+					pasteFile(file, list[i]);
+				if (PressPaper.toDelete())
+					child.delete();
+
+			} else {
+				if (PressPaper.toDelete())
+					child.renameTo(file);
+				else {
+					FileInputStream fileInputStream;
+					try {
+						fileInputStream = new FileInputStream(child);
+						FileOutputStream fileOutputStream =
+							new FileOutputStream(file);
+						byte[] buffer = new byte[1024];
+						while (fileInputStream.available() > 0) {
+							int readNumber = fileInputStream.read(buffer);
+							if (readNumber > 0)
+								fileOutputStream.write(buffer, 0, readNumber);
+						}
+					} catch (FileNotFoundException e) {
+						throw new DoNotExistFileException(child);
+					} catch (IOException e) {
+						throw new ErrorIOFileException(child);
 					}
-				} catch (FileNotFoundException e) {
-					throw new DoNotExistFileException(child);
-				} catch (IOException e) {
-					throw new ErrorIOFileException(child);
 				}
 			}
 		}
@@ -158,11 +182,16 @@ public class Paste extends AbstractAction implements Command {
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() < 1)
-			//TODO cas ou on n a rien selectionne.
-			// (new NoSelectedFilesException()).show;
-			// return;
-			;
+
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
+
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
+			return;
+		}
 
 		try {
 			run(selected_file.get(0));

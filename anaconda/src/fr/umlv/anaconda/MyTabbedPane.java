@@ -19,7 +19,7 @@ public class MyTabbedPane extends JPanel {
 		listModel = new ModelListAdapter(model);
 		listFiles = new JList(listModel);
 		/* Creation d'un onglet */
-		Component panel1 = listFiles;//new JList(listModel);
+		Component panel1 = new JScrollPane(listFiles);/*new JList(listModel);*/
 		tabbedPane.addTab("Fichiers", null, panel1, "Contenu du repertoire courant");
 		// marque l'onglet d'indice 0 comme selectionné par defaut
 		tabbedPane.setSelectedIndex(0); 

@@ -15,6 +15,8 @@ import javax.swing.AbstractAction;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
+import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.exception.TooMuchFilesException;
 /**
  * @author ofiguero
  * 
@@ -58,11 +60,16 @@ public class Delete extends AbstractAction {
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() < 1)
-			//TODO cas ou on n a rien selectionne.
-			// (new NoSelectedFilesException()).show();
-			// return;
-			;
+
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
+
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
+			return;
+		}
 
 		try {
 			run(Main.getSelectionItems());

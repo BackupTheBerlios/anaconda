@@ -19,9 +19,12 @@ public class Main {
 	final public static ModelTreeAdapter treeModel =
 		new ModelTreeAdapter(model);
 	final public static JTree tree = new JTree(treeModel);
-	final public static ModelListAdapter listModel =
+	/*final public static ModelListAdapter listModel =
 		new ModelListAdapter(model);
-	final public static JList list = new JList(listModel);
+	final public static JList list = new JList(listModel);*/
+	final public static MyTabbedPane tabb = new MyTabbedPane(model);
+		   final public static ModelListAdapter listModel = tabb.getListModel();
+		   final public static JList list = tabb.getListFiles();
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
 		ArrayList selection_items = new ArrayList();
@@ -156,7 +159,7 @@ public class Main {
 			}
 		});
 		JScrollPane scrollTree = new JScrollPane(tree);
-		JScrollPane scrollList = new JScrollPane(list);
+		//JScrollPane scrollList = new JScrollPane(list);
 		/******************************/
 		JPanel infoPanel = new JPanel();
 		ImageIcon anacondaLogo = new ImageIcon(icones[LOGO_ICONE]);
@@ -177,7 +180,7 @@ public class Main {
 			new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT,
 				splitTreeInfo /*scrollTree*/
-		, scrollList);
+		, /*scrollList*/tabb);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
 		/**********************************/

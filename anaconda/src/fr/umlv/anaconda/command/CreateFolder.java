@@ -15,6 +15,8 @@ import javax.swing.AbstractAction;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
+import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.exception.TooMuchFilesException;
 
 /**
  * @author FIGUEROA
@@ -64,20 +66,25 @@ public class CreateFolder extends AbstractAction implements Command {
 
 	public void undo() throws CanNotDeleteException {
 		File file = new File(current_folder, current_name);
-		try{
+		try {
 			file.delete();
-		}catch(SecurityException e){
+		} catch (SecurityException e) {
 			throw new CanNotDeleteException(file);
 		}
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() != 1)
-			//TODO cas ou on n a rien selectionne.
-			// (new NoSelectedFilesException()).show;
-			// return;
-			;
+
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
+
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
+			return;
+		}
 
 		try {
 			run(selected_file.get(0));
