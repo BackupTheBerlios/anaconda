@@ -88,7 +88,6 @@ public class Main {
 		tableModel.setFolder(currentFolder);
 	}
 	public static void setFolder(File newFolder) {
-		/*****/System.out.println(newFolder.getAbsolutePath());
 		currentFolder = newFolder;
 		try {
 			adrZone.setText(newFolder.getCanonicalPath());
@@ -249,8 +248,8 @@ public class Main {
 						if(file == null || file.equals(currentFolder)) break;
 						if(file.isDirectory()) {
 							boolean down = currentFolder.equals(file.getParentFile());
-							setFolder(file);
 							TreePath currentPath = tree.getSelectionPath();
+							setFolder(file);
 							if(currentPath != null) {
 								if(down) currentPath = currentPath.pathByAddingChild(currentFolder);
 								else currentPath = currentPath.getParentPath();
