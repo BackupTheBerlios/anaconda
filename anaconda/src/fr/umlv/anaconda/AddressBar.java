@@ -33,8 +33,14 @@ public class AddressBar extends JComboBox {
 	/**
 	 * 
 	 */
-	public AddressBar(String file) {
-		super(new AddressBarComboBoxModel(file));
+	public AddressBar(String file_name) {
+		super(new AddressBarComboBoxModel(file_name));
+		this.setEditable(true);
+		
+	}
+
+	public AddressBar(File file) {
+		super(new AddressBarComboBoxModel(file.getAbsolutePath()));
 		this.setEditable(true);
 		
 	}
@@ -84,10 +90,19 @@ public class AddressBar extends JComboBox {
 		}
 	}
 
+	public void setText(File fich) {
+		//	this.getEditor().setItem(txt);
+		try {
+			this.getEditor().setItem(fich.getCanonicalPath());
+		} catch (IOException e) {
+			new ErrorIOFileException(fich).show();
+		}
+	}
+
 	public String getText() {
 		return (String)this.getEditor().getItem();
 	}
-	
+
 	/** a key listener factory for the combobox */
 	public KeyListener listenerFactory() {
 		return new KeyListener() {

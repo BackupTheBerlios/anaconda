@@ -90,11 +90,8 @@ public class Main {
 	public static void setFolder(File newFolder) {
 		lastFolder = currentFolder;
 		currentFolder = newFolder;
-		try {
-			adrZone.setText(newFolder.getCanonicalPath());
-		} catch (IOException e) {
-			new ErrorIOFileException(newFolder).show();
-		}
+		adrZone.setText(newFolder);
+
 		refresh();
 	}
 	
@@ -595,9 +592,9 @@ public class Main {
 		adrZone =
 			new AddressBar(
 				fileName
-					+ ((fileName.endsWith(File.separator))
+					/*+ ((fileName.endsWith(File.separator))
 						? ""
-						: File.separator));
+						: File.separator)*/);
 		adrZone.setActionCommand("test");
 		adressBar.add(delAdr);
 		adressBar.add(adr);
@@ -657,9 +654,9 @@ public class Main {
 				String fileName = currentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
-						+ ((fileName.endsWith(File.separator))
+						/*+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator));
+							: File.separator)*/);
 			}
 		});
 		adrZone.addKeyListener(adrZone.listenerFactory());
@@ -676,6 +673,8 @@ public class Main {
 		/***********************************************/
 		/* MENU DEROULANT */
 		clickInFile.add(refreshAction);
+		clickInFile.add(new JSeparator());
+		clickInFile.add(pasteAction);
 		clickInFile.add(new JSeparator());
 		clickInFile.add(createFile);
 		clickInFile.add(createFolder);
