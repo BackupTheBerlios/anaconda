@@ -61,23 +61,9 @@ public class ShowProperties implements Command {
 		is_hidden = f.isHidden();
 		size = f.length();
 		last_modified = f.lastModified();
-
-		System.out.println(
-			"read \t\t\t"
-				+ can_read
-				+ "\nwrite \t\t\t"
-				+ can_write
-				+ "\ndelete \t\t\t"
-				+ can_delete
-				+ "\nis directory \t"
-				+ is_directory
-				+ "\nis hidden \t\t"
-				+ is_hidden
-				+ "\nlength \t\t\t"
-				+ size
-				+ "\nlast modified \t"
-				+ new Date(last_modified));
-
+		
+		name = f.getName();
+		viewProperties(f);
 	}
 
 	public void redo() {
@@ -105,22 +91,8 @@ public class ShowProperties implements Command {
 		size = f.length();
 		last_modified = f.lastModified();
 
-		System.out.println(
-			"read \t\t\t"
-				+ can_read
-				+ "\nwrite \t\t\t"
-				+ can_write
-				+ "\ndelete \t\t\t"
-				+ can_delete
-				+ "\nis directory \t"
-				+ is_directory
-				+ "\nis hidden \t\t"
-				+ is_hidden
-				+ "\nlength \t\t\t"
-				+ size
-				+ "\nlast modified \t"
-				+ new Date(last_modified));
-
+		name = f.getName();
+		viewProperties(f);
 	}
 
 	public static void main(String[] args)
@@ -143,5 +115,26 @@ public class ShowProperties implements Command {
 
 	public boolean canUndo() {
 		return false;
+	}
+	
+	private void viewProperties(File f) {
+
+		System.out.println(
+				"Prop : \t\t<"+name+">\n"+
+			"read \t\t\t"
+				+ can_read
+				+ "\nwrite \t\t\t"
+				+ can_write
+				+ "\ndelete \t\t\t"
+				+ can_delete
+				+ "\nis directory \t"
+				+ is_directory
+				+ "\nis hidden \t\t"
+				+ is_hidden
+				+ "\nlength \t\t\t"
+				+ size
+				+ "\nlast modified \t"
+				+ new Date(last_modified));
+
 	}
 }
