@@ -1,3 +1,5 @@
+package fr.umlv.anac;
+
 import javax.swing.*;
 import javax.swing.event.*;
 

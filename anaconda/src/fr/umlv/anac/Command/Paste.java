@@ -24,20 +24,23 @@ public class Paste implements Command {
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
 	 */
-	public void run(File dest)
+	public void run(Object o)
 		throws
 			IsNotDirectoryException,
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
+				
+		File dest = (File) o;
+		
 		if (!dest.exists())
 			throw new DoNotExistFileException(dest);
 		if (!dest.isDirectory())
 			throw new IsNotDirectoryException(dest);
 		if (!dest.canWrite())
 			throw new CanNotWriteException(dest);
-
+			
 		for (Iterator it = PressPaper.getSelectedFiles().iterator();
 			it.hasNext();
 			) {
@@ -111,16 +114,6 @@ public class Paste implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException {
-
-	}
-
-	public void run(ArrayList selectedfile)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException {
 
 	}
 

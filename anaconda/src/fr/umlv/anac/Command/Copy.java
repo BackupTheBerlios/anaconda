@@ -11,7 +11,6 @@ import fr.umlv.anac.Exception.CanNotDeleteException;
 import fr.umlv.anac.Exception.CanNotReadException;
 import fr.umlv.anac.Exception.CanNotWriteException;
 import fr.umlv.anac.Exception.DoNotExistFileException;
-import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
 public class Copy implements Command {
@@ -24,9 +23,9 @@ public class Copy implements Command {
 	 * 
 	 * @param selection
 	 */
-	public void run(ArrayList selection) {
+	public void run(Object o) {
 		this.selection = new ArrayList();
-		this.selection.addAll(selection);
+		this.selection.addAll((ArrayList) o);
 		PressPaper.addToPressPaper(selection, deleted);
 	}
 
@@ -67,15 +66,4 @@ public class Copy implements Command {
 
 		}
 	}
-
-	/** No use */
-	public void run(File dest)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException {
-	}
-
 }

@@ -25,9 +25,9 @@ public class Cut implements Command {
 	 * @param selection
 	 *            is the selection of files.
 	 */
-	public void run(ArrayList selection) {
+	public void run(Object o) {
 		this.selection = new ArrayList();
-		this.selection.addAll(selection);
+		this.selection.addAll((ArrayList)o);
 		PressPaper.addToPressPaper(selection, deleted);
 	}
 
@@ -78,19 +78,5 @@ public class Cut implements Command {
 			}
 
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see fr.umlv.anac.Command.Command#run(java.io.File)
-	 */
-	public void run(File dest)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException {
-		// TODO Raccord de méthode auto-généré
-
 	}
 }

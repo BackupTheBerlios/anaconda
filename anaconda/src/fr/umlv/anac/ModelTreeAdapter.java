@@ -1,6 +1,7 @@
-import java.io.*;
+package fr.umlv.anac;
+
 import javax.swing.tree.*;
-import javax.swing.event.*;
+
 
 /**
  * 

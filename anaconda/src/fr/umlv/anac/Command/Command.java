@@ -6,9 +6,6 @@
  */
 package fr.umlv.anac.Command;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import fr.umlv.anac.Exception.CanNotDeleteException;
 import fr.umlv.anac.Exception.CanNotReadException;
 import fr.umlv.anac.Exception.CanNotWriteException;
@@ -30,21 +27,6 @@ public interface Command {
 				CanNotReadException,
 				DoNotExistFileException,
 				ErrorPastingFileException;
-/*	public void run(ArrayList selectedfile)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException;
-
-	public void run(File dest)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException;*/
 
 	public void undo()
 		throws

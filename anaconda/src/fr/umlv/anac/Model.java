@@ -1,3 +1,5 @@
+package fr.umlv.anac;
+
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
