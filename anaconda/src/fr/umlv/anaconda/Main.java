@@ -301,9 +301,13 @@ public class Main {
 	public static void main(String[] args) {
 		IconsManager im = new IconsManager();
 		final JFrame mainFrame = new JFrame(" - Anaconda - ");
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.setSize(800, 600);
-
+		mainFrame.addWindowListener(new WindowAdapter() {
+						public void windowClosing(WindowEvent evt) {
+							goOut();
+						}
+				});
 		oldCurrentFolder = newCurrentFolder = currentFolder;
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
@@ -762,6 +766,10 @@ public class Main {
 		});
 		tree.setForeground(Themes.getBgColor());
 		tree.setBackground(Themes.getBgColor());
+		AnacondaDrag dragTable = new AnacondaDrag(table);
+		AnacondaDrop dropTable = new AnacondaDrop(table);
+		AnacondaDrag dragTree = new AnacondaDrag(tree);
+		AnacondaDrop dropTree = new AnacondaDrop(tree);
 		mainFrame.show();
 	}
 }
