@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.plaf.SeparatorUI;
 import javax.swing.tree.*;
 
 import fr.umlv.anaconda.appearance.Themes;
@@ -444,20 +445,25 @@ public class Main {
 
 		/* Fichier */
 		JMenu subMenuNew = new JMenu("Nouveau...");
-		JMenuItem newFileItem = new JMenuItem("Fichier    Ctrl+T");
-		newFileItem.addActionListener(createFile);
-		JMenuItem newFolderItem = new JMenuItem("Repertoire    Ctrl+R");
-		newFolderItem.addActionListener(createFolder);
-		JMenuItem newFrameItem =
-			new JMenuItem("Fenetre d'exploration    Ctrl+E");
+		JMenuItem newFileItem = new JMenuItem(createFile);
+//		JMenuItem newFileItem = new JMenuItem("Fichier    Ctrl+T");
+//		newFileItem.addActionListener(createFile);
+		JMenuItem newFolderItem = new JMenuItem(createFolder);
+//		JMenuItem newFolderItem = new JMenuItem("Repertoire    Ctrl+R");
+//		newFolderItem.addActionListener(createFolder);
+//		JMenuItem newFrameItem =
+//			new JMenuItem("Fenetre d'exploration    Ctrl+E");
 		subMenuNew.add(newFileItem);
 		subMenuNew.add(newFolderItem);
-		subMenuNew.add(newFrameItem);
+//		subMenuNew.add(newFrameItem);
 		file.add(subMenuNew);
-		JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
-		findItem.addActionListener(findAction);
-		JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
-		propertiesItem.addActionListener(showPropertiesAction);
+		file.add(new JSeparator());
+		JMenuItem findItem = new JMenuItem(findAction);
+//		JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
+//		findItem.addActionListener(findAction);
+		JMenuItem propertiesItem = new JMenuItem(showPropertiesAction);
+//		JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
+//		propertiesItem.addActionListener(showPropertiesAction);
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -467,6 +473,7 @@ public class Main {
 
 		file.add(findItem);
 		file.add(propertiesItem);
+		file.add(new JSeparator());
 		file.add(quitter);
 		/* Edition */
 		JMenuItem undoItem = new JMenuItem(undoAction);
@@ -481,11 +488,14 @@ public class Main {
 		JMenuItem deleteItem = new JMenuItem(deleteAction);
 		edit.add(undoItem);
 		edit.add(redoItem);
+		edit.add(new JSeparator());
 		edit.add(copyItem);
 		edit.add(cutItem);
 		edit.add(pasteItem);
+		edit.add(new JSeparator());
 		edit.add(dupItem);
 		edit.add(moveItem);
+		edit.add(new JSeparator());
 		edit.add(selectAllItem);
 		edit.add(renameItem);
 		edit.add(deleteItem);
@@ -517,23 +527,23 @@ public class Main {
 		subMenuType.add(typeSmall);
 		subMenuType.add(typeList);
 		subMenuType.add(typeDetail);
-		JMenu subMenuBar = new JMenu("Barres...");
+/*		JMenu subMenuBar = new JMenu("Barres...");
 		JMenuItem barTools = new JMenuItem("Barre d'outils");
 		JMenuItem barAdr = new JMenuItem("Barre d'adresse");
 		subMenuBar.add(barTools);
-		subMenuBar.add(barAdr);
+		subMenuBar.add(barAdr); 
 		JMenu subMenuLangue = new JMenu("Langue...");
 		JMenuItem french = new JMenuItem("Francais");
 		JMenuItem english = new JMenuItem("Anglais");
 		JMenuItem spanish = new JMenuItem("Espagnol");
 		subMenuLangue.add(french);
 		subMenuLangue.add(english);
-		subMenuLangue.add(spanish);
+		subMenuLangue.add(spanish); */
 		disp.add(reloadItem);
 		disp.add(subMenuTri);
 		disp.add(subMenuType);
-		disp.add(subMenuBar);
-		disp.add(subMenuLangue);
+//		disp.add(subMenuBar);
+//		disp.add(subMenuLangue);
 		/* ? */
 		JMenuItem itemHelp = new JMenuItem("Aide");
 		itemHelp.addActionListener(helpAction);
@@ -545,6 +555,7 @@ public class Main {
 		menuBar.add(file);
 		menuBar.add(edit);
 		menuBar.add(disp);
+		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
 		menuBar.add(help);
 
 		/* TOOLBAR */
@@ -678,18 +689,23 @@ public class Main {
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		/***********************************************/
 		/* MENU DEROULANT */
-		clickInFile.add(new JMenuItem("Nouveau Fichier    Ctrl+T"));
-		clickInFile.add(new JMenuItem("Nouveau Repertoire    Ctrl+R"));
-		clickInFile.add(
-			new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
+		clickInFile.add(refreshAction);
+		clickInFile.add(new JSeparator());
+		clickInFile.add(createFile);
+		clickInFile.add(createFolder);
+//		clickInFile.add(
+//			new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
+		clickOutFile.add(new JMenuItem(selectAllAction));
+		clickOutFile.add(new JSeparator());
 		clickOutFile.add(new JMenuItem(copyAction));
 		clickOutFile.add(new JMenuItem(cutAction));
 		clickOutFile.add(new JMenuItem(pasteAction));
+		clickOutFile.add(new JSeparator());
 		clickOutFile.add(new JMenuItem(dupAction));
 		clickOutFile.add(new JMenuItem(moveAction));
-		clickOutFile.add(new JMenuItem(selectAllAction));
-		clickOutFile.add(new JMenuItem(renameAction));
+		clickOutFile.add(new JSeparator());
 		clickOutFile.add(new JMenuItem(deleteAction));
+		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(showPropertiesAction));
 		/***********************************************/
 		/* LISTERNER SUR L'ARBRE ET LA LISTE */
