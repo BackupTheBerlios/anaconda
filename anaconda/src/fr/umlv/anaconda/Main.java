@@ -241,6 +241,13 @@ public class Main {
 			}
 		};
 
+		final Action showByNameAction = new AbstractAction("Nom") {
+					public void actionPerformed(ActionEvent e) {
+						model.addCmp("by_name");
+						model.setFolder(newCurrentFolder);
+					}
+				};
+
 		final Action showBySizeAction = new AbstractAction("Taille") {
 			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_size");
@@ -338,7 +345,7 @@ public class Main {
 		/* Affichage */
 		JMenuItem reloadItem = new JMenuItem(refreshAction);
 		JMenu subMenuTri = new JMenu("Organiser par...");
-		JMenuItem triName = new JMenuItem("Nom");
+		JMenuItem triName = new JMenuItem(showByNameAction);
 		JMenuItem triType = new JMenuItem(showByTypeAction);
 		JMenuItem triSize = new JMenuItem(showBySizeAction);
 		JMenuItem triDate = new JMenuItem(showByDateAction);

@@ -29,7 +29,7 @@ public class Model implements ListModel, TreeNode {
 			return 1;
 		}
 		public boolean equals(Object obj) {
-			return compare(this, obj) == 0;
+			return this == obj;
 		}
 	};
 	/* pour trier par taille */
@@ -92,7 +92,12 @@ public class Model implements ListModel, TreeNode {
 
 	private ArrayList comp = new ArrayList();
 	public void addCmp(String s) {
-		if (s.equalsIgnoreCase("by_size")) {
+		if (s.equalsIgnoreCase("by_name")) {
+			if (comp.contains(cmp))
+				comp.remove(cmp);
+			else
+				comp.add(cmp);
+		} else if (s.equalsIgnoreCase("by_size")) {
 			if (comp.contains(cmp_by_size))
 				comp.remove(cmp_by_size);
 			else
@@ -117,11 +122,9 @@ public class Model implements ListModel, TreeNode {
 	private int[] filterTree;
 	public Model() {
 		this(new File(System.getProperty("user.home")));
-		comp.add(cmp);
 	}
 	public Model(File folder) {
 		setFolder(folder);
-		comp.add(cmp);
 	}
 	public File getFolder() {
 		return folder;
@@ -145,7 +148,7 @@ public class Model implements ListModel, TreeNode {
 		folder = newFolder;
 		folderParent = folder.getParentFile();
 		folderChilds = folder.listFiles();
-		if (folderChilds != null)
+		if (folderChilds != null && !comp.isEmpty())
 			for (Iterator i = comp.iterator(); i.hasNext();)
 				Arrays.sort(folderChilds, (Comparator) i.next());
 		setFilterList();
