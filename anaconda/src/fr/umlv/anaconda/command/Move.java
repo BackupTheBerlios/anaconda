@@ -43,13 +43,14 @@ public class Move implements Command {
 			return;
 		}
 		
-		
+		if ( dest != null  && dest.isDirectory() ) {
 		File origin;
 		for (int i=0; i<selection.size(); i++) {
 			origin = (File) selection.get(i);
 			origin.renameTo( new File( dest.getAbsolutePath()+File.separatorChar+origin.getName() ) );
 		}
 		Main.model.setFolder(Main.newCurrentFolder);
+		}
 	}
 
 	/* (non-Javadoc)
