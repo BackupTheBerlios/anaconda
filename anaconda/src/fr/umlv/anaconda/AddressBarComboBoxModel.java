@@ -17,7 +17,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	/** List to store the navigation history with an order and no duplicate element **/
 	private LinkedList history;
 	/** to store the element of the auto-completion **/
-	private LinkedList completion;
+//	private LinkedList completion;
 	/** the current list */
 	private LinkedList current;
 	/** current selected index */
@@ -30,7 +30,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add("");
-		completion = new LinkedList();
+//		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
 	}
@@ -39,10 +39,9 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add(path);
-		completion = new LinkedList();
+//		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
-	//	current.add(path);
 	}
 
 	/* (non-Javadoc)
@@ -58,14 +57,14 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 */
 	public void addElement(Object obj) {
 		System.out.println("addElement : ".concat((String)obj));
-//		if (current.contains(obj)) {
+		if (current.contains(obj)) {
 			/* already present move it first */
-//			current.remove(obj);
+			current.remove(obj);
 			current.addFirst(obj);
-//		}
-//		else {
-	//		current.addFirst(obj);
-//		}
+		}
+		else {
+			current.addFirst(obj);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +96,12 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
 	 */
 	public void setSelectedItem(Object anItem) {
-		this.index = current.indexOf(anItem);	
-		System.out.println("setSelectedItem : ".concat(new Integer( current.indexOf(anItem)).toString()));
+		if (current.contains(anItem))	
+			this.index = current.indexOf(anItem);
+		else
+			this.index = 1;
+//		System.out.println("setSelectedItem : ".concat(new Integer( current.indexOf(anItem)).toString()));
+		System.out.println("setSelectedItem : ".concat(new Integer(this.index).toString()));
 	}
 
 	/* (non-Javadoc)
