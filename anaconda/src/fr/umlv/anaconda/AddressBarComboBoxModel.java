@@ -119,16 +119,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 */
 	public Object getElementAt(int index) {
 		System.out.println("getElementAt : ".concat(new Integer(index).toString()));
-//		this.index = index;
-//		return current.get(index);
-		final Object o;
-		try {	
-	       o = current.get(index);
-		}
-		 catch (Exception e) {
-			return null;  	 
-		}
-		return o;
+		return current.get(index);
 	}
 
 	/* (non-Javadoc)
@@ -138,6 +129,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		System.out.println("addListDataListener");
 		// TODO Je ne vois pas encore quoi mettre ici
 
+		//throw new UnsupportedOperationException();
 	}
 
 	/* (non-Javadoc)
@@ -147,6 +139,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		System.out.println("removeListDataListener");
 		// TODO Je ne vois pas encore quoi mettre ici
 
+		//throw new UnsupportedOperationException();
 	}
 
 }
