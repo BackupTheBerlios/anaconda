@@ -6,6 +6,8 @@
  */
 package fr.umlv.anaconda.exception;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author FIGUEROA
  *
@@ -15,6 +17,10 @@ package fr.umlv.anaconda.exception;
 public class NameConflictException extends Exception{
 	
 	public NameConflictException(){
+	}
+
+	public void show() {
+		JOptionPane.showMessageDialog(null, "Conflit de noms",  "Un problème de nommage est apparu" ,  JOptionPane.WARNING_MESSAGE);
 	}
 
 }
