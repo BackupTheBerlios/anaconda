@@ -40,7 +40,9 @@ public class CreateFolder implements Command {
 			return;
 		}
 
-		this.current_folder = (File) selected_file.get(0);
+		current_folder = (File) selected_file.get(0);
+		if( !current_folder.isDirectory() )
+			current_folder = current_folder.getParentFile();
 		
 		if( !current_folder.isDirectory() ){
 			(new IsNotDirectoryException(current_folder)).show();

@@ -250,6 +250,11 @@ public class Main {
 				frame.show();
 			}
 		};
+		final Action refreshAction = new AbstractAction("Actualiser"){
+					public void actionPerformed(ActionEvent e){
+						model.setFolder(model.getFolder());
+					}
+				};
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -300,7 +305,7 @@ public class Main {
 		edit.add(renameItem);
 		edit.add(deleteItem);
 		/* Affichage */
-		JMenuItem reloadItem = new JMenuItem("Actualiser");
+		JMenuItem reloadItem = new JMenuItem(refreshAction);
 		JMenu subMenuTri = new JMenu("Organiser par...");
 		JMenuItem triName = new JMenuItem("Nom");
 		JMenuItem triType = new JMenuItem("Type");

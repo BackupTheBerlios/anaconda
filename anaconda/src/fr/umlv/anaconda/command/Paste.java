@@ -23,7 +23,7 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 
-public class Paste implements Command {
+public class Paste extends Thread implements Command {
 	private static boolean is_cut;
 	private static ArrayList last_selection = new ArrayList();
 	private static File dest_rep;
@@ -48,6 +48,8 @@ public class Paste implements Command {
 		}
 
 		File dest = (File) selected_file.get(0);
+		if( !dest.isDirectory() )
+			dest = dest.getParentFile();
 
 		if (!dest.exists()){
 			 (new DoNotExistFileException(dest)).show();
