@@ -9,10 +9,14 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+import fr.umlv.anaconda.exception.ErrorIOFileException;
+
 //import fr.umlv.anaconda.exception.TooMuchFilesException;
 //import java.util.*;
 //import javax.swing.event.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 //import java.io.File;
 
 /**
@@ -72,7 +76,12 @@ public class AddressBar extends JComboBox {
 	}
 
 	public void setText(String txt) {
-		this.getEditor().setItem(txt);
+		//	this.getEditor().setItem(txt);
+		try {
+			this.getEditor().setItem((new File(txt)).getCanonicalPath());
+		} catch (IOException e) {
+			new ErrorIOFileException(new File(txt)).show();
+		}
 	}
 
 	public String getText() {
