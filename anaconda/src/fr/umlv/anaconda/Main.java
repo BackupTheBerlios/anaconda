@@ -231,6 +231,7 @@ public class Main {
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
+				(new Clone()).run();
 			}
 		};
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
