@@ -3,6 +3,7 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import fr.umlv.anaconda.Main;
@@ -22,6 +23,14 @@ public class Cut implements Command {
 			(new NoSelectedFilesException()).show();
 			return;
 		}
+
+		for (int i = 0; i < selected_file.size(); i++) {
+			if (((File) selected_file.get(i)).getName().compareTo("..") == 0) {
+				selected_file.remove(i);
+				break;
+			}
+		}
+
 		PressPaper.addToPressPaper(selected_file, deleted);
 	}
 
@@ -30,9 +39,17 @@ public class Cut implements Command {
 			(new NoSelectedFilesException()).show();
 			return;
 		}
+
+		for (int i = 0; i < selected_file.size(); i++) {
+			if (((File) selected_file.get(i)).getName().compareTo("..") == 0) {
+				selected_file.remove(i);
+				break;
+			}
+		}
+
 		PressPaper.addToPressPaper(selected_file, deleted);
 	}
-	
+
 	public void undo() {
 	}
 

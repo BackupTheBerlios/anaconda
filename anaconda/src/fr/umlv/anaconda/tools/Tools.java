@@ -1,18 +1,7 @@
-/*
- * Cr?? le 5 f?vr. 2004
- *
- * Pour changer le mod?le de ce fichier g?n?r?, allez ? :
- * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
- */
 package fr.umlv.anaconda.tools;
 
 import java.io.File;
-/**
- * @author ofiguero
- *
- * Pour changer le mod?le de ce commentaire de type g?n?r?, allez ? :
- * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
- */
+
 public class Tools {
 
 	public static boolean contains(File parent, File file) {
@@ -24,6 +13,12 @@ public class Tools {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	public static boolean isPointPoint(File f) {
+		if (f.getName().compareTo("..") == 0)
+			return true;
 		return false;
 	}
 }

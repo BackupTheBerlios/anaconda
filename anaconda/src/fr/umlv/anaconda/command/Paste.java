@@ -11,24 +11,91 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
+import fr.umlv.anaconda.tools.PressPaper;
 import fr.umlv.anaconda.tools.Tools;
 
-public class Paste extends Thread implements Command {
+public class Paste /*extends Thread */
+implements Command {
 	private static boolean is_cut;
 	private static ArrayList last_selection = new ArrayList();
 	private static File dest_rep;
 	private static File origin_rep;
 	private static Delete deleter = new Delete();
+	private final static NoSelectedFilesException no_selection =
+		new NoSelectedFilesException();
 
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
 	 */
 	public void run() {
+
+		/*ArrayList selected_file = Main.getSelectionItems();
+		
+		if (selected_file.size() < 1) {
+			no_selection.show();
+			return;
+		}
+		
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
+			return;
+		}
+		
+		File dest = (File) selected_file.get(0);
+		if (!dest.isDirectory())
+			dest = dest.getParentFile();
+		
+		if (!dest.exists()) {
+			(new DoNotExistFileException(dest)).show();
+			return;
+		}
+		if (!dest.isDirectory()) {
+			(new IsNotDirectoryException(dest)).show();
+			return;
+		}
+		if (!dest.canWrite()) {
+			(new CanNotWriteException(dest)).show();
+			return;
+		}
+		
+		Paste.dest_rep = dest;
+		
+		if (PressPaper.isEmpty()) {
+			(new EmptyPressPaperException()).show();
+			return;
+		}
+		
+		Paste.origin_rep =
+			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
+		
+		last_selection.clear();
+		last_selection.addAll(PressPaper.getSelectedFiles());
+		is_cut = PressPaper.toDelete();
+		
+		for (Iterator it = PressPaper.getSelectedFiles().iterator();
+			it.hasNext();
+			) {
+			File file = (File) it.next();
+			if (!file.exists())
+				 (new DoNotExistFileException(file)).show();
+			if (!file.canRead())
+				 (new CanNotReadException(file)).show();
+		
+			try {
+				pasteFile(dest, file);
+			} catch (DoNotExistFileException e) {
+				e.show();
+			} catch (ErrorIOFileException e) {
+				e.show();
+			}
+		}
+		*/
+
 		ArrayList selected_file = Main.getSelectionItems();
 
 		if (selected_file.size() < 1) {
-			(new NoSelectedFilesException()).show();
+			no_selection.show();
 			return;
 		}
 
@@ -38,90 +105,84 @@ public class Paste extends Thread implements Command {
 		}
 
 		File dest = (File) selected_file.get(0);
-		if( !dest.isDirectory() )
+		if (!dest.isDirectory())
 			dest = dest.getParentFile();
 
-		if (!dest.exists()){
-			 (new DoNotExistFileException(dest)).show();
+		if (!dest.exists()) {
+			(new DoNotExistFileException(dest)).show();
 			return;
 		}
-		if (!dest.isDirectory()){	
-			 (new IsNotDirectoryException(dest)).show();
-			 return;
+		if (!dest.isDirectory()) {
+			(new IsNotDirectoryException(dest)).show();
+			return;
 		}
-		if (!dest.canWrite()){
-			 (new CanNotWriteException(dest)).show();
+		if (!dest.canWrite()) {
+			(new CanNotWriteException(dest)).show();
 			return;
 		}
 
 		Paste.dest_rep = dest;
+
+		if (PressPaper.isEmpty()) {
+			(new EmptyPressPaperException()).show();
+			return;
+		}
+
 		Paste.origin_rep =
 			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
 
 		last_selection.clear();
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
-
-		for (Iterator it = PressPaper.getSelectedFiles().iterator();
-			it.hasNext();
-			) {
-			File file = (File) it.next();
-			if (!file.exists())
-				 (new DoNotExistFileException(file)).show();
-			if (!file.canRead())
-				 (new CanNotReadException(file)).show();
-
-			try {
-				pasteFile(dest, file);
-			} catch (DoNotExistFileException e) {
-				e.show();
-			} catch (ErrorIOFileException e) {
-				e.show();
-			}
-
-		}
+		(new DoThread()).start();
 	}
 
 	public void run(File dest) {
-		if (!dest.exists()){
-			 (new DoNotExistFileException(dest)).show();
-			 return;
+		if (!dest.exists()) {
+			(new DoNotExistFileException(dest)).show();
+			return;
 		}
-		if (!dest.isDirectory()){
-			 (new IsNotDirectoryException(dest)).show();
-			 return;
+		if (!dest.isDirectory()) {
+			(new IsNotDirectoryException(dest)).show();
+			return;
 		}
-		if (!dest.canWrite()){
-			 (new CanNotWriteException(dest)).show();
-			 return;
+		if (!dest.canWrite()) {
+			(new CanNotWriteException(dest)).show();
+			return;
 		}
 
 		Paste.dest_rep = dest;
+
+		if (PressPaper.isEmpty()) {
+			(new EmptyPressPaperException()).show();
+			return;
+		}
+
 		Paste.origin_rep =
 			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
 
 		last_selection.clear();
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
-
-		for (Iterator it = PressPaper.getSelectedFiles().iterator();
-			it.hasNext();
-			) {
-			File file = (File) it.next();
-			if (!file.exists())
-				 (new DoNotExistFileException(file)).show();
-			if (!file.canRead())
-				 (new CanNotReadException(file)).show();
-
-			try {
-				pasteFile(dest, file);
-			} catch (DoNotExistFileException e) {
-				e.show();
-			} catch (ErrorIOFileException e) {
-				e.show();
-			}
-
-		}
+		(new DoThread()).start();
+		/*	for (Iterator it = PressPaper.getSelectedFiles().iterator();
+				it.hasNext();
+				) {
+				File file = (File) it.next();
+				if (!file.exists())
+					 (new DoNotExistFileException(file)).show();
+				if (!file.canRead())
+					 (new CanNotReadException(file)).show();
+		
+				try {
+					pasteFile(dest, file);
+				} catch (DoNotExistFileException e) {
+					e.show();
+				} catch (ErrorIOFileException e) {
+					e.show();
+				}
+		
+			}*/
 	}
 
 	/**
@@ -185,48 +246,76 @@ public class Paste extends Thread implements Command {
 	}
 
 	public void undo() {
-		if (!dest_rep.exists()){
-			 (new DoNotExistFileException(dest_rep)).show();
+		if (!dest_rep.exists()) {
+			(new DoNotExistFileException(dest_rep)).show();
 			return;
 		}
-		if (!dest_rep.isDirectory()){
-			 (new IsNotDirectoryException(dest_rep)).show();
-			 return;
-		}
-		if (!dest_rep.canWrite()){
-			 (new CanNotWriteException(dest_rep)).show();
+		if (!dest_rep.isDirectory()) {
+			(new IsNotDirectoryException(dest_rep)).show();
 			return;
 		}
-		
-		File[] tab_file = dest_rep.listFiles();
+		if (!dest_rep.canWrite()) {
+			(new CanNotWriteException(dest_rep)).show();
+			return;
+		}
+		(new UndoThread()).start();
+	}
 
-		for (int i = 0; i < tab_file.length; i++) {
-			for (Iterator j = last_selection.iterator(); j.hasNext();) {
-				File tmp = (File) j.next();
-				if (((tab_file[i].isDirectory() && tmp.isDirectory())
-					|| (tab_file[i].isFile() && tmp.isFile()))
-					&& tab_file[i].getName().compareTo(tmp.getName()) == 0) {
-					if (is_cut)
-						try {
-							pasteFile(origin_rep, tab_file[i]);
-						} catch (DoNotExistFileException e) {
-							e.show();
-						} catch (ErrorIOFileException e) {
-							e.show();
-						}
-					deleter.run(tab_file[i]);
+	private static Cut redo_cut = new Cut();
+	private static Copy redo_copy = new Copy();
+
+	public void redo() {
+		if (is_cut)
+			redo_cut.run(last_selection);
+		else
+			redo_copy.run(last_selection);
+		run(dest_rep);
+	}
+
+	public class DoThread extends Thread {
+		public void run() {
+			for (Iterator it = PressPaper.getSelectedFiles().iterator();
+				it.hasNext();
+				) {
+				File file = (File) it.next();
+				if (!file.exists())
+					 (new DoNotExistFileException(file)).show();
+				if (!file.canRead())
+					 (new CanNotReadException(file)).show();
+
+				try {
+					pasteFile(dest_rep, file);
+				} catch (DoNotExistFileException e) {
+					e.show();
+				} catch (ErrorIOFileException e) {
+					e.show();
+				}
+			}
+
+		}
+	}
+	public class UndoThread extends Thread {
+		public void run() {
+			File[] tab_file = dest_rep.listFiles();
+
+			for (int i = 0; i < tab_file.length; i++) {
+				for (Iterator j = last_selection.iterator(); j.hasNext();) {
+					File tmp = (File) j.next();
+					if (((tab_file[i].isDirectory() && tmp.isDirectory())
+						|| (tab_file[i].isFile() && tmp.isFile()))
+						&& tab_file[i].getName().compareTo(tmp.getName()) == 0) {
+						if (is_cut)
+							try {
+								pasteFile(origin_rep, tab_file[i]);
+							} catch (DoNotExistFileException e) {
+								e.show();
+							} catch (ErrorIOFileException e) {
+								e.show();
+							}
+						deleter.run(tab_file[i]);
+					}
 				}
 			}
 		}
 	}
-
-	public void redo() {
-
-		if (is_cut)
-			 (new Cut()).run(last_selection);
-		else
-			 (new Copy()).run(last_selection);
-		run(dest_rep);
-	}
-
 }

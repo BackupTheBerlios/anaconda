@@ -10,11 +10,13 @@ import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
+import fr.umlv.anaconda.tools.Tools;
 
-public class Rename implements Command{
+public class Rename implements Command {
 	private File file;
 	private String origin_name;
 	private String new_name;
+	private static NoSelectedFilesException no_selection = new NoSelectedFilesException();
 
 	public Rename() {
 	}
@@ -22,13 +24,13 @@ public class Rename implements Command{
 	public void run() {
 		ArrayList selected_file = Main.getSelectionItems();
 
-		if (selected_file.size() < 1) {
-			(new NoSelectedFilesException()).show();
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
 			return;
 		}
 
-		if (selected_file.size() > 1) {
-			(new TooMuchFilesException()).show();
+		if (selected_file.size() < 1) {
+			no_selection.show();
 			return;
 		}
 
@@ -36,10 +38,15 @@ public class Rename implements Command{
 	}
 
 	public void run(File file) {
-		
+
+		if(Tools.isPointPoint(file)){
+			no_selection.show();
+			return;
+		}
+
 		File parent = file.getParentFile();
 		origin_name = file.getName();
-		System.out.println(origin_name);
+
 		this.file = file;
 
 		String new_name;
@@ -66,7 +73,7 @@ public class Rename implements Command{
 		} while (!admitRename);
 
 		this.new_name = new_name;
-		File tmp_file = new File(parent,new_name);
+		File tmp_file = new File(parent, new_name);
 		try {
 			file.renameTo(tmp_file);
 		} catch (SecurityException e) {

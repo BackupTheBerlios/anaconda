@@ -37,15 +37,17 @@ public class Main {
 	final private static int TREE_FOCUS = 1;
 	final private static int NONE_FOCUS = 2;
 	private static int lastFocused = NONE_FOCUS;
-
+	private static ArrayList selection_items = new ArrayList();
+	
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
-		ArrayList selection_items = new ArrayList();
+		selection_items.clear();
+		
 		switch(lastFocused) {
 		case LIST_FOCUS:
 			Object[] o = list.getSelectedValues();
 			for (int i=0;i<o.length;i++){
-				if (Model.cmp.compare(o[i], model.getFolderParent()) != 0)
+				//if (Model.cmp.compare(o[i], model.getFolderParent()) != 0)
 					selection_items.add(o[i]);
 			}
 		break;
@@ -140,7 +142,7 @@ public class Main {
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
-				(new Paste()).start();
+				(new Paste()).run();
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {

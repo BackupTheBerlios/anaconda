@@ -7,6 +7,7 @@ import java.util.Iterator;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.tools.Tools;
 
 public class Delete implements Command {
 
@@ -18,20 +19,30 @@ public class Delete implements Command {
 			return;
 		}
 
-		for (Iterator i = selected_file.iterator(); i.hasNext();)
-			try {
-				delete((File) i.next());
-			} catch (CanNotDeleteException e) {
-				e.show();
-			}
+		for (Iterator i = selected_file.iterator(); i.hasNext();) {
+			File to_delete = (File) i.next();
+
+			if (Tools.isPointPoint(to_delete))
+				 (new CanNotDeleteException(to_delete)).show();
+			else
+				try {
+					delete(to_delete);
+				} catch (CanNotDeleteException e) {
+					e.show();
+				}
+		}
 	}
 
 	public void run(File selected_file) {
-		try {
-			delete(selected_file);
-		} catch (CanNotDeleteException e) {
-			e.show();
-		}
+
+		if (Tools.isPointPoint(selected_file))
+			 (new CanNotDeleteException(selected_file)).show();
+		else
+			try {
+				delete(selected_file);
+			} catch (CanNotDeleteException e) {
+				e.show();
+			}
 	}
 
 	public void delete(File file) throws CanNotDeleteException {
@@ -53,7 +64,9 @@ public class Delete implements Command {
 			}
 	}
 
-	public void redo() {}
+	public void redo() {
+	}
 
-	public void undo() {}
+	public void undo() {
+	}
 }

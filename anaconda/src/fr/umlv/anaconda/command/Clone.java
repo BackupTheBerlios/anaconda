@@ -6,10 +6,9 @@ package fr.umlv.anaconda.command;
  */
 
 import java.io.*;
-import java.util.ArrayList;
 
 import fr.umlv.anaconda.Main;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
+import fr.umlv.anaconda.exception.IsNotDirectoryException;
 import fr.umlv.anaconda.tools.ChoozRep;
 
 /**
@@ -19,19 +18,27 @@ import fr.umlv.anaconda.tools.ChoozRep;
  *
  */
 public class Clone implements Command {
-
-//	private File origin;
-	private File dest;
+	private static Copy copy = new Copy();
+	private static Paste last_paste = new Paste();
 
 	/* (non-Javadoc)
 	 * @see fr.umlv.anaconda.command.Command#run()
 	 */
 	public void run() {
-		ArrayList selected_file = Main.getSelectionItems();
-		if (dest == null ) {
-			dest = ChoozRep.frameChoozRep();
+
+		File dest = ChoozRep.frameChoozRep();
+
+		if (dest == null)
+			return;
+	
+		if( !dest.isDirectory() ){
+			(new IsNotDirectoryException(dest)).show();
+			return;
 		}
-		
+
+		copy.run(Main.getSelectionItems());
+		last_paste.run(dest);
+		/*ArrayList selected_file = Main.getSelectionItems();
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 		File fin = null;
@@ -61,24 +68,16 @@ public class Clone implements Command {
 			} catch (IOException e2) {
 				System.err.println("erreur de flux");
 			}
-		}
-		
+		}*/
+
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#redo()
-	 */
 	public void redo() {
-		// TODO Raccord de méthode auto-généré
-
+		last_paste.redo();
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#undo()
-	 */
 	public void undo() {
-		// TODO Raccord de méthode auto-généré
-
+		last_paste.undo();
 	}
 
 }
