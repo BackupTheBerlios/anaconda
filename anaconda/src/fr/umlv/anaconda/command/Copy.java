@@ -3,20 +3,12 @@
  */
 package fr.umlv.anaconda.command;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javax.swing.AbstractAction;
-
 import fr.umlv.anaconda.Main;
-import fr.umlv.anaconda.exception.CanNotDeleteException;
-import fr.umlv.anaconda.exception.CanNotReadException;
-import fr.umlv.anaconda.exception.CanNotWriteException;
-import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-import fr.umlv.anaconda.exception.IsNotDirectoryException;
+import fr.umlv.anaconda.exception.NoSelectedFilesException;
 
-public class Copy extends AbstractAction implements Command {
+public class Copy implements Command {
 	private final static boolean deleted = false;
 
 	/**
@@ -24,46 +16,28 @@ public class Copy extends AbstractAction implements Command {
 	 * 
 	 * @param selection
 	 */
-	public void run(Object o) {
-		PressPaper.addToPressPaper((ArrayList) o, deleted);
-	}
-
-	/**
-	 * Undoes the last command CopyPaste.
-	 * 
-	 * @throws DoNotExistFileException
-	 * @throws IsNotDirectoryException
-	 * @throws CanNotWriteException
-	 * @throws CanNotReadException
-	 * @throws CanNotDeleteException
-	 */
-	public void undo()
-		throws
-			DoNotExistFileException,
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			CanNotDeleteException {
-
-	}
-
-	public void redo()
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorIOFileException {
-	}
-
-	public void actionPerformed(ActionEvent e) {
+	public void run() {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() < 1)
-			//TODO cas ou on n a rien selectionne.
-			// (new NoSelectedFilesException()).show();
-			// return;
-			;
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
 
-		run(Main.getSelectionItems());
+		PressPaper.addToPressPaper(selected_file, deleted);
+	}
+
+	public void run(ArrayList selected_file) {
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
+
+		PressPaper.addToPressPaper(selected_file, deleted);
+	}
+
+	public void undo() {
+	}
+
+	public void redo() {
 	}
 }

@@ -5,6 +5,13 @@ import java.util.*;
 import java.net.*;
 import javax.swing.*;
 import javax.swing.tree.*;
+
+import fr.umlv.anaconda.command.Copy;
+import fr.umlv.anaconda.command.Cut;
+import fr.umlv.anaconda.command.Delete;
+import fr.umlv.anaconda.command.Paste;
+import fr.umlv.anaconda.command.Rename;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -25,18 +32,24 @@ public class Main {
 	final public static MyTabbedPane tabb = new MyTabbedPane(model);
 		   final public static ModelListAdapter listModel = tabb.getListModel();
 		   final public static JList list = tabb.getListFiles();
+	final private static int LIST_FOCUS = 0;
+	final private static int TREE_FOCUS = 1;
+	final private static int NONE_FOCUS = 2;
+	private static int lastFocused = NONE_FOCUS;
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
 		ArrayList selection_items = new ArrayList();
-		if (list.hasFocus()){
+		switch(lastFocused) {
+		case LIST_FOCUS:
 			Object[] o = list.getSelectedValues();
 			for (int i=0;i<o.length;i++){
 				if (Model.cmp.compare(o[i], model.getFolderParent()) != 0)
 					selection_items.add(o[i]);
 			}
-		}
-		else if (tree.hasFocus()){
+		break;
+		case TREE_FOCUS:
 			selection_items.add(((Model) tree.getLastSelectedPathComponent()).getFolder());
+			break;
 		}
 		return selection_items;
 	}
@@ -187,17 +200,20 @@ public class Main {
 		/* LES ACTIONS */
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
+				//TODO action copy
+				(new Copy()).run();
 			}
 		};
 		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
+				//TODO action cut
+				(new Cut()).run();
 			}
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
+				//TODO action paste
+				(new Paste()).run();
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
@@ -218,11 +234,13 @@ public class Main {
 		final Action renameAction = new AbstractAction("Renommer") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
+				(new Rename()).run();
 			}
 		};
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
+				(new Delete()).run();
 			}
 		};
 		/* MENUBAR */
@@ -454,6 +472,7 @@ public class Main {
 		//pasteItem.addActionListener(pasteAction);
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				lastFocused = TREE_FOCUS;
 				selectAllAction.setEnabled(false);
 				pasteAction.setEnabled(true);
 				int index = tree.getRowForLocation(e.getX(), e.getY());
@@ -493,6 +512,7 @@ public class Main {
 		});
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				lastFocused = LIST_FOCUS;
 				selectAllAction.setEnabled(true);
 				pasteAction.setEnabled(false);
 				switch (e.getButton()) {

@@ -1,11 +1,7 @@
-
 package fr.umlv.anaconda.command;
 
 import java.io.File;
 import java.util.Properties;
-
-import fr.umlv.anaconda.exception.CanNotDeleteException;
-import fr.umlv.anaconda.exception.CanNotWriteException;
 
 import junit.framework.TestCase;
 
@@ -33,19 +29,12 @@ public class CreateFolderTest extends TestCase {
 						+ "testcreatefolder"
 						+ file_separator));
 		CreateFolder creater = new CreateFolder();
-		try {
-			creater.run(folder);
-			creater.undo();
-			creater.run(folder);
-			creater.run(folder);
-			creater.run(folder);
-			creater.undo();
-		} catch (CanNotWriteException e) {
-			e.show();
-		} catch (CanNotDeleteException e) {
-			e.show();
-		}
-
+		creater.run(folder);
+		creater.undo();
+		creater.run(folder);
+		creater.run(folder);
+		creater.run(folder);
+		creater.undo();
 	}
 
 }

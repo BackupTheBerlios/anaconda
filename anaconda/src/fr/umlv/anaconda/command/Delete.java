@@ -1,34 +1,37 @@
-/*
- * Créé le 3 févr. 2004
- * 
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
 package fr.umlv.anaconda.command;
 
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.AbstractAction;
-
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
-import fr.umlv.anaconda.exception.TooMuchFilesException;
-/**
- * @author ofiguero
- * 
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
- */
-public class Delete extends AbstractAction {
 
-	public void run(Object o) throws CanNotDeleteException {
-		ArrayList array_file = (ArrayList) o;
-		for (Iterator i = array_file.iterator(); i.hasNext();)
-			delete((File) i.next());
+public class Delete implements Command {
+
+	public void run() {
+		ArrayList selected_file = Main.getSelectionItems();
+
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
+
+		for (Iterator i = selected_file.iterator(); i.hasNext();)
+			try {
+				delete((File) i.next());
+			} catch (CanNotDeleteException e) {
+				e.show();
+			}
+	}
+
+	public void run(File selected_file) {
+		try {
+			delete(selected_file);
+		} catch (CanNotDeleteException e) {
+			e.show();
+		}
 	}
 
 	public void delete(File file) throws CanNotDeleteException {
@@ -50,33 +53,7 @@ public class Delete extends AbstractAction {
 			}
 	}
 
-	public void redo() {
+	public void redo() {}
 
-	}
-
-	public void undo() {
-
-	}
-
-	public void actionPerformed(ActionEvent arg0) {
-		ArrayList selected_file = Main.getSelectionItems();
-
-		if (selected_file.size() < 1) {
-			(new NoSelectedFilesException()).show();
-			return;
-		}
-
-		if (selected_file.size() > 1) {
-			(new TooMuchFilesException()).show();
-			return;
-		}
-
-		try {
-			run(Main.getSelectionItems());
-		} catch (CanNotDeleteException e) {
-			e.show();
-		}
-
-	}
-
+	public void undo() {}
 }

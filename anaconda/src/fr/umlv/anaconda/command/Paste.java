@@ -4,7 +4,6 @@
 package fr.umlv.anaconda.command;
 
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,11 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
-import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
@@ -26,7 +23,7 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 
-public class Paste extends AbstractAction implements Command {
+public class Paste implements Command {
 	private static boolean is_cut;
 	private static ArrayList last_selection = new ArrayList();
 	private static File dest_rep;
@@ -37,22 +34,33 @@ public class Paste extends AbstractAction implements Command {
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
 	 */
-	public void run(Object o)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorIOFileException {
+	public void run() {
+		ArrayList selected_file = Main.getSelectionItems();
 
-		File dest = (File) o;
+		if (selected_file.size() < 1) {
+			(new NoSelectedFilesException()).show();
+			return;
+		}
 
-		if (!dest.exists())
-			throw new DoNotExistFileException(dest);
-		if (!dest.isDirectory())
-			throw new IsNotDirectoryException(dest);
-		if (!dest.canWrite())
-			throw new CanNotWriteException(dest);
+		if (selected_file.size() > 1) {
+			(new TooMuchFilesException()).show();
+			return;
+		}
+
+		File dest = (File) selected_file.get(0);
+
+		if (!dest.exists()){
+			 (new DoNotExistFileException(dest)).show();
+			return;
+		}
+		if (!dest.isDirectory()){	
+			 (new IsNotDirectoryException(dest)).show();
+			 return;
+		}
+		if (!dest.canWrite()){
+			 (new CanNotWriteException(dest)).show();
+			return;
+		}
 
 		Paste.dest_rep = dest;
 		Paste.origin_rep =
@@ -67,10 +75,60 @@ public class Paste extends AbstractAction implements Command {
 			) {
 			File file = (File) it.next();
 			if (!file.exists())
-				throw new DoNotExistFileException(file);
+				 (new DoNotExistFileException(file)).show();
 			if (!file.canRead())
-				throw new CanNotReadException(file);
-			pasteFile(dest, file);
+				 (new CanNotReadException(file)).show();
+
+			try {
+				pasteFile(dest, file);
+			} catch (DoNotExistFileException e) {
+				e.show();
+			} catch (ErrorIOFileException e) {
+				e.show();
+			}
+
+		}
+	}
+
+	public void run(File dest) {
+		if (!dest.exists()){
+			 (new DoNotExistFileException(dest)).show();
+			 return;
+		}
+		if (!dest.isDirectory()){
+			 (new IsNotDirectoryException(dest)).show();
+			 return;
+		}
+		if (!dest.canWrite()){
+			 (new CanNotWriteException(dest)).show();
+			 return;
+		}
+
+		Paste.dest_rep = dest;
+		Paste.origin_rep =
+			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
+
+		last_selection.clear();
+		last_selection.addAll(PressPaper.getSelectedFiles());
+		is_cut = PressPaper.toDelete();
+
+		for (Iterator it = PressPaper.getSelectedFiles().iterator();
+			it.hasNext();
+			) {
+			File file = (File) it.next();
+			if (!file.exists())
+				 (new DoNotExistFileException(file)).show();
+			if (!file.canRead())
+				 (new CanNotReadException(file)).show();
+
+			try {
+				pasteFile(dest, file);
+			} catch (DoNotExistFileException e) {
+				e.show();
+			} catch (ErrorIOFileException e) {
+				e.show();
+			}
+
 		}
 	}
 
@@ -98,7 +156,7 @@ public class Paste extends AbstractAction implements Command {
 				option = JOptionPane.NO_OPTION;
 			}
 		}
-		
+
 		if (option == JOptionPane.YES_OPTION) {
 			if (child.isDirectory()) {
 
@@ -134,21 +192,20 @@ public class Paste extends AbstractAction implements Command {
 		}
 	}
 
-	public void undo()
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			CanNotDeleteException,
-			DoNotExistFileException,
-			ErrorIOFileException {
-		if (!dest_rep.exists())
-			throw new DoNotExistFileException(dest_rep);
-		if (!dest_rep.isDirectory())
-			throw new IsNotDirectoryException(dest_rep);
-		if (!dest_rep.canWrite())
-			throw new CanNotWriteException(dest_rep);
-
+	public void undo() {
+		if (!dest_rep.exists()){
+			 (new DoNotExistFileException(dest_rep)).show();
+			return;
+		}
+		if (!dest_rep.isDirectory()){
+			 (new IsNotDirectoryException(dest_rep)).show();
+			 return;
+		}
+		if (!dest_rep.canWrite()){
+			 (new CanNotWriteException(dest_rep)).show();
+			return;
+		}
+		
 		File[] tab_file = dest_rep.listFiles();
 
 		for (int i = 0; i < tab_file.length; i++) {
@@ -158,54 +215,26 @@ public class Paste extends AbstractAction implements Command {
 					|| (tab_file[i].isFile() && tmp.isFile()))
 					&& tab_file[i].getName().compareTo(tmp.getName()) == 0) {
 					if (is_cut)
-						pasteFile(origin_rep, tab_file[i]);
+						try {
+							pasteFile(origin_rep, tab_file[i]);
+						} catch (DoNotExistFileException e) {
+							e.show();
+						} catch (ErrorIOFileException e) {
+							e.show();
+						}
 					deleter.run(tab_file[i]);
 				}
 			}
 		}
 	}
 
-	public void redo()
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorIOFileException {
+	public void redo() {
 
 		if (is_cut)
 			 (new Cut()).run(last_selection);
 		else
 			 (new Copy()).run(last_selection);
 		run(dest_rep);
-	}
-
-	public void actionPerformed(ActionEvent arg0) {
-		ArrayList selected_file = Main.getSelectionItems();
-
-		if (selected_file.size() < 1) {
-			(new NoSelectedFilesException()).show();
-			return;
-		}
-
-		if (selected_file.size() > 1) {
-			(new TooMuchFilesException()).show();
-			return;
-		}
-
-		try {
-			run(selected_file.get(0));
-		} catch (IsNotDirectoryException e) {
-			e.show();
-		} catch (CanNotWriteException e) {
-			e.show();
-		} catch (CanNotReadException e) {
-			e.show();
-		} catch (DoNotExistFileException e) {
-			e.show();
-		} catch (ErrorIOFileException e) {
-			e.show();
-		}
 	}
 
 }

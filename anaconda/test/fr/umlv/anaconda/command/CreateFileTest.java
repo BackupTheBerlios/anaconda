@@ -4,9 +4,6 @@ package fr.umlv.anaconda.command;
 import java.io.File;
 import java.util.Properties;
 
-import fr.umlv.anaconda.exception.CanNotWriteException;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-
 import junit.framework.TestCase;
 
 /**
@@ -29,19 +26,13 @@ public class CreateFileTest extends TestCase {
 		File folder =
 			new File(new String(home + file_separator + "testcreatefile"));
 		CreateFile creater = new CreateFile();
-		try {
-			creater.run(folder);
-			creater.undo();
-			creater.run(folder);
-			creater.run(folder);
-			creater.run(folder);
-			creater.undo();
-			creater.redo();
-		} catch (CanNotWriteException e) {
-			e.show();
-		} catch (ErrorIOFileException e) {
-			e.show();
-		}
+		creater.run(folder);
+		creater.undo();
+		creater.run(folder);
+		creater.run(folder);
+		creater.run(folder);
+		creater.undo();
+		creater.redo();
 
 	}
 

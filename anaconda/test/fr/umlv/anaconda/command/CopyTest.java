@@ -6,13 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import fr.umlv.anaconda.exception.CanNotDeleteException;
-import fr.umlv.anaconda.exception.CanNotReadException;
-import fr.umlv.anaconda.exception.CanNotWriteException;
-import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-import fr.umlv.anaconda.exception.IsNotDirectoryException;
-
 import junit.framework.TestCase;
 
 
@@ -57,18 +50,6 @@ public class CopyTest extends TestCase {
 			pt.redo();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		} catch (IsNotDirectoryException e) {
-			e.show();
-		} catch (CanNotWriteException e) {
-			e.show();
-		} catch (CanNotReadException e) {
-			e.show();
-		} catch (DoNotExistFileException e) {
-			e.show();
-		} catch (ErrorIOFileException e) {
-			e.show();
-		} catch (CanNotDeleteException e) {
-			e.show();
 		}
 	}
 }
