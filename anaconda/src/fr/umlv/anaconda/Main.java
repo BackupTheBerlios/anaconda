@@ -6,11 +6,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
-import fr.umlv.anaconda.command.Copy;
-import fr.umlv.anaconda.command.Cut;
-import fr.umlv.anaconda.command.Delete;
-import fr.umlv.anaconda.command.Paste;
-import fr.umlv.anaconda.command.Rename;
+import fr.umlv.anaconda.command.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -225,6 +221,7 @@ public class Main {
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
+				(new Move()).run();
 			}
 		};
 		final Action selectAllAction = new AbstractAction("Selectionner tout") {

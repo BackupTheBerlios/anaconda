@@ -24,7 +24,7 @@ public class ChoozRep {
 	 * To create a window used to browse disk in order to choose a directory
 	 * @return the choosen directory
 	 */
-	protected static File frameChoozRep() {
+	public static File frameChoozRep() {
 		
 		JFileChooser fileChooz = new JFileChooser();
 		RepFileFilter filtre = new RepFileFilter();
