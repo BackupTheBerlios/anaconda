@@ -334,7 +334,6 @@ public class Main {
 		infoPanel.setMinimumSize(size);
 		infoPanel.setMaximumSize(size);
 		/******************************/
-		//JTabbedPane tabb = new JTabbedPane();
 		JSplitPane splitPane =
 			new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT,
@@ -364,8 +363,6 @@ public class Main {
 		final Action deleteAction = AllCommand.getAction("delete");
 		final Action findAction = new AbstractAction("Rechercher") {
 			public void actionPerformed(ActionEvent e) {
-				//FindPanel find_panel = new FindPanel(find_model);
-				//info_panel.setPanel(FindPanel.getPanel());
 				info_panel.setAsFind(find_model);
 			}
 			
@@ -434,24 +431,13 @@ public class Main {
 		/* Fichier */
 		JMenu subMenuNew = new JMenu("Nouveau...");
 		JMenuItem newFileItem = new JMenuItem(createFile);
-//		JMenuItem newFileItem = new JMenuItem("Fichier    Ctrl+T");
-//		newFileItem.addActionListener(createFile);
 		JMenuItem newFolderItem = new JMenuItem(createFolder);
-//		JMenuItem newFolderItem = new JMenuItem("Repertoire    Ctrl+R");
-//		newFolderItem.addActionListener(createFolder);
-//		JMenuItem newFrameItem =
-//			new JMenuItem("Fenetre d'exploration    Ctrl+E");
 		subMenuNew.add(newFileItem);
 		subMenuNew.add(newFolderItem);
-//		subMenuNew.add(newFrameItem);
 		file.add(subMenuNew);
 		file.add(new JSeparator());
 		JMenuItem findItem = new JMenuItem(findAction);
-//		JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
-//		findItem.addActionListener(findAction);
 		JMenuItem propertiesItem = new JMenuItem(showPropertiesAction);
-//		JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
-//		propertiesItem.addActionListener(showPropertiesAction);
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -515,23 +501,10 @@ public class Main {
 		subMenuType.add(typeSmall);
 		subMenuType.add(typeList);
 		subMenuType.add(typeDetail);
-/*		JMenu subMenuBar = new JMenu("Barres...");
-		JMenuItem barTools = new JMenuItem("Barre d'outils");
-		JMenuItem barAdr = new JMenuItem("Barre d'adresse");
-		subMenuBar.add(barTools);
-		subMenuBar.add(barAdr); 
-		JMenu subMenuLangue = new JMenu("Langue...");
-		JMenuItem french = new JMenuItem("Francais");
-		JMenuItem english = new JMenuItem("Anglais");
-		JMenuItem spanish = new JMenuItem("Espagnol");
-		subMenuLangue.add(french);
-		subMenuLangue.add(english);
-		subMenuLangue.add(spanish); */
+
 		disp.add(reloadItem);
 		disp.add(subMenuTri);
 		disp.add(subMenuType);
-//		disp.add(subMenuBar);
-//		disp.add(subMenuLangue);
 		/* ? */
 		JMenuItem itemHelp = new JMenuItem("Aide");
 		itemHelp.addActionListener(helpAction);
@@ -564,7 +537,7 @@ public class Main {
 		final JButton paste = new JButton(IconsManager.PASTE);
 	//	final JButton paste = new JButton(pasteAction);
 		paste.setRolloverIcon(IconsManager.ONFOCUSPASTE);
-		paste.addActionListener(pasteAction); // ne prend pas en compte l'état !
+		paste.addActionListener(pasteAction); // ne prend pas en compte l'?tat !
 	//	paste.setAction(pasteAction);
 	//	paste.setIcon(IconsManager.PASTE);
 		final JButton find = new JButton(IconsManager.FIND);
@@ -590,16 +563,10 @@ public class Main {
 		/* ADRESSBAR */
 		JToolBar adressBar = new JToolBar();
 		adressBar.setFloatable(false);
-		JButton delAdr = new JButton("effacer");
+		JButton delAdr = new JButton(" X ");
 		JLabel adr = new JLabel(" adresse : ");
-		JButton openAdr = new JButton("ouvrir");
+		JButton openAdr = new JButton("GO");
 		JButton autoAdr = new JButton("auto-completion");
-		autoAdr.addActionListener(new AbstractAction(){
-			public void actionPerformed(ActionEvent arg0) {
-				adrZone.Completion();
-			}
-		}
-			);
 		//String fileName = currentFolder.getAbsolutePath();
 		adrZone = new AddressBar(currentFolder);
 		/*adrZone =
@@ -609,11 +576,11 @@ public class Main {
 						? ""
 						: File.separator)); */
 //		adrZone.setActionCommand("test");
-		adressBar.add(delAdr);
 		adressBar.add(openAdr);
+		adressBar.add(delAdr);
 		adressBar.add(adr);
 		adressBar.add(adrZone);
-		adressBar.add(autoAdr);
+//		adressBar.add(autoAdr);
 
 		/* PANELBAR */
 		JPanel panelBar = new JPanel();
@@ -649,30 +616,19 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println(e.getActionCommand());
-//				System.out.println(e.paramString());
 				File file = new File(adrZone.getText());
 				if (file.exists()) {
 					setFolder(file);
 					back.setEnabled(true);
 					next.setEnabled(false);
-//					adrZone.addItem(file);
 					adrZone.addItem(file.getAbsolutePath());
-				} else
-/*					JOptionPane.showMessageDialog(
-						null,
-						"Le fichier/repertoire <"
-							+ file.getAbsolutePath()
-							+ "> n'a pas ete trouve.",
-						"Fichier/repertoire non trouve",
-						JOptionPane.ERROR_MESSAGE); */
-					new DoNotExistFileException(file).show();
-				/*				String fileName = currentFolder.getAbsolutePath();
-				adrZone.setText(
-					fileName
-					+ ((fileName.endsWith(File.separator))
-							? ""
-							: File.separator)); */
+				} 
+				else{
+					adrZone.Completion();
+				}
+					//	System.err.println("PROBLEME");
+				//	new DoNotExistFileException(file).show();
+
 				adrZone.setText(currentFolder);
 			}
 		});
@@ -683,6 +639,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 //				adrZone.setText("");
 				adrZone.getEditor().setItem("");
+				adrZone.getEditor().getEditorComponent().requestFocus();
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
