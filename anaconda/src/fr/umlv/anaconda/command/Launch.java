@@ -50,7 +50,7 @@ public class Launch implements Command {
 	 * @param selected_file the selected file
 	 */
 	public void run(File selected_file) {
-		if (!selected_file.isDirectory()) {
+		if (selected_file!=null && !selected_file.isDirectory()) {
 			try {
 				r.exec(selected_file.getCanonicalPath());
 				// sinon lancer avec l'appli qui va bien...

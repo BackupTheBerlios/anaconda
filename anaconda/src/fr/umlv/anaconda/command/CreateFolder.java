@@ -39,7 +39,7 @@ public class CreateFolder implements Command {
 			return;
 		}*/
 
-		current_folder = Main.model.getFolder();/*(File) selected_file.get(0)*/;
+		current_folder = Main.currentFolder;/*(File) selected_file.get(0)*/;
 		if( !current_folder.isDirectory() )
 			current_folder = current_folder.getParentFile();
 		

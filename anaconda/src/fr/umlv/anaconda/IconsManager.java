@@ -1,4 +1,3 @@
-
 package fr.umlv.anaconda;
 
 import javax.swing.ImageIcon;
