@@ -133,8 +133,8 @@ public class Paste extends AbstractAction implements Command {
 
 			if (is_cut)
 				pasteFile(last_site, to_replace);
-			tab_file[i].delete();//TODO revoir avec supprimer.
-			
+			tab_file[i].delete(); //TODO revoir avec supprimer.
+
 		}
 	}
 
@@ -154,8 +154,13 @@ public class Paste extends AbstractAction implements Command {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		ArrayList selected_file = Main.getSelectionItems();
+		if (selected_file.size() < 1)
+			//TODO cas ou on n a rien selectionne.
+			;
+
 		try {
-			run(Main.getSelectionItems());
+			run(selected_file.get(0));
 		} catch (IsNotDirectoryException e) {
 			// TODO Si le file ou on veut coller n est pas un rep.
 		} catch (CanNotWriteException e) {

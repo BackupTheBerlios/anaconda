@@ -26,7 +26,6 @@ public class Cut extends AbstractAction implements Command {
 	 *            is the selection of files.
 	 */
 	public void run(Object o) {
-
 		PressPaper.addToPressPaper((ArrayList) o, deleted);
 	}
 
@@ -59,8 +58,12 @@ public class Cut extends AbstractAction implements Command {
 			ErrorPastingFileException {
 	}
 
-	
 	public void actionPerformed(ActionEvent arg0) {
+		ArrayList selected_file = Main.getSelectionItems();
+		if (selected_file.size() < 1)
+			//TODO cas ou on n a rien selectionne.
+			;
+
 		run(Main.getSelectionItems());
 	}
 }

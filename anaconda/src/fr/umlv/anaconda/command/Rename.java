@@ -10,19 +10,19 @@ public class Rename {
 	private String origin_name;
 	private String new_name;
 
-	public Rename(){
+	public Rename() {
 	}
-	
-	public void run(Object o,String new_name){
-		File file = (File)o;
+
+	public void run(Object o, String new_name) {
+		File file = (File) o;
 		File tmp_file = new File(new_name);
 		file.renameTo(tmp_file);
 	}
 
-public void redo(){
-	File tmp_file = new File(new_name);
-	file.renameTo(tmp_file);
-}
+	public void redo() {
+		File tmp_file = new File(new_name);
+		file.renameTo(tmp_file);
+	}
 
 	public void undo() {
 		File origin_file = new File(origin_name);

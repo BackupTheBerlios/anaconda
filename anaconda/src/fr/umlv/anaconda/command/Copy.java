@@ -16,7 +16,7 @@ import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorPastingFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
-public class Copy extends AbstractAction  implements Command {
+public class Copy extends AbstractAction implements Command {
 	private final static boolean deleted = false;
 
 	/**
@@ -44,7 +44,7 @@ public class Copy extends AbstractAction  implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException {
-		
+
 	}
 
 	public void redo()
@@ -56,8 +56,12 @@ public class Copy extends AbstractAction  implements Command {
 			ErrorPastingFileException {
 	}
 
-	
 	public void actionPerformed(ActionEvent e) {
+		ArrayList selected_file = Main.getSelectionItems();
+		if (selected_file.size() < 1)
+			//TODO cas ou on n a rien selectionne.
+			;
+
 		run(Main.getSelectionItems());
 	}
 }
