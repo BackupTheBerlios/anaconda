@@ -230,8 +230,8 @@ public class Main {
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
-				(new Clone()).run();
+				//TODO a revoir
+				//(new Clone()).run();
 			}
 		};
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
@@ -254,8 +254,9 @@ public class Main {
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
 				//Delete de la corbeille
-				//(new Delete()).run();
-				trash.start();
+				(new Delete()).run();
+				refreshAction.actionPerformed(e);
+				//trash.run();
 			}
 		};
 		final Action findAction = new AbstractAction("Rechercher"){
@@ -285,6 +286,7 @@ public class Main {
 		subMenuNew.add(newFrameItem);
 		file.add(subMenuNew);
 		JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
+		findItem.addActionListener(findAction);
 		JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
