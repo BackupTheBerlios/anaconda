@@ -8,6 +8,7 @@ package fr.umlv.anaconda;
 
 import java.awt.Component;
 import java.io.File;
+import java.net.URLConnection;
 
 
 import javax.swing.DefaultListCellRenderer;
@@ -15,15 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-/**
- * @author FIGUEROA
- * 
- * To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Generation - Code and Comments
- */
-public class ListRenderer extends DefaultListCellRenderer {
 
-	IconsManager im = new IconsManager();
+public class ListRenderer extends DefaultListCellRenderer {
 
 	private ImageIcon father_icon = IconsManager.big_father_icon;
 	private ImageIcon folder_icon = IconsManager.big_folder_icon;
@@ -88,6 +82,11 @@ public class ListRenderer extends DefaultListCellRenderer {
 		}
 		((JLabel) c).setText(name);
 		/** ********************* */
+		
+		//URLConnection url_connex = new URLConnection();
+		
+		
+		
 		if (((File) value).isDirectory()) {
 			if (name.compareTo("..") == 0)
 				 ((JLabel) c).setIcon(father_icon);

@@ -122,7 +122,6 @@ public class Trash extends Thread implements Command {
 	public void addFile(File file, String old_path) {
 		System.out.println(file.toString() + "   " + old_path.toString());
 		files_deleted.add(new FileInformation(file, old_path));
-		
 		model.addElement(file);
 	}
 

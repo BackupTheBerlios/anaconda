@@ -2,7 +2,7 @@ package fr.umlv.anaconda;
 
 import java.io.*;
 import java.util.*;
-import java.net.*;
+
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -55,34 +55,10 @@ public class Main {
 		}
 		return selection_items;
 	}
-	/* VARIABLES POUR LES ICONES */
-	final public static String iconesResourcePath = "/images/";
-	final public static String[] iconesPath = { "anaconda_logo_2.gif",
-		"back.gif", "copy.gif", "cut.gif", "find.gif", "iconExe.gif",
-		"iconFather.gif", "iconFocus.gif", "iconImg.gif", "iconNode.gif",
-		"iconOpen.gif", "iconRep.gif", "iconText.gif", "next.gif", "paste.gif" };
-	final public static int LOGO_ICONE = 0;
-	final public static int BACK_ICONE = 1;
-	final public static int COPY_ICONE = 2;
-	final public static int CUT_ICONE = 3;
-	final public static int FIND_ICONE = 4;
-	final public static int EXE_ICONE = 5;
-	final public static int FATHER_ICONE = 6;
-	final public static int FOCUS_ICONE = 7;
-	final public static int IMG_ICONE = 8;
-	final public static int NODE_ICONE = 9;
-	final public static int OPEN_ICONE = 10;
-	final public static int REP_ICONE = 11;
-	final public static int TEXT_ICONE = 12;
-	final public static int NEXT_ICONE = 13;
-	final public static int PASTE_ICONE = 14;
-	final public static URL[] icones = new URL[iconesPath.length];
-	static {
-		for(int i = 0; i < iconesPath.length; i ++)
-			icones[i] = Main.class.getResource(iconesResourcePath + iconesPath[i]);
-	}
+
 	/* METHODE MAIN */
 	public static void main(String[] args) throws Exception {
+		IconsManager im = new IconsManager();
 		final JFrame mainFrame = new JFrame("Anaconda");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(800, 600);
@@ -105,10 +81,9 @@ public class Main {
 		list.setCellRenderer(listCellRenderer);
 
 		JScrollPane scrollTree = new JScrollPane(tree);
-		//JScrollPane scrollList = new JScrollPane(list);
 		/******************************/
 		JPanel infoPanel = new JPanel();
-		ImageIcon anacondaLogo = new ImageIcon(icones[LOGO_ICONE]);
+		ImageIcon anacondaLogo = IconsManager.logo;
 		infoPanel.add(new JLabel(anacondaLogo));
 		infoPanel.setBackground(Color.WHITE);
 
@@ -320,27 +295,20 @@ public class Main {
 		/* TOOLBAR */
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		final JButton back = new JButton(new ImageIcon(icones[BACK_ICONE]));
-		final JButton next = new JButton(new ImageIcon(icones[NEXT_ICONE]));
-		JButton cut = new JButton(new ImageIcon(icones[CUT_ICONE]));
-		JButton copy = new JButton(new ImageIcon(icones[COPY_ICONE]));
-		JButton paste = new JButton(new ImageIcon(icones[PASTE_ICONE]));
-		JButton find = new JButton(new ImageIcon(icones[FIND_ICONE]));
+		final JButton back = new JButton(IconsManager.back);
+		final JButton next = new JButton(IconsManager.next);
+		JButton cut = new JButton(IconsManager.cut);
+		JButton copy = new JButton(IconsManager.copy);
+		JButton paste = new JButton(IconsManager.paste);
+		JButton find = new JButton(IconsManager.find);
 		find.addActionListener(findAction);
 
-		//back.setBackground(Color.WHITE);
-		//next.setBackground(Color.WHITE);
-		//cut.setBackground(Color.WHITE);
-		//copy.setBackground(Color.WHITE);
-		//paste.setBackground(Color.WHITE);
-		//find.setBackground(Color.WHITE);
 		toolBar.add(back);
 		toolBar.add(next);
 		toolBar.add(cut);
 		toolBar.add(copy);
 		toolBar.add(paste);
 		toolBar.add(find);
-		//toolBar.setBackground(Color.WHITE);
 		toolBar.setRollover(true);
 
 		/* ADRESSBAR */
@@ -397,7 +365,6 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println("ACTION".concat(e.toString())); //TODO r?cup le bon ?venement
 				File file = new File((String)adrZone.getEditor().getItem()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
@@ -429,7 +396,6 @@ public class Main {
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
-		//mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
 		mainFrame.getContentPane().add(panelBar, BorderLayout.NORTH);
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		/***********************************************/
