@@ -132,7 +132,7 @@ public class Paste extends AbstractAction implements Command {
 				File tmp = (File) j.next();
 				if (((tab_file[i].isDirectory() && tmp.isDirectory())
 					|| (tab_file[i].isFile() && tmp.isFile()))
-					&& tab_file[i].getName().compareTo(tmp.getName()) == 0 ) {
+					&& tab_file[i].getName().compareTo(tmp.getName()) == 0) {
 					if (is_cut)
 						pasteFile(origin_rep, tab_file[i]);
 					deleter.run(tab_file[i]);
@@ -165,15 +165,15 @@ public class Paste extends AbstractAction implements Command {
 		try {
 			run(selected_file.get(0));
 		} catch (IsNotDirectoryException e) {
-			// TODO Si le file ou on veut coller n est pas un rep.
+			e.show();
 		} catch (CanNotWriteException e) {
-			// TODO Si on ne peut pas ecrire sur le rep.
+			e.show();
 		} catch (CanNotReadException e) {
-			// TODO Si on ne peut pas lire le rep.
+			e.show();
 		} catch (DoNotExistFileException e) {
-			// TODO Si on le rep n existe pas.
+			e.show();
 		} catch (ErrorPastingFileException e) {
-			// TODO Si on ne peut pas coller un file.
+			e.show();
 		}
 	}
 

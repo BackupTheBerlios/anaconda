@@ -8,7 +8,6 @@ package fr.umlv.anaconda;
 
 import java.io.File;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;

@@ -8,8 +8,8 @@ package fr.umlv.anaconda.command;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
@@ -38,12 +38,18 @@ public class CopyTest extends TestCase {
 	}
 
 	public void testCopy() {
-		Copy cp = new Copy();
+		Properties p = System.getProperties();
+		String home = p.getProperty("user.dir");
+		String file_separator = p.getProperty("file.separator");
 		ArrayList al = new ArrayList();
-		File f1 = new File("/home/main01/abrunete/testcopy1.txt");
-		File f2 = new File("/home/main01/abrunete/testcopy2.txt");
-		File f3 = new File("/home/main01/abrunete/testcopy3.txt");
-			
+		File f1 = new File(new String(home + file_separator + "testcopy1.txt"));
+		File f2 = new File(new String(home + file_separator + "testcopy2.txt"));
+		File f3 = new File(new String(home + file_separator + "testcopy3.txt"));
+		File rep =
+			new File(
+				new String(home + file_separator + "tmpcopy" + file_separator));
+		rep.mkdir();
+		Copy cp = new Copy();
 		try {
 			f1.createNewFile();
 			f2.createNewFile();
@@ -52,25 +58,32 @@ public class CopyTest extends TestCase {
 			al.add(f1);
 			al.add(f2);
 			al.add(f3);
-			
-			cp.run(al);		
+
+			cp.run(al);
 			Paste pt = new Paste();
-			pt.run(new File("/home/main01/abrunete/tmp1"));		
+
+			pt.run(rep);
 			pt.undo();
 			pt.redo();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (IsNotDirectoryException e) {
+			e.show();
 			System.out.println("mauvais nom de repertoire.");
 		} catch (CanNotWriteException e) {
+			e.show();
 			System.out.println("pas de droit d ecriture.");
 		} catch (CanNotReadException e) {
+			e.show();
 			System.out.println("pas de droit de lecture.");
 		} catch (DoNotExistFileException e) {
+			e.show();
 			System.out.println("repertoire inexistant.");
 		} catch (ErrorPastingFileException e) {
+			e.show();
 			System.out.println("erreur de copie.");
 		} catch (CanNotDeleteException e) {
+			e.show();
 			System.out.println("ne peut supprimer");
 		}
 	}

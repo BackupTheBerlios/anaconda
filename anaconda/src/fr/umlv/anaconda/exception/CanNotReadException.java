@@ -6,17 +6,18 @@ package fr.umlv.anaconda.exception;
 import java.io.File;
 import javax.swing.JOptionPane;
 
-
-public class CanNotReadException extends Exception{
-	
+public class CanNotReadException extends Exception {
 	private File f;
-	
-	public CanNotReadException(File file){
-		//TODO cas ou on n a pas les droits en lecture du file.
-		f = file; 
+
+	public CanNotReadException(File file) {
+		f = file;
 	}
 
 	public void show() {
-		JOptionPane.showMessageDialog(null, "Lecture impossible", f.getName() ,  JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(
+			null,
+			"Lecture impossible",
+			f.getName(),
+			JOptionPane.WARNING_MESSAGE);
 	}
 }
