@@ -68,7 +68,7 @@ public class FindFrame extends JFrame {
 				} catch (TooMuchFilesException exception) {
 					//TODO verifier l'exception
 				} catch (DoNotExistFileException exception) {
-
+					exception.show();
 				}
 				FindFrame.this.dispose();
 			}
@@ -101,7 +101,7 @@ public class FindFrame extends JFrame {
 
 		getContentPane().add(panel);
 		setSize(350, 100);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 
 	public String getNameToFind() {
