@@ -8,6 +8,7 @@ package fr.umlv.anaconda.command;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.*;
 import java.util.ArrayList;
 
 import fr.umlv.anaconda.exception.CanNotDeleteException;
@@ -39,11 +40,10 @@ public class CopyTest extends TestCase {
 	public void testCopy() {
 		Copy cp = new Copy();
 		ArrayList al = new ArrayList();
-		File f1 = new File("C:\\testcopy1.txt");
-		File f2 = new File("C:\\testcopy2.txt");
-		File f3 = new File("C:\\testcopy3.txt");
-		String rep_path = new String("C:\\tmp\\");
-		
+		File f1 = new File("/home/main01/abrunete/testcopy1.txt");
+		File f2 = new File("/home/main01/abrunete/testcopy2.txt");
+		File f3 = new File("/home/main01/abrunete/testcopy3.txt");
+			
 		try {
 			f1.createNewFile();
 			f2.createNewFile();
@@ -53,12 +53,11 @@ public class CopyTest extends TestCase {
 			al.add(f2);
 			al.add(f3);
 			
-			cp.run(al);
-			
+			cp.run(al);		
 			Paste pt = new Paste();
-			pt.run(new File(rep_path));
-			System.out.println("undo!");
+			pt.run(new File("/home/main01/abrunete/tmp1"));		
 			pt.undo();
+			pt.redo();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (IsNotDirectoryException e) {

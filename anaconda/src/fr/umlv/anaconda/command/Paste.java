@@ -135,12 +135,6 @@ public class Paste extends AbstractAction implements Command {
 					&& tab_file[i].getName().compareTo(tmp.getName()) == 0 ) {
 					if (is_cut)
 						pasteFile(origin_rep, tab_file[i]);
-					System.out.println(
-						"delete "
-							+ tmp.getPath()
-							+ " "
-							+ tab_file[i].getPath());
-					tab_file[i].delete();
 					deleter.run(tab_file[i]);
 				}
 			}
