@@ -42,6 +42,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
+	//	current.add(path);
 	}
 
 	/* (non-Javadoc)
