@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.SeparatorUI;
 import javax.swing.tree.*;
 
 import fr.umlv.anaconda.appearance.Themes;
@@ -24,7 +23,7 @@ public class Main {
 	final public static ModelTable tableModel = new ModelTable(currentFolder);
 	final public static JTable table = new JTable(tableModel);
 	final public static GarbageModel garbage_model = new GarbageModel();
-	final public static FindModel find_model = new FindModel(tableModel);
+	final public static FindModel find_model = new FindModel();
 	final public static MyTabbedPane tabb =
 		new MyTabbedPane(tableModel, find_model, garbage_model);
 	final public static InfoPanel info_panel = new InfoPanel();
