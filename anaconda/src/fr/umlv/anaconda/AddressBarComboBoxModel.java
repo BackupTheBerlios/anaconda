@@ -1,7 +1,7 @@
 package fr.umlv.anaconda;
 
 /*
- * Créé le 3 févr. 2004
+ * Cree le 3 fevr. 2004
  *
  */
 
@@ -51,6 +51,17 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		history = new LinkedList();
 		history.add(path);
 		history.add(new File("/").getAbsolutePath());
+		completion = new LinkedList();
+		current = new LinkedList();
+		current = history;
+		list = new ArrayList();
+	}
+
+	public AddressBarComboBoxModel(File fich) {
+		super();
+		history = new LinkedList();
+		history.add(fich);
+		history.add(new File("/"));
 //		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
@@ -69,9 +80,12 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	/* (non-Javadoc)
 	 * @see javax.swing.MutableComboBoxModel#addElement(java.lang.Object)
 	 */
+	 /** @deprecated */
 	public void addElement(Object obj) {
+		System.err.println("Dans addElement(O)");
 		if (current.contains(obj)) {
 			/* already present -> move it first */
+			System.err.println("contains");
 			current.remove(obj);
 			current.addFirst(obj);
 		for (int i=0; i<list.size(); i++)
@@ -79,7 +93,32 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
 		}
 		else {
+			System.err.println("pas contains");
 			current.addFirst(obj);
+			System.err.println("Ajout de l'objet dans la liste");
+		for (int i=0; i<list.size(); i++){
+		System.err.println("dans for\n" + current.toString());
+//		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
+		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, current.size()));
+	}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.MutableComboBoxModel#addElement(java.lang.Object)
+	 */
+	public void addElement(File fich) {
+		System.err.println("Ajout d'un element");
+		if (current.contains(fich)) {
+			/* already present -> move it first */
+			current.remove(fich);
+			current.addFirst(fich);
+		for (int i=0; i<list.size(); i++)
+	//	((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
+		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
+		}
+		else {
+			current.addFirst(fich);
 		for (int i=0; i<list.size(); i++)
 //		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
 		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
@@ -109,8 +148,10 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
 	public Object getSelectedItem() {
-		if (this.index>=0)
+		if (this.index>=0){
+			System.err.println("index = " + index);
 			return current.get(this.index);
+		}
 		//TODO lancement auto du bon rep ?
 		return null;
 	}
@@ -122,7 +163,8 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		if (current.contains(anItem))	
 			this.index = current.indexOf(anItem);
 		else
-			this.index = 1;
+			this.index = 0;
+			current = history;
 	}
 
 	/* (non-Javadoc)
