@@ -18,6 +18,8 @@ public class MyTabbedPane extends JPanel {
 		tabbedPane = new JTabbedPane();
 		listModel = new ModelListAdapter(model);
 		listFiles = new JList(listModel);
+		listFiles.setBackground(new Color(210,230,255));
+		listFiles.setSelectionBackground(new Color(180,200,245));
 		/* Creation d'un onglet */
 		Component panel1 = new JScrollPane(listFiles);/*new JList(listModel);*/
 		tabbedPane.addTab("Fichiers", null, panel1, "Contenu du repertoire courant");
@@ -26,7 +28,10 @@ public class MyTabbedPane extends JPanel {
 		/**/
 
 		/* Creation d'un autre onglet */
-		Component panel2 = new JScrollPane(new JList(findModel));
+		JList findList = new JList(findModel);
+		ListRenderer findRenderer = new ListRenderer();
+		findList.setCellRenderer(findRenderer);
+		Component panel2 = new JScrollPane(findList);
 		tabbedPane.addTab("Rechercher", null, panel2, "Resultats de la recherche");
 		/**/
 
