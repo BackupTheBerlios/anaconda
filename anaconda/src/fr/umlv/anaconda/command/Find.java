@@ -8,10 +8,12 @@ package fr.umlv.anaconda.command;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import fr.umlv.anaconda.FindModel;
+import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 /**
  * @author FIGUEROA
@@ -19,20 +21,38 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
  * To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class Find implements Command {
+public class Find extends Thread implements Command {
 
 	private ArrayList list = null;
+	private File root_file = null;
+	private String name = null;
+	private FindModel model;
 
 	public void run(Object o) {
 
 	}
 
-	public void run(Object file, String name, FindModel model)
-		throws TooMuchFilesException {
+	public void run() {
+		launchFind();
+	}
+
+	public void set(File file, String name, FindModel model)
+		throws TooMuchFilesException, DoNotExistFileException {
+		if (!file.exists())
+			throw new DoNotExistFileException(file);
+		model.init();
+		this.model = model;
 		list = new ArrayList();
-		File root_file = (File) file;
-		//Pattern file_name = Pattern.compile(name);
+		root_file = (File) file;
+		this.name = name;
+	}
+	
+	public void launchFind(){
+		try{
 		find(root_file, name, model);
+		}catch(TooMuchFilesException e){
+			JOptionPane.showMessageDialog(null,"Veuillez cibler votre recherche");
+		}
 	}
 
 	public void find(File root_file, String name, FindModel model)
@@ -49,11 +69,6 @@ public class Find implements Command {
 		}
 	}
 
-	public void showResult() {
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			System.out.println(((File) it.next()).toString());
-		}
-	}
 
 	public void undo() {
 

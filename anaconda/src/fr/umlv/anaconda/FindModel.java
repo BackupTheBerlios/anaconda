@@ -24,8 +24,16 @@ public class FindModel extends AbstractListModel{
 	public void add(File file) throws TooMuchFilesException{
 		if(getSize() == MAX_SIZE)
 		   throw new TooMuchFilesException();
+	
 		list.add(file);
 		fireIntervalAdded(FindModel.this,getSize()-1,getSize()-1);		
+	}
+	
+	public void init(){
+		int size = list.size();
+		list.clear();
+		//fireContentsChanged(FindModel.this,0,size);
+		fireIntervalRemoved(FindModel.this,0,size);
 	}
 	
 	public int getSize() {

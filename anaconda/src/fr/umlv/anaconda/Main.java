@@ -29,7 +29,8 @@ public class Main {
 	/*final public static ModelListAdapter listModel =
 		new ModelListAdapter(model);
 	final public static JList list = new JList(listModel);*/
-	final public static MyTabbedPane tabb = new MyTabbedPane(model);
+	final public static FindModel find_model = new FindModel();
+	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model);
 		   final public static ModelListAdapter listModel = tabb.getListModel();
 		   final public static JList list = tabb.getListFiles();
 	final private static int LIST_FOCUS = 0;
@@ -243,6 +244,12 @@ public class Main {
 				(new Delete()).run();
 			}
 		};
+		final Action findAction = new AbstractAction("Rechercher"){
+			public void actionPerformed(ActionEvent e){
+				FindFrame frame = new FindFrame(find_model);
+				frame.show();
+			}
+		};
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -347,6 +354,7 @@ public class Main {
 		JButton copy = new JButton(new ImageIcon(icones[COPY_ICONE]));
 		JButton paste = new JButton(new ImageIcon(icones[PASTE_ICONE]));
 		JButton find = new JButton(new ImageIcon(icones[FIND_ICONE]));
+		find.addActionListener(findAction);
 
 		//back.setBackground(Color.WHITE);
 		//next.setBackground(Color.WHITE);

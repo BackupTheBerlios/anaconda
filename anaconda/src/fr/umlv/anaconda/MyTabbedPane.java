@@ -13,7 +13,7 @@ public class MyTabbedPane extends JPanel {
 	/**
 	 * 
 	 */
-	public MyTabbedPane(Model model) {
+	public MyTabbedPane(Model model,FindModel findModel) {
 	
 		tabbedPane = new JTabbedPane();
 		listModel = new ModelListAdapter(model);
@@ -26,7 +26,7 @@ public class MyTabbedPane extends JPanel {
 		/**/
 
 		/* Creation d'un autre onglet */
-		Component panel2 = new JList(listModel);
+		Component panel2 = new JScrollPane(new JList(findModel));
 		tabbedPane.addTab("Rechercher", null, panel2, "Resultats de la recherche");
 		/**/
 
