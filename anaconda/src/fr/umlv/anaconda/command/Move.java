@@ -10,6 +10,7 @@ import java.io.File;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.ChoozRep;
+import fr.umlv.anaconda.tools.PressPaper;
 
 /**
  * Moving files
@@ -39,6 +40,7 @@ public class Move implements Command {
 		cut.run(Main.getSelectionItems());
 		last_paste = new Paste();
 		last_paste.run(dest);
+		PressPaper.clear();
 		/*selection = Main.getSelectionItems();
 		if (dest == null || !dest.isDirectory()) {
 			dest = ChoozRep.frameChoozRep();

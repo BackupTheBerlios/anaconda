@@ -10,6 +10,7 @@ import java.io.*;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 import fr.umlv.anaconda.tools.ChoozRep;
+import fr.umlv.anaconda.tools.PressPaper;
 
 /**
  * 
@@ -39,6 +40,7 @@ public class Clone implements Command {
 		copy.run(Main.getSelectionItems());
 		Clone.last_paste = new Paste();
 		last_paste.run(dest);
+		PressPaper.clear();
 		/*ArrayList selected_file = Main.getSelectionItems();
 		FileInputStream fis = null;
 		FileOutputStream fos = null;

@@ -29,69 +29,6 @@ implements Command {
 	 * 'selectedFiles'.
 	 */
 	public void run() {
-
-		/*ArrayList selected_file = Main.getSelectionItems();
-		
-		if (selected_file.size() < 1) {
-			no_selection.show();
-			return;
-		}
-		
-		if (selected_file.size() > 1) {
-			(new TooMuchFilesException()).show();
-			return;
-		}
-		
-		File dest = (File) selected_file.get(0);
-		if (!dest.isDirectory())
-			dest = dest.getParentFile();
-		
-		if (!dest.exists()) {
-			(new DoNotExistFileException(dest)).show();
-			return;
-		}
-		if (!dest.isDirectory()) {
-			(new IsNotDirectoryException(dest)).show();
-			return;
-		}
-		if (!dest.canWrite()) {
-			(new CanNotWriteException(dest)).show();
-			return;
-		}
-		
-		Paste.dest_rep = dest;
-		
-		if (PressPaper.isEmpty()) {
-			(new EmptyPressPaperException()).show();
-			return;
-		}
-		
-		Paste.origin_rep =
-			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
-		
-		last_selection.clear();
-		last_selection.addAll(PressPaper.getSelectedFiles());
-		is_cut = PressPaper.toDelete();
-		
-		for (Iterator it = PressPaper.getSelectedFiles().iterator();
-			it.hasNext();
-			) {
-			File file = (File) it.next();
-			if (!file.exists())
-				 (new DoNotExistFileException(file)).show();
-			if (!file.canRead())
-				 (new CanNotReadException(file)).show();
-		
-			try {
-				pasteFile(dest, file);
-			} catch (DoNotExistFileException e) {
-				e.show();
-			} catch (ErrorIOFileException e) {
-				e.show();
-			}
-		}
-		*/
-
 		ArrayList selected_file = Main.getSelectionItems();
 
 		if (selected_file.size() < 1) {
@@ -165,24 +102,8 @@ implements Command {
 		last_selection.addAll(PressPaper.getSelectedFiles());
 		is_cut = PressPaper.toDelete();
 		(new DoThread()).start();
-		/*	for (Iterator it = PressPaper.getSelectedFiles().iterator();
-				it.hasNext();
-				) {
-				File file = (File) it.next();
-				if (!file.exists())
-					 (new DoNotExistFileException(file)).show();
-				if (!file.canRead())
-					 (new CanNotReadException(file)).show();
-		
-				try {
-					pasteFile(dest, file);
-				} catch (DoNotExistFileException e) {
-					e.show();
-				} catch (ErrorIOFileException e) {
-					e.show();
-				}
-		
-			}*/
+		if(is_cut)
+			PressPaper.clear();	
 	}
 
 	/**
