@@ -13,17 +13,30 @@ public class Main {
     /**/
     public static File oldCurrentFolder;
     public static File newCurrentFolder;
+	final public static Model model = new Model();
+	final public static ModelTreeAdapter treeModel = new ModelTreeAdapter(model);
+	final public static JTree tree = new JTree(treeModel);
+	final public static ModelListAdapter listModel = new ModelListAdapter(model);
+	final public static JList list = new JList(listModel);
+	public static Object[] getSelectionItems() {
+		Object[] o = list.getSelectedValues();
+		if(o.length == 1) {
+			File file = (File)o[0];
+			if(Model.cmp.compare(file, model.getFolderParent()) == 0)
+				o[0] = ((Model)tree.getLastSelectedPathComponent()).getFolder();
+		}
+		else {
+			// virer le rep .. du tableau
+		}
+		return o;
+	}
     /**/ 
     public static void main(String[] args) throws Exception {
         final JFrame mainFrame = new JFrame("Anaconda");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(800, 600);
-        final Model model = new Model();
-
         oldCurrentFolder = newCurrentFolder  = model.getFolder();
 
-        final ModelTreeAdapter treeModel = new ModelTreeAdapter(model);
-        final JTree tree = new JTree(treeModel);
         /* CREATION DE L'ARBRE */
         TreeSelectionModel treeSelection = new DefaultTreeSelectionModel();
         treeSelection.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -55,8 +68,6 @@ public class Main {
                 }
             });
         /* CREATION DE LA LISTE */
-        final ModelListAdapter listModel = new ModelListAdapter(model);
-        final JList list = new JList(listModel);
         /***********************/
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(-1);
@@ -339,8 +350,13 @@ public class Main {
                             if(file.isDirectory()) {
                                 newCurrentFolder = file;
                                 model.setFolder(file);
-                                tree.expandPath(new TreePath(model));
-								String fileName = file.getAbsolutePath(); 
+                                TreePath path = new TreePath(model);
+                                tree.expandPath(path);
+                                tree.setSelectionPath(path);
+								tree.validate();
+                                tree.repaint();
+								tree.repaint(0, 0, 0, tree.getWidth(), tree.getHeight());
+								String fileName = file.getAbsolutePath();
 								adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                                 list.setSelectedIndex(0);
                             }
@@ -379,7 +395,6 @@ public class Main {
                             popup.add(moveItemPop);
                             popup.add(renameItemPop);
                             popup.add(deleteItemPop);
-                            
                         }
                         popup.show(e.getComponent(), e.getX(), e.getY());
                         break;
