@@ -1,13 +1,19 @@
+package fr.umlv.anaconda;
+
 /*
  * Créé le 3 févr. 2004
  *
  */
-package fr.umlv.anaconda;
 
+import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
+
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.*;
-import java.awt.event.*;
+
+import fr.umlv.anaconda.exception.TooMuchFilesException;
+//import java.awt.event.*;
 
 /**
  * @author abrunete
@@ -28,6 +34,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 
 	/**
 	 * default constructor
+	 * @deprecated
 	 */
 	public AddressBarComboBoxModel() {
 		super();
@@ -43,6 +50,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add(path);
+		history.add("./");
 //		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
@@ -156,16 +164,23 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		this.current = this.history; 
 	}
 
-	/** a key listener factory for the combobox */
-	public KeyListener listenerFactory() {
-		return new KeyListener() {
-				public void keyPressed(KeyEvent e) {}
-				public void keyReleased(KeyEvent e){}
-				public void keyTyped(KeyEvent e){
-					if (e.getKeyCode() == KeyEvent.VK_TAB)
-						System.out.println ("autocompletion ??");	
+	
+	/* récup de la cmd find */
+	public void find(File root_file, String name, LinkedList list)
+		throws TooMuchFilesException {
+
+		File[] children = root_file.listFiles();
+		if (children != null) {
+			for (int i = 0; i < children.length; i++) {
+				if (Pattern.matches(name, children[i].getName())) {
+					list.add(children[i]);
 				}
-		};
+				if (children[i].isDirectory())
+					find(children[i], name, list);
+			}
+		}
+
 	}
 
+	
 }

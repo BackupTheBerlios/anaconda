@@ -333,14 +333,17 @@ public class Main {
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
 		String fileName = model.getFolder().getAbsolutePath();
-		final JComboBox adrZone = new JComboBox(
+/*		final JComboBox adrZone = new JComboBox(
 					new AddressBarComboBoxModel(
 								fileName
 				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)
 													   ));
-		adrZone.setEditable(true);
-		adrZone.addKeyListener(((AddressBarComboBoxModel)adrZone.getModel()).listenerFactory());
-		
+
+        adrZone.setEditable(true);
+        */
+		final AddressBar adrZone = new AddressBar(fileName + ((fileName.endsWith(File.separator)) ? "" : File.separator));
+		//adrZone.addKeyListener(((AddressBarComboBoxModel)adrZone.getModel()).listenerFactory());
+		adrZone.setActionCommand("test");
 		adressBar.add(delAdr);
 		adressBar.add(adr);
 		adressBar.add(adrZone);
@@ -359,11 +362,16 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				model.setFolder(oldCurrentFolder);
 				String fileName = oldCurrentFolder.getAbsolutePath();
-				adrZone.getEditor().setItem(
+		/*		adrZone.getEditor().setItem(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator));
+							: File.separator)); */
+				adrZone.setText(
+						fileName
+						+ ((fileName.endsWith(File.separator))
+								? ""
+								: File.separator));
 				back.setEnabled(false);
 				next.setEnabled(true);
 			}
@@ -372,20 +380,26 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				model.setFolder(newCurrentFolder);
 				String fileName = newCurrentFolder.getAbsolutePath();
-				adrZone.getEditor().setItem(
+		/*		adrZone.getEditor().setItem(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator));
+							: File.separator)); */
+				adrZone.setText(
+						fileName
+						+ ((fileName.endsWith(File.separator))
+								? ""
+								: File.separator));
 				back.setEnabled(true);
 				next.setEnabled(false);
 			}
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				e.getActionCommand();
+				System.out.println(e.getActionCommand());
+				System.out.println(e.paramString());
 			//	if (e.getActionCommand().)
-				File file = new File((String)adrZone.getEditor().getItem()); 
+				File file = new File(adrZone.getText()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
 					newCurrentFolder = file;
@@ -402,14 +416,20 @@ public class Main {
 						"Fichier/repertoire non trouve",
 						JOptionPane.ERROR_MESSAGE);
 				String fileName = model.getFolder().getAbsolutePath();
-				adrZone.getEditor().setItem( 
+		/*		adrZone.getEditor().setItem( 
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator));
+							: File.separator)); */
+				adrZone.setText(
+						fileName
+						+ ((fileName.endsWith(File.separator))
+								? ""
+								: File.separator));
 			}
 		});
-		openAdr.addActionListener((adrZone.getActionListeners())[0]);
+		adrZone.addKeyListener(adrZone.listenerFactory());
+		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				adrZone.getEditor().setItem(""); 
@@ -458,11 +478,16 @@ public class Main {
 							if (Model.cmp.compare(oldCurrentFolder, file) != 0) {
 								model.setFolder(file);
 								String fileName = file.getAbsolutePath();
-								adrZone.getEditor().setItem( 
+						/*		adrZone.getEditor().setItem( 
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
-											: File.separator));
+											: File.separator)); */
+								adrZone.setText(
+										fileName
+										+ ((fileName.endsWith(File.separator))
+												? ""
+												: File.separator));
 								list.setSelectedIndex(0);
 							}
 						}
@@ -513,11 +538,16 @@ public class Main {
 									tree.scrollPathToVisible(path);
 								}
 								String fileName = file.getAbsolutePath();
-								adrZone.getEditor().setItem( 
+							/*	adrZone.getEditor().setItem( 
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
-											: File.separator));
+											: File.separator)); */
+								adrZone.setText(
+										fileName
+										+ ((fileName.endsWith(File.separator))
+												? ""
+												: File.separator));
 								list.setSelectedIndex(0);
 							}
 						}
