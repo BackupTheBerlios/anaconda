@@ -49,6 +49,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.MutableComboBoxModel#removeElementAt(int)
 	 */
 	public void removeElementAt(int index) {
+		System.out.println("removeElement : ");
 		  current.remove(index);
 	}
 
@@ -56,14 +57,14 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.MutableComboBoxModel#addElement(java.lang.Object)
 	 */
 	public void addElement(Object obj) {
-		System.out.println("addElement");
+		System.out.println("addElement : ".concat((String)obj));
 //		if (current.contains(obj)) {
 			/* already present move it first */
 //			current.remove(obj);
 			current.addFirst(obj);
 //		}
 //		else {
-			current.addFirst(obj);
+	//		current.addFirst(obj);
 //		}
 	}
 
@@ -79,15 +80,16 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.MutableComboBoxModel#insertElementAt(java.lang.Object, int)
 	 */
 	public void insertElementAt(Object obj, int index) {
-		System.out.println("insertElementAt");
+		System.out.println("insertElementAt : ".concat(new Integer(index).toString()));
 		current.add(index, obj);
+	//	this.index = index;
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
 	public Object getSelectedItem() {
-		System.out.println("getSelectedItem");
+		System.out.println("getSelectedItem : ".concat(new Integer(this.index).toString()));
 		return current.get(this.index);
 	}
 
@@ -95,24 +97,35 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
 	 */
 	public void setSelectedItem(Object anItem) {
-		System.out.println("setSelectedItem");
 		this.index = current.indexOf(anItem);	
+		System.out.println("setSelectedItem : ".concat(new Integer( current.indexOf(anItem)).toString()));
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.ListModel#getSize()
 	 */
 	public int getSize() {
-		System.out.println("getSize");
-		return current.size();
+		int tmp = current.size();
+		System.out.println("getSize : ".concat(new Integer(tmp).toString()));
+	//	return current.size();
+	return tmp;
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
 	public Object getElementAt(int index) {
-		System.out.println("getElementAt");
-		return current.get(index); 
+		System.out.println("getElementAt : ".concat(new Integer(index).toString()));
+//		this.index = index;
+//		return current.get(index);
+		final Object o;
+		try {	
+	       o = current.get(index);
+		}
+		 catch (Exception e) {
+			return null;  	 
+		}
+		return o;
 	}
 
 	/* (non-Javadoc)
@@ -120,7 +133,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 */
 	public void addListDataListener(ListDataListener l) {
 		System.out.println("addListDataListener");
-		// TODO Raccord de méthode auto-généré
+		// TODO Je ne vois pas encore quoi mettre ici
 
 	}
 
@@ -129,7 +142,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 */
 	public void removeListDataListener(ListDataListener l) {
 		System.out.println("removeListDataListener");
-		// TODO Raccord de méthode auto-généré
+		// TODO Je ne vois pas encore quoi mettre ici
 
 	}
 
