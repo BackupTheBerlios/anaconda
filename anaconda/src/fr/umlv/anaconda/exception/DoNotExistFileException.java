@@ -1,5 +1,5 @@
 /*
- * Created on 1 févr. 2004
+ * Created on 1 f?vr. 2004
  */
 package fr.umlv.anaconda.exception;
 
@@ -21,4 +21,6 @@ public class DoNotExistFileException extends Exception {
 			"<".concat( f.getName() ).concat("> est introuvable."),
 			JOptionPane.WARNING_MESSAGE);
 	}
+	
+
 }
