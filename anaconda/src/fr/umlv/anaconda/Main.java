@@ -32,7 +32,6 @@ public class Main {
 
 
 	final public static GarbageModel garbage_model = new GarbageModel();
-	final public static Trash trash = new Trash(garbage_model);
 	final public static FindModel find_model = new FindModel();
 	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model,garbage_model);
 		   final public static ModelListAdapter listModel = tabb.getListModel();
@@ -184,9 +183,9 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				//Delete de la corbeille
 				//(new Delete()).run();
-				AllCommand.get("delete").run();
-				refreshAction.actionPerformed(e);
-				//trash.run();
+				//AllCommand.get("delete").run();
+				//refreshAction.actionPerformed(e);
+				AllCommand.get("trash").run();
 			}
 		};
 		final Action findAction = new AbstractAction("Rechercher"){
@@ -195,13 +194,13 @@ public class Main {
 				frame.show();
 			}
 		};
-		final Action bigIconsAction = new AbstractAction("Grandes Iconses"){
+		final Action bigIconsAction = new AbstractAction("Grandes Icones"){
 			public void actionPerformed(ActionEvent e){
 				listCellRenderer.setIconsSize(IconsManager.BIG_ICONS);
 				refreshAction.actionPerformed(e);
 			}
 		};
-		final Action smallIconsAction = new AbstractAction("Grandes Iconses"){
+		final Action smallIconsAction = new AbstractAction("Petites Icones"){
 			public void actionPerformed(ActionEvent e){
 				listCellRenderer.setIconsSize(IconsManager.SMALL_ICONS);
 				refreshAction.actionPerformed(e);

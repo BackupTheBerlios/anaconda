@@ -19,6 +19,7 @@ public class AllCommand {
 			new Delete(),
 			new Find(),
 			new ShowProperties(),
+			new Trash()
 			};
 
 	public static final String[] command_name =
@@ -33,7 +34,8 @@ public class AllCommand {
 			"move",
 			"delete",
 			"find",
-			"showproperties" };
+			"showproperties",
+			"trash"};
 
 	public static Command last_command;
 	public static boolean can_undo=false;

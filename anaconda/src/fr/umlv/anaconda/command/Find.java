@@ -86,4 +86,10 @@ public class Find extends Thread implements Command {
 
 	}
 
+
+	public boolean canUndo() {
+		return false;
+	}
+	
+
 }

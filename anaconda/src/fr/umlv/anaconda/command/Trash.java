@@ -13,6 +13,8 @@ import java.util.Iterator;
 
 import fr.umlv.anaconda.GarbageModel;
 import fr.umlv.anaconda.Main;
+import fr.umlv.anaconda.exception.CanNotWriteException;
+import fr.umlv.anaconda.exception.ExternalException;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
 import fr.umlv.anaconda.tools.*;
 
@@ -28,17 +30,25 @@ public class Trash extends Thread implements Command {
 		//TODO Enlever la methode run de command
 	}*/
 	private ArrayList files_deleted = new ArrayList();
-	private GarbageModel model = null;
+	private static GarbageModel model = null;
 	private File home = new File(System.getProperty("user.home"));
-	private File garbage = new File(home, "anaconda_garbage");
-	private File garbage_history = new File(home, "garbage_history");
+	private File garbage = new File(home, ".anaconda_garbage");
+	private File garbage_history = new File(home, ".garbage_history");
+	private boolean CanTrash = true;
+	public int save_index = 0;
 
-	public Trash(GarbageModel model) {
-
-		if (!garbage.exists())
-			garbage.mkdir();
-		else {
-			loadGarbageHistory();
+	public Trash() {
+		try {
+			Trash.model = Main.garbage_model;
+			if (!garbage.exists())
+				garbage.mkdir();
+			else {
+				loadGarbageHistory();
+			}
+		} catch (SecurityException e) {
+			(new CanNotWriteException(garbage)).show();
+			new ExternalException("Les droits de la corbeille ont ete modifies")
+				.show();
 		}
 	}
 
@@ -54,48 +64,58 @@ public class Trash extends Thread implements Command {
 	}
 
 	public void moveToGarbage(File file) {
-		String file_name = file.getName();
-		System.out.println(file_name + " has been moved to garbage");
-		int i = 1;
-		while (Tools.contains(garbage, file)) {
-			file_name = (file.getName() + "(" + i + ")");
-			i++;
-		}
 
-		File dest = new File(garbage, file_name);
 		if (file.isFile()) {
 			try {
+				File dest = new File(garbage, checkFileName(file));
 				FileInputStream in = new FileInputStream(file);
 				dest.createNewFile();
 				FileOutputStream out = new FileOutputStream(dest);
 				byte[] buffer = new byte[1024];
-				try {
-					while (in.available() > 0) {
-						int readNumber = in.read(buffer);
-						if (readNumber > 0)
-							out.write(buffer, 0, readNumber);
-					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
+
+				while (in.available() > 0) {
+					int readNumber = in.read(buffer);
+					if (readNumber > 0)
+						out.write(buffer, 0, readNumber);
 				}
+				addFile(dest, file.getAbsolutePath());
+				file.delete();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-			} catch (IOException e){
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			addFile(dest, file.getAbsolutePath());
-			file.delete();
-		}
-		else{
+		} else {
+			try{
 			File[] files = file.listFiles();
-			for(int k =0;k< files.length;k++){
+			for (int k = 0; k < files.length; k++) {
 				moveToGarbage(files[k]);
 			}
-			addFile(dest,file.getAbsolutePath());
+			File dest = new File(garbage, checkFileName(file));
+			addFile(dest, file.getAbsolutePath());
 			dest.mkdir();
-			dest.delete();
+			if(!file.delete()){
+				System.out.println("c'est pas good pour " + file.getAbsolutePath());
+				}
+			}catch(SecurityException e){
+				System.err.println("Security Exception in moveToGarbage");
+			}
 		}
-
+	}
+	
+	/**
+	 * Checks the file name before to put it in the garbage 
+	 * @return
+	 */
+	public String checkFileName(File file) {
+		String initial_name = file.getName();
+		String file_name = initial_name;
+		int i = 1;
+		while (Tools.contains(garbage, file_name, file.isDirectory())) {
+			file_name = (initial_name + "(" + i + ")");
+			i++;
+		}
+		return file_name;
 	}
 
 	public class FileInformation implements Serializable {

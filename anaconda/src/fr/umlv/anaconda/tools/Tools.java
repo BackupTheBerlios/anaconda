@@ -17,6 +17,15 @@ public class Tools {
 		}
 		return false;
 	}
+	public static boolean contains(File parent,String file_name,boolean isDirectory){
+		File[] children = parent.listFiles();
+		for(int i=0;i<children.length;i++){
+			if(((children[i].isDirectory() && isDirectory) || (children[i].isFile() && !isDirectory)) && children[i].getName().equals(file_name)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static boolean contains(ArrayList afile, File file) {
 		for (Iterator i = afile.iterator(); i.hasNext();) {
@@ -29,6 +38,8 @@ public class Tools {
 		}
 		return false;
 	}
+	
+
 
 	public static boolean isPointPoint(File f) {
 		if (f.getName().compareTo("..") == 0)
