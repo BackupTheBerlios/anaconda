@@ -2,15 +2,14 @@ package fr.umlv.anaconda.command;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
-import fr.umlv.anaconda.exception.NoSelectedFilesException;
-import fr.umlv.anaconda.exception.TooMuchFilesException;
+
 
 public class CreateFile implements Command {
 

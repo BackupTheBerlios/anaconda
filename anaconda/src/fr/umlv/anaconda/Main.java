@@ -197,8 +197,6 @@ public class Main {
 		/* LES ACTIONS */
 		final Action refreshAction = new AbstractAction("Actualiser"){
 					public void actionPerformed(ActionEvent e){
-						
-						System.out.println("raffraichissement de " + model.getFolder().toString());
 						model.setFolder(model.getFolder());
 					}
 		};
