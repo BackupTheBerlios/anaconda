@@ -643,7 +643,9 @@ public class Main {
 					//	System.err.println("PROBLEME");
 				//	new DoNotExistFileException(file).show();
 
+		//		((AddressBarComboBoxModel)adrZone.getModel()).switch2hist();
 				adrZone.setText(currentFolder);
+				
 			}
 		});
 //		adrZone.addKeyListener(adrZone.listenerFactory());
@@ -654,6 +656,7 @@ public class Main {
 //				adrZone.setText("");
 				adrZone.getEditor().setItem("");
 				adrZone.getEditor().getEditorComponent().requestFocus();
+				((AddressBarComboBoxModel)adrZone.getModel()).switch2hist();
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
