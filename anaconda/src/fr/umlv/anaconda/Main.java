@@ -215,16 +215,41 @@ public class Main {
 
 		final Action showPropertiesAction = new AbstractAction("Propriétés"){
 			public void actionPerformed(ActionEvent e){
-					AllCommand.get("showproperties").run();
+				AllCommand.get("showproperties").run();
 			}
 		};
 
 		final Action aboutAction = new AbstractAction("A propos"){
 			public void actionPerformed(ActionEvent e){
-					AllCommand.get("about").run();
+				AllCommand.get("about").run();
 			}
 		};
 
+		final Action showBySizeAction = new AbstractAction("Taille"){
+			public void actionPerformed(ActionEvent e){
+				model.addCmp("by_size");
+				model.setFolder(newCurrentFolder);
+			}
+		};
+		
+		final Action showByDateAction = new AbstractAction("Date"){
+			public void actionPerformed(ActionEvent e){
+				model.addCmp("by_date");
+				model.setFolder(newCurrentFolder);
+			}
+		};
+		
+		final Action undoAction = new AbstractAction("Annuler"){
+			public void actionPerformed(ActionEvent e){
+				AllCommand.undoLastCommand();
+			}
+		};
+		
+		final Action redoAction = new AbstractAction("Refaire"){
+			public void actionPerformed(ActionEvent e){
+				AllCommand.redoLastCommand();					
+			}
+		};
 		
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
@@ -263,6 +288,8 @@ public class Main {
 		file.add(propertiesItem);
 		file.add(quitter);
 		/* Edition */
+		JMenuItem undoItem = new JMenuItem(undoAction);
+		JMenuItem redoItem = new JMenuItem(redoAction);
 		JMenuItem copyItem = new JMenuItem(copyAction);
 		JMenuItem cutItem = new JMenuItem(cutAction);
 		JMenuItem pasteItem = new JMenuItem(pasteAction);
@@ -271,6 +298,8 @@ public class Main {
 		JMenuItem selectAllItem = new JMenuItem(selectAllAction);
 		JMenuItem renameItem = new JMenuItem(renameAction);
 		JMenuItem deleteItem = new JMenuItem(deleteAction);
+		edit.add(undoItem);
+		edit.add(redoItem);
 		edit.add(copyItem);
 		edit.add(cutItem);
 		edit.add(pasteItem);
@@ -284,8 +313,8 @@ public class Main {
 		JMenu subMenuTri = new JMenu("Organiser par...");
 		JMenuItem triName = new JMenuItem("Nom");
 		JMenuItem triType = new JMenuItem("Type");
-		JMenuItem triSize = new JMenuItem("Taille");
-		JMenuItem triDate = new JMenuItem("Date");
+		JMenuItem triSize = new JMenuItem(showBySizeAction);
+		JMenuItem triDate = new JMenuItem(showByDateAction);
 		subMenuTri.add(triName);
 		subMenuTri.add(triType);
 		subMenuTri.add(triSize);
