@@ -27,16 +27,29 @@ import javax.swing.KeyStroke;
 public class Help implements Command {
 	/** where the help main page should be found */
 	//private static final String HELP_LOCATION = "http://developer.berlios.de/projects/anaconda/";
-	private static final String HELP_LOCATION = "http://f1.grp.yahoofs.com/v1/EGxDQI27hSnSVsGzTpnQeY0FxQiK76DhbWS6hrjZu2EgnBcdfviLObsmw_Ug53nBFifDRBdr3G9uNS0uIGR4tw/aide_anaconda.html";
-	// pas sur ke cette adresse soit valable...
+	private static final String HELP_LOCATION = "http://etudiant.univ-mlv.fr/~abrunete/anac/aide_anaconda.html";
+	// chez moi en attendant mieux...
 
 	protected boolean isAvailable = true;
 	
-	/**
-	 * Default constructor
-	 */
+	private Action act; 
+	
+	/** Default constructor */
 	public Help() {
 		super();
+		
+		act = new AbstractAction(){
+			
+		//	public static final String ACCELERATOR_KEY = /*KeyEvent.VK_F1*/;
+		//	public final String ACCELERATOR_KEY = KeyStroke.getKeyStroke("VK_F1").toString();
+			//this.putValue(Action.ACCELERATOR)
+			
+			public void actionPerformed(ActionEvent arg0) {
+				//System.out.println(KeyStroke.getKeyStroke("VK_F1").toString());
+				run();
+			}
+			
+		};
 	}
 
 	/* (non-Javadoc)
@@ -114,18 +127,7 @@ public class Help implements Command {
 	}
 
 	public Action getAction() {
-		return new AbstractAction(){
-			
-		//	public static final String ACCELERATOR_KEY = /*KeyEvent.VK_F1*/;
-		//	public final String ACCELERATOR_KEY = KeyStroke.getKeyStroke("VK_F1").toString();
-			//this.putValue(Action.ACCELERATOR)
-			
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(KeyStroke.getKeyStroke("VK_F1").toString());
-				run();
-			}
-			
-		};
+		return act;
 	}
 	
 }
