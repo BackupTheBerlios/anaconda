@@ -4,10 +4,10 @@
  */
 package fr.umlv.anaconda;
 
-import java.awt.event.*;
 import java.util.*;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.*;
+import java.awt.event.*;
 
 /**
  * @author abrunete
@@ -67,13 +67,14 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 			current.remove(obj);
 			current.addFirst(obj);
 		for (int i=0; i<list.size(); i++)
-			((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
+	//	((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
+		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
 		}
 		else {
 			current.addFirst(obj);
 		for (int i=0; i<list.size(); i++)
-			((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
-
+//		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, 0, 0));
+		((ListDataListener)list.get(i)).contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, 0));
 		}
 	}
 
@@ -145,14 +146,17 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 			list.remove(l);
 	}
 
+	/** comboBox is wanted to show the auto-completion */
 	public void switch2comp() {
 		this.current = this.completion;
 	}
 
+	/** comboBox is wanted to show the history */
 	public void switch2hist() {
 		this.current = this.history; 
 	}
 
+	/** a key listener factory for the combobox */
 	public KeyListener listenerFactory() {
 		return new KeyListener() {
 				public void keyPressed(KeyEvent e) {}
