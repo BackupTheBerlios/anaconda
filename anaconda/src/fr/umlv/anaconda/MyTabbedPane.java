@@ -1,16 +1,25 @@
 package fr.umlv.anaconda;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
+
+
 import fr.umlv.anaconda.appearance.Themes;
+import fr.umlv.anaconda.command.AllCommand;
 
 
 public class MyTabbedPane extends JPanel {
 	private JTabbedPane tabbedPane;
 	private JTable tableFiles; 
 	private ModelTable tableModel; 
+	private JList garbage_list;
 	
 	public MyTabbedPane(ModelTable model,FindModel findModel,GarbageModel garbageModel) {
 	
@@ -31,9 +40,17 @@ public class MyTabbedPane extends JPanel {
 		tabbedPane.setSelectedIndex(0); 
 		
 		/* Creation de l'onglet de recherche */
-		JList findList = new JList(findModel);
+		final JList findList = new JList(findModel);
+		findList.addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent e){
+				Object[] selected_files = findList.getSelectedValues();	
+				if(selected_files.length > 0){
+					Main.info_panel.setAsGeneral((File)selected_files[0],selected_files.length);
+				}
+			}
+		});
 		TableRenderer findRenderer = new TableRenderer();
-		findList.setCellRenderer(new ListRenderer());
+		findList.setCellRenderer(new ListRenderer("find"));
 		
 		
 		JPanel panelTemp2 = new JPanel();
@@ -49,7 +66,30 @@ public class MyTabbedPane extends JPanel {
 		
 		JPanel panelTemp3 = new JPanel();
 		panelTemp3.setLayout(new BorderLayout());
-		panelTemp3.add(new JList(garbageModel), BorderLayout.CENTER);
+		garbage_list = new JList(garbageModel);
+		garbage_list.setCellRenderer(new ListRenderer("garbage"));
+		final JPopupMenu clickInGarbage = new JPopupMenu();
+		final Action restoreAction = AllCommand.getAction("restore");
+		clickInGarbage.add(new JMenuItem(restoreAction));
+		garbage_list.addMouseListener(new MouseAdapter() {
+		public void mouseClicked(MouseEvent e) {
+
+			switch (e.getButton()) {
+
+				case MouseEvent.BUTTON3 :
+					int index = garbage_list.locationToIndex(new Point(e.getX(), e.getY()));
+					File file = (File) Main.garbage_model.getElementAt(index);
+					clickInGarbage.show(
+					e.getComponent(),
+					e.getX(),
+					e.getY());
+
+					break;
+			}
+		}
+	});
+
+		panelTemp3.add(garbage_list, BorderLayout.CENTER);
 		panelTemp3.setBackground(Themes.getBgColor());
 		
 		Component panel3 = new JScrollPane(panelTemp3);
@@ -79,6 +119,15 @@ public class MyTabbedPane extends JPanel {
 	}
 	public ModelTable getListModel(){
 		return 	tableModel;
+	}
+	
+	public ArrayList getGarbageSelectedFiles(){
+		Object[] o  = garbage_list.getSelectedValues();
+		ArrayList file_list = new ArrayList();
+		for(int i = 0;i<o.length;i++){
+			file_list.add((File)o[i]);
+		}
+		return file_list;
 	}
 
 }

@@ -6,7 +6,6 @@ import java.io.File;
 
 import java.util.ArrayList;
 
-
 import javax.swing.AbstractListModel;
 
 /**
@@ -38,5 +37,4 @@ public class GarbageModel extends AbstractListModel{
 	public Object getElementAt(int position){
 		return list.get(position);
 	}
-
 }

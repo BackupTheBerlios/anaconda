@@ -30,13 +30,23 @@ public class ListRenderer extends DefaultListCellRenderer {
 	private ImageIcon image_icon = IconsManager.big_image_icon;
 	private ImageIcon exe_icon = IconsManager.big_exe_icon;
 	private ImageIcon file_icon = IconsManager.big_file_icon;
+	private boolean find = false;
+	private boolean garbage = false;
 
 
 	//ModelListAdapter listModel = null;
 
-	public ListRenderer(){
+	public ListRenderer(String type){
 		super();
 		setIconsSize(IconsManager.SMALL_ICONS);
+		if(type.equals("find")){
+			find = true;
+			garbage = false;
+		}
+		else{
+			find =  false;
+			garbage = true;
+		}
 	}
 	
 	/*public ListRenderer(ModelListAdapter listModel) {
@@ -76,53 +86,15 @@ public class ListRenderer extends DefaultListCellRenderer {
 				cellHasFocus);
 		File file = (File) value;
 		String name = file.getName();
-		/*
-		if (listModel != null) {
-			File parent = listModel.getModel().getFolder().getParentFile();
-			if (parent == null)
-				parent = listModel.getModel().getFolder();
-			if (parent
-				.getAbsolutePath()
-				.compareTo(((File) value).getAbsolutePath())
-				== 0)
-				name = "..";
-			else if (name.compareTo("") == 0)
-				name = ((File) value).getAbsolutePath();
-		}
-		*/
 		if(name.length()>20){
 			name = (name.substring(0,10)).concat("...");
 		}
 		((JLabel) c).setText(name);
-		((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-		((JLabel) c).setVerticalAlignment(SwingConstants.CENTER);
-		((JLabel) c).setHorizontalTextPosition(SwingConstants.CENTER);
-		((JLabel) c).setVerticalTextPosition(SwingConstants.BOTTOM);
+		((JLabel) c).setHorizontalAlignment(SwingConstants.LEFT);
+		((JLabel) c).setVerticalAlignment(SwingConstants.TOP);
+		((JLabel) c).setHorizontalTextPosition(SwingConstants.RIGHT);
+		((JLabel) c).setVerticalTextPosition(SwingConstants.TOP);
 		/** ********************* */
-		
-		//URLConnection url_connex = new URLConnection();
-		
-		
-		/*
-		if (((File) value).isDirectory()) {
-			if (name.compareTo("..") == 0)
-				 ((JLabel) c).setIcon(father_icon);
-			else
-				 ((JLabel) c).setIcon(folder_icon);
-		} else {
-			int extIndex = name.lastIndexOf('.');
-			if(extIndex != -1) {
-				if (Extension.isImage(name))
-					((JLabel) c).setIcon(image_icon);
-				else if (name.endsWith(".exe"))
-					 ((JLabel) c).setIcon(exe_icon);
-				else
-					 ((JLabel) c).setIcon(file_icon);
-			}
-			else
-				 ((JLabel) c).setIcon(file_icon);
-		}
-		*/
 		if(((File)value).isDirectory()) ((JLabel)c).setIcon(TableRenderer.FOLDER_ICON);
 		else {
 			int indexExt = file.getName().lastIndexOf('.');

@@ -3,6 +3,7 @@ package fr.umlv.anaconda;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.AbstractListModel;
 
@@ -22,10 +23,22 @@ public class FindModel extends AbstractListModel {
 	public void add(File file) throws TooMuchFilesException{
 		if(getSize() == MAX_SIZE)
 		   throw new TooMuchFilesException();
-	
 		list.add(file);
+		System.err.println("Adding from " + this.getSize() + getSize());
 		fireIntervalAdded(FindModel.this,getSize()-1,getSize()-1);
 	}
+	
+	public void add(ArrayList file_list) throws TooMuchFilesException{
+		if(getSize() + file_list.size() > MAX_SIZE)
+			throw new TooMuchFilesException();
+		System.err.println(file_list.toString());
+		for(Iterator it = file_list.iterator();it.hasNext();){
+			list.add((File)it.next());
+		}
+		fireIntervalAdded(FindModel.this,getSize()-1,(getSize()+file_list.size()-1));
+	}
+	
+	
 	public void init(){
 		int size = list.size();
 		list.clear();
