@@ -21,12 +21,20 @@ import fr.umlv.anac.Exception.IsNotDirectoryException;
  */
 public interface Command {
 	public void run(Object o)
-			throws
-				IsNotDirectoryException,
-				CanNotWriteException,
-				CanNotReadException,
-				DoNotExistFileException,
-				ErrorPastingFileException;
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException;
+
+	public void redo()
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException;
 
 	public void undo()
 		throws
