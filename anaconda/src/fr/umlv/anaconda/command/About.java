@@ -25,14 +25,23 @@ public class About implements Command {
 	final public static String images_path = Themes.getCurrentPath();
 	final public static ImageIcon LOGO = new ImageIcon(IconsManager.class.getResource(images_path + "anaconda_logo.gif"));
 
+	private Action act; 
+	
 	/** default constructor */
 	public About() {
 		super();
+
+		act = new AbstractAction(){
+			public void actionPerformed(ActionEvent arg0) {
+				run();
+			}
+		};
+
 	}
 
 	public void run() {
 		final JFrame frame = new JFrame("A propos...");
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		
 		frame.getContentPane().add(new JLabel(LOGO), BorderLayout.WEST);
@@ -66,5 +75,10 @@ public class About implements Command {
 	public boolean canUndo() {	
 		return false;
 	}
+	
+	public Action getAction() {
+		return act;
+	}
+
 
 }

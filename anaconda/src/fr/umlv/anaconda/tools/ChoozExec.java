@@ -45,9 +45,9 @@ public class ChoozExec {
 		fileChooz.setMultiSelectionEnabled(false);
 		fileChooz.setDialogTitle("Lancement");
 		fileChooz.setApproveButtonText("Lancer");
-		fileChooz.setApproveButtonToolTipText("Lance l'application s?lectionn?e");
+		fileChooz.setApproveButtonToolTipText("Lance l'application selectionnee");
 	//	fileChooz.setCurrentDirectory(new File(System.getProperty("user.dir")));
-		
+		exe=null;
 		int returnVal = fileChooz.showOpenDialog(null); 
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			exe = fileChooz.getSelectedFile();

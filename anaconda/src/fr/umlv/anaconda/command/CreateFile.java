@@ -1,7 +1,11 @@
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
@@ -17,7 +21,7 @@ public class CreateFile implements Command {
 
 	public void run() {
 
-		this.current_folder = Main.model.getFolder();
+		this.current_folder = Main.getFolder();
 
 		if (!current_folder.isDirectory()) {
 			(new IsNotDirectoryException(current_folder)).show();
@@ -103,5 +107,17 @@ public class CreateFile implements Command {
 
 	public boolean canUndo() {
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Cree Fichier") {
+		public void actionPerformed(ActionEvent e) {
+			run();
+			Main.refresh();
+		}
+	};
 	}
 }

@@ -2,9 +2,10 @@
 package fr.umlv.anaconda.command;
 
 import java.io.File;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.FindModel;
@@ -19,7 +20,7 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
 public class Find extends Thread implements Command {
 
 	private static boolean searching = false;
-	private ArrayList list = null;
+//	private ArrayList list = null;
 	private File root_file = null;
 	private String name = null;
 	private FindModel model;
@@ -45,7 +46,7 @@ public class Find extends Thread implements Command {
 			throw new DoNotExistFileException(file);
 		model.init();
 		this.model = model;
-		list = new ArrayList();
+//		list = new ArrayList();
 		root_file = (File) file;
 		this.name = name;
 		return 1;
@@ -89,6 +90,13 @@ public class Find extends Thread implements Command {
 
 	public boolean canUndo() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return null; // pas dispo depuis là !
 	}
 	
 

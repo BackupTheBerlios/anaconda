@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import fr.umlv.anaconda.appearance.Themes;
+
 /**
  * @author FIGUEROA
  *
@@ -56,7 +58,7 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 			 ((JLabel) c).setIcon(open_node_icon);
 		else
 			 ((JLabel) c).setIcon(close_node_icon);
-		backgroundNonSelectionColor = Main.getBgColor();
+		backgroundNonSelectionColor = Themes.getBgColor();
 		return c;
 	}
 

@@ -7,14 +7,15 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 
+import fr.umlv.anaconda.appearance.Themes;
 import fr.umlv.anaconda.command.AllCommand;
-import fr.umlv.anaconda.command.Help;
 import fr.umlv.anaconda.command.Launch;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 public class Main {
 	/* VARIABLE DE NAVIGATION */
 	final public static File root = new File(System.getProperty("user.home"));
-	public static File currentFolder = root;
+	protected static File currentFolder = root;
 	/* VARIABLE D'APPLICATION */
 	final public static ModelTree treeModel = new ModelTree(root);
 	final public static JTree tree = new JTree(treeModel);
@@ -30,7 +31,7 @@ public class Main {
 	final public static int NONE_FOCUS = 2;
 	private static int lastFocused = NONE_FOCUS;
 	private static ArrayList selection_items = new ArrayList();
-	private static Color bg_color = new Color(210, 230, 255);
+	protected static AddressBar adrZone=null;
 	/* PILE DE PRECEDENT SUIVANT */
 	final public static Stack backFolderStack = new Stack();
 	final public static Stack nextFolderStack = new Stack();
@@ -52,6 +53,9 @@ public class Main {
 		clickOutFile.add(new JMenuItem("Renommer"));
 		clickOutFile.add(new JMenuItem("Supprimer"));
 	}*/
+	
+	
+	
 	/* METHODES */
 	public static ArrayList getSelectionItems() {
 		selection_items.clear();
@@ -75,17 +79,41 @@ public class Main {
 		}
 		return selection_items;
 	}
-	public static Color getBgColor() {
-		return bg_color;
-	}
+	
 	public static void refresh() {
 		treeModel.setFolder(currentFolder);
 		tableModel.setFolder(currentFolder);
 	}
 	public static void setFolder(File newFolder) {
 		currentFolder = newFolder;
+		try {
+			adrZone.setText(newFolder.getCanonicalPath());
+		} catch (IOException e) {
+			new ErrorIOFileException(newFolder).show();
+		}
 		refresh();
 	}
+	
+	public static File getFolder() {
+		return currentFolder;
+	}
+	
+	public static TreePath getTreeSelectionPath() {
+		return tree.getSelectionPath();
+	} 
+	
+	static void goOut() {
+		
+		if (JOptionPane
+				.showConfirmDialog(
+						null,
+						"Voulez vous vraiment quitter ?",
+						" Quitter ",
+						JOptionPane.OK_CANCEL_OPTION)
+				== JOptionPane.OK_OPTION)
+			System.exit(1);
+	}	
+
 	public static void initTree() {
 		tree.setExpandsSelectedPaths(true);
 		tree.setScrollsOnExpand(true);
@@ -167,6 +195,7 @@ public class Main {
 			}
 		});
 	}
+	
 	public static void initTable() {
 		table.setCellSelectionEnabled(true);
 		table.setShowGrid(false);
@@ -273,6 +302,7 @@ public class Main {
 		final JFrame mainFrame = new JFrame(" - Anaconda - ");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(800, 600);
+
 		oldCurrentFolder = newCurrentFolder = currentFolder;
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
@@ -289,6 +319,7 @@ public class Main {
 		splitTreeInfo.setDividerSize(2);
 
 		Dimension size = new Dimension(200, 200);
+//		Dimension size = new Dimension(IconsManager.LOGO.getIconWidth(), IconsManager.LOGO.getIconHeight()+200);
 		infoPanel.setMinimumSize(size);
 		infoPanel.setMaximumSize(size);
 		/******************************/
@@ -302,59 +333,14 @@ public class Main {
 		splitPane.setDividerSize(2);
 		/**********************************/
 		/* LES ACTIONS */
-		final Action refreshAction = new AbstractAction("Actualiser") {
-			public void actionPerformed(ActionEvent e) {
-				setFolder(currentFolder);
-			}
-		};
-		final Action createFile = new AbstractAction("Cree Fichier") {
-			public void actionPerformed(ActionEvent e) {
-					//(new CreateFile()).run();
-	AllCommand.get("createfile").run();
-				refreshAction.actionPerformed(e);
-			}
-		};
-		final Action createFolder = new AbstractAction("Cree Repertoire") {
-			public void actionPerformed(ActionEvent e) {
-				TreePath path = tree.getSelectionPath();
-				//(new CreateFolder()).run();
-				AllCommand.get("createfolder").run();
-				refreshAction.actionPerformed(e);
-				setFolder(currentFolder);
-			}
-		};
-		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Copy()).run();
-	AllCommand.get("copy").run();
-			}
-		};
-		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Cut()).run();
-	AllCommand.get("cut").run();
-			}
-		};
-		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Paste()).run();
-	AllCommand.get("paste").run();
-			}
-		};
-		final Action dupAction =
-			new AbstractAction("Dupliquer    Ctrl+Alt+C") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Clone()).run();
-	AllCommand.get("clone").run();
-			}
-		};
-		final Action moveAction =
-			new AbstractAction("Deplacer    Ctrl+Alt+X") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Move()).run();
-	AllCommand.get("move").run();
-			}
-		};
+		final Action refreshAction = AllCommand.getAction("refresh");
+		final Action createFile = AllCommand.getAction("createfile");
+		final Action createFolder = AllCommand.getAction("createfolder");
+		final Action copyAction = AllCommand.getAction("copy");
+		final Action cutAction = AllCommand.getAction("cut");
+		final Action pasteAction = AllCommand.getAction("paste");
+		final Action dupAction = AllCommand.getAction("clone");
+		final Action moveAction = AllCommand.getAction("move");
 		final Action selectAllAction =
 			new AbstractAction("Selectionner tout") {
 			public void actionPerformed(ActionEvent e) {
@@ -362,80 +348,45 @@ public class Main {
 				info_panel.setAsGeneral(null, tableModel.getSize() - 1);
 			}
 		};
-		final Action renameAction = new AbstractAction("Renommer") {
-			public void actionPerformed(ActionEvent e) {
-					//(new Rename()).run();
-	AllCommand.get("rename").run();
-				refreshAction.actionPerformed(e);
-			}
-		};
-		final Action deleteAction = new AbstractAction("Supprimer") {
-			public void actionPerformed(ActionEvent e) {
-					//Delete de la corbeille
-		//(new Delete()).run();
-		//AllCommand.get("delete").run();
-		//refreshAction.actionPerformed(e);
-	AllCommand.get("trash").run();
-			}
-		};
+		final Action renameAction = AllCommand.getAction("rename");
+		final Action deleteAction = AllCommand.getAction("delete");
 		final Action findAction = new AbstractAction("Rechercher") {
 			public void actionPerformed(ActionEvent e) {
-					//FindPanel find_panel = new FindPanel(find_model);
-		//info_panel.setPanel(FindPanel.getPanel());
-	info_panel.setAsFind(find_model);
+				//FindPanel find_panel = new FindPanel(find_model);
+				//info_panel.setPanel(FindPanel.getPanel());
+				info_panel.setAsFind(find_model);
 			}
-
+			
 		};
 		final Action bigIconsAction = new AbstractAction("Grandes Icones") {
 			public void actionPerformed(ActionEvent e) {
 				TableRenderer.setIconsSize(IconsManager.BIG_ICONS);
 				tableModel.setDimmension(tableModel.getRowCount(), tableModel.getColumnCount());
-				refreshAction.actionPerformed(e);
+				refresh();
 			}
 		};
 		final Action smallIconsAction = new AbstractAction("Petites Icones") {
 			public void actionPerformed(ActionEvent e) {
 				TableRenderer.setIconsSize(IconsManager.SMALL_ICONS);
 				tableModel.setDimmension(tableModel.getRowCount(), tableModel.getColumnCount());
-				refreshAction.actionPerformed(e);
+				refresh();
 			}
 		};
-
-		final Action showPropertiesAction = new AbstractAction("Proprietes") {
-			public void actionPerformed(ActionEvent e) {
-				AllCommand.get("showproperties").run();
-			}
-		};
-
-		final Action aboutAction = new AbstractAction("A propos") {
-			public void actionPerformed(ActionEvent e) {
-				AllCommand.get("about").run();
-			}
-		};
-
-	/*	final Action helpAction = new AbstractAction("Aide") {
-			public void actionPerformed(ActionEvent e) {
-				AllCommand.get("help").run();
-			}
-		};
-*/
-		final Action helpAction = ((Help)(AllCommand.get("help"))).getAction();
-
-		
+		final Action showPropertiesAction = AllCommand.getAction("showproperties");
+		final Action aboutAction = AllCommand.getAction("about");
+		final Action helpAction = AllCommand.getAction("help");
 		final Action showByNameAction = new AbstractAction("Nom") {
 					public void actionPerformed(ActionEvent e) {
 						ComparatorsManager.addCmp("by_name");
 						setFolder(newCurrentFolder);
 					}
 				};
-
 		final Action showBySizeAction = new AbstractAction("Taille") {
 			public void actionPerformed(ActionEvent e) {
 				ComparatorsManager.addCmp("by_size");
 				setFolder(newCurrentFolder);
 			}
 		};
-
 		final Action showByTypeAction = new AbstractAction("Type") {
 			public void actionPerformed(ActionEvent e) {
 				ComparatorsManager.addCmp("by_type");
@@ -448,13 +399,11 @@ public class Main {
 				setFolder(newCurrentFolder);
 			}
 		};
-
 		final Action undoAction = new AbstractAction("Annuler") {
 			public void actionPerformed(ActionEvent e) {
 				AllCommand.undoLastCommand();
 			}
 		};
-
 		final Action redoAction = new AbstractAction("Refaire") {
 			public void actionPerformed(ActionEvent e) {
 				AllCommand.redoLastCommand();
@@ -487,14 +436,7 @@ public class Main {
 		JMenuItem quitter = new JMenuItem("Quitter");
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (JOptionPane
-					.showConfirmDialog(
-						null,
-						"Voulez vous vraiment quitter ?",
-						" Quitter ",
-						JOptionPane.OK_CANCEL_OPTION)
-					== JOptionPane.OK_OPTION)
-					System.exit(1);
+				goOut();
 			}
 		});
 
@@ -595,7 +537,11 @@ public class Main {
 		final JButton copy = new JButton(IconsManager.COPY);
 		copy.setRolloverIcon(IconsManager.ONFOCUSCOPY);
 		final JButton paste = new JButton(IconsManager.PASTE);
+	//	final JButton paste = new JButton(pasteAction);
 		paste.setRolloverIcon(IconsManager.ONFOCUSPASTE);
+		paste.addActionListener(pasteAction); // ne prend pas en compte l'état !
+	//	paste.setAction(pasteAction);
+	//	paste.setIcon(IconsManager.PASTE);
 		final JButton find = new JButton(IconsManager.FIND);
 		find.setRolloverIcon(IconsManager.ONFOCUSFIND);
 		final JButton home = new JButton(IconsManager.HOME);
@@ -608,11 +554,9 @@ public class Main {
 		toolBar.add(back);
 		toolBar.add(refresh);
 		toolBar.add(next);
-		toolBar.addSeparator();
 		toolBar.add(cut);
 		toolBar.add(copy);
 		toolBar.add(paste);
-		toolBar.addSeparator();
 		toolBar.add(garbage);
 		toolBar.add(find);
 		toolBar.setRollover(true);
@@ -625,7 +569,7 @@ public class Main {
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
 		String fileName = currentFolder.getAbsolutePath();
-		final AddressBar adrZone =
+		adrZone =
 			new AddressBar(
 				fileName
 					+ ((fileName.endsWith(File.separator))
@@ -657,12 +601,12 @@ public class Main {
 				nextFolderStack.push(currentFolder);
 				next.setEnabled(true);
 				setFolder(oldCurrentFolder);
-				String fileName = oldCurrentFolder.getAbsolutePath();
+		/*		String fileName = oldCurrentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator));
+							: File.separator)); */
 				if (backFolderStack.empty())
 					back.setEnabled(false);
 
@@ -674,13 +618,13 @@ public class Main {
 				backFolderStack.push(currentFolder);
 				back.setEnabled(true);
 				setFolder(newCurrentFolder);
-				String fileName = newCurrentFolder.getAbsolutePath();
+	/*			String fileName = newCurrentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
 						+ ((fileName.endsWith(File.separator))
 							? ""
 							: File.separator));
-
+*/
 				if (nextFolderStack.empty())
 					next.setEnabled(false);
 			}
@@ -718,7 +662,7 @@ public class Main {
 		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				adrZone.getEditor().setItem("");
+				adrZone.setText("");
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
@@ -815,8 +759,8 @@ public class Main {
 				}
 			}
 		});
-		tree.setForeground(getBgColor());
-		tree.setBackground(getBgColor());
+		tree.setForeground(Themes.getBgColor());
+		tree.setBackground(Themes.getBgColor());
 		mainFrame.show();
 	}
 }

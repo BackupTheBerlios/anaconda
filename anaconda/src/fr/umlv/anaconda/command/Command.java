@@ -5,6 +5,8 @@
  
 package fr.umlv.anaconda.command;
 
+import javax.swing.Action;
+
 /**
  * Interface for the anaconda commands
  * 
@@ -24,4 +26,7 @@ public interface Command {
 	
 	/** tell if the command can be cancelled */
 	public boolean canUndo();
+	
+	/** returns the associated Action */
+	public Action getAction();
 }

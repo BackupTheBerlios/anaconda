@@ -1,11 +1,11 @@
 package fr.umlv.anaconda.command;
 
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.*;
 
-import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
+import javax.swing.*;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
@@ -13,15 +13,34 @@ import fr.umlv.anaconda.tools.PressPaper;
 import fr.umlv.anaconda.tools.Tools;
 
 public class Paste implements Command {
-	private boolean is_cut;
-	private ArrayList last_selection = new ArrayList();
-	private File dest_rep;
-	private File origin_rep;
-	private Delete deleter = new Delete();
+	protected boolean is_cut;
+	protected ArrayList last_selection = new ArrayList();
+	protected File dest_rep;
+	protected File origin_rep;
+	protected Delete deleter = new Delete();
 	private NoSelectedFilesException no_selection =
 		new NoSelectedFilesException();
-	private JProgressBar progress_bar = new JProgressBar();
+//	private JProgressBar progress_bar = new JProgressBar();
 
+	private Action act;
+	
+	public Paste() {
+		super();
+		
+		act = new AbstractAction("Coller Ctrl+V") {
+			public void actionPerformed(ActionEvent e) {
+				run();
+			}
+		//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
+		//	final String ACCELERATOR_KEY = "Ctrl+V";
+		//	final String NAME = "Coller";
+		//	final String SHORT_DESCRIPTION = "Coller depuis le presse papier";
+		//	final String LONG_DESCRIPTION ="Coller un element prealablement copier ou coupe";
+	
+		};
+		act.setEnabled(false);
+	}
+	
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
@@ -114,7 +133,7 @@ public class Paste implements Command {
 	 * elements in 'selectedFiles' if the last action is 'cut'. Subdirectories
 	 * are pasted to.
 	 */
-	private void pasteFile(File parent, File child)
+	protected void pasteFile(File parent, File child)
 		throws DoNotExistFileException, ErrorIOFileException, CanNotReadException {
 		File file = new File(parent, child.getName());
 		int option = JOptionPane.YES_OPTION;
@@ -320,5 +339,12 @@ public class Paste implements Command {
 			throw new ErrorIOFileException(f);
 		}
 
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return act;
 	}
 }

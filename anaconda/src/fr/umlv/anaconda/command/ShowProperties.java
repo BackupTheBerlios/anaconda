@@ -3,9 +3,13 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotReadException;
@@ -21,7 +25,7 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
 public class ShowProperties implements Command {
 	private boolean can_read;
 	private boolean can_write;
-	private boolean can_execute;
+//	private boolean can_execute;
 	private boolean can_delete;
 	private boolean is_hidden;
 	private long size;
@@ -119,5 +123,16 @@ public class ShowProperties implements Command {
 
 		Main.info_panel.setAsProperties(name,can_read,can_write,can_delete,is_directory,is_hidden,size,last_modified);
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Proprietes") {
+			public void actionPerformed(ActionEvent e) {
+				run();
+			}
+		};
 	}
 }

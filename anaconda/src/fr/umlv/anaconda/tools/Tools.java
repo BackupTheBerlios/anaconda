@@ -1,5 +1,7 @@
 package fr.umlv.anaconda.tools;
 
+import java.awt.Image;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,5 +47,48 @@ public class Tools {
 		if (f.getName().compareTo("..") == 0)
 			return true;
 		return false;
+	}
+	
+	/**
+	 * Returns a new Image to the correct rectangular size
+	 * @param img the original Image
+	 * @param width the wanted width
+	 * @param height the wanted height
+	 * @param io the linked ImageObserver
+	 * @return the resized Image
+	 */
+	public static Image resizeImg(Image img, int width, int height, ImageObserver io) {
+		int H = img.getHeight(io);
+		int W = img.getWidth(io);
+		Image image;
+		if (H<=W){
+			image = img.getScaledInstance(-1,height, Image.SCALE_FAST);
+			// reduit pour le "nbe elts selectionnes"
+		}
+		else {
+			image = img.getScaledInstance(width,-1, Image.SCALE_FAST);
+		}
+		return image;
+	}
+	
+	/**
+	 * Returns a new Image to the correct squarre size
+	 * @param img the original Image
+	 * @param size the wanted size
+	 * @param io the linked ImageObserver
+	 * @return the resized Image
+	 */
+	public static Image resizeImg(Image img, int size, ImageObserver io) {
+		return resizeImg(img, size, size, io);
+	}
+	
+	/**
+	 * Tells wether the os is windows or not
+	 * @return true if the OS is windows 
+	 */
+	public static boolean isWin(){
+		//	a utiliser pour savoir comment lancer ?..
+		final String os = System.getProperty("os.name");
+		return (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"));
 	}
 }

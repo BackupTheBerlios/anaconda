@@ -36,7 +36,7 @@ public class ChoozRep {
 		fileChooz.setDialogTitle("Choix du repertoire de destination");
 		fileChooz.setApproveButtonText("Valider");
 		fileChooz.setApproveButtonToolTipText("Valide le reperoire sélectionné");
-		
+		dir=null;
 		int returnVal = fileChooz.showSaveDialog(null); 
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			dir = fileChooz.getSelectedFile();

@@ -1,8 +1,12 @@
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
@@ -72,5 +76,18 @@ public class Delete implements Command {
 
 	public boolean canUndo() {
 		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Supprimer") {
+			public void actionPerformed(ActionEvent e) {
+				//Delete de la corbeille
+				run();
+				Main.refresh();
+			}
+		};
 	}
 }

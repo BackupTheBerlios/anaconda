@@ -6,20 +6,22 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import fr.umlv.anaconda.tools.Extension;
+
 public class TableRenderer extends DefaultTableCellRenderer {
 	public static ImageIcon FATHER_ICON = IconsManager.big_father_icon;
 	public static ImageIcon FOLDER_ICON = IconsManager.big_folder_icon;
 	public static ImageIcon IMAGE_ICON = IconsManager.big_image_icon;
 	public static ImageIcon EXE_ICON = IconsManager.big_exe_icon;
 	public static ImageIcon FILE_ICON = IconsManager.big_file_icon;
-	final private static ArrayList imagesExt = new ArrayList();
+/*	final private static ArrayList imagesExt = new ArrayList();
 	static {
 		imagesExt.add(".jpg");
 		imagesExt.add(".jpeg");
 		imagesExt.add(".gif");
 		imagesExt.add(".png");
 		imagesExt.add(".bmp");
-	}
+	} */
 	/**
 	 * METHODES UTILES
 	 */
@@ -56,7 +58,8 @@ public class TableRenderer extends DefaultTableCellRenderer {
 		else {
 			int indexExt = file.getName().lastIndexOf('.');
 			if(indexExt != -1) {
-				if(imagesExt.contains(file.getName().substring(indexExt))) ((JLabel) c).setIcon(IMAGE_ICON);
+				//if(imagesExt.contains(file.getName().substring(indexExt))) ((JLabel) c).setIcon(IMAGE_ICON);
+				if(Extension.isImage(file.getName())) ((JLabel) c).setIcon(IMAGE_ICON);
 				else if(file.getName().endsWith(".exe")) ((JLabel) c).setIcon(EXE_ICON);
 				else ((JLabel)c).setIcon(FILE_ICON);
 			}

@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
 import fr.umlv.anaconda.GarbageModel;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotWriteException;
@@ -20,9 +22,6 @@ import fr.umlv.anaconda.tools.*;
 
 /**
  * @author FIGUEROA
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class Trash extends Thread implements Command {
 
@@ -197,6 +196,13 @@ public class Trash extends Thread implements Command {
 	public boolean canUndo() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return null; // pas dispo d'ici ?
 	}
 
 }

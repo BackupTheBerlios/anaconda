@@ -4,12 +4,17 @@ package fr.umlv.anaconda.command;
 /* Anaconda (Livingstone project) */
 /* Created on 21 févr. 2004 */
 
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.ChoozExec;
+import fr.umlv.anaconda.tools.Tools;
 
 /**
  * Manage to launch files
@@ -22,8 +27,6 @@ import fr.umlv.anaconda.tools.ChoozExec;
  */
 public class Launch implements Command {
 
-	//	a utiliser pour savoir comment lancer ?..
-	private static final String os = System.getProperty("os.name");
 	private Runtime r = Runtime.getRuntime();
 	
 	/**default constructor */
@@ -77,14 +80,15 @@ public class Launch implements Command {
 	public boolean canUndo() {
 		return false;
 	}
-	
-	public static boolean isExe(File f) {
-		if (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"))
-			if (f.getName().endsWith(".exe"))
-				return true;
-			else
-				return false;
-		else // on n'est pas sous windows... a quoi se fier ?
-			return true;
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction(){
+			public void actionPerformed(ActionEvent arg0) {
+				run();
+			}
+		};
 	}
 }

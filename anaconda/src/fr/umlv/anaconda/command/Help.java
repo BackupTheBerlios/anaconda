@@ -1,19 +1,15 @@
 package fr.umlv.anaconda.command;
 
-import java.awt.event.*;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-
-//import fr.umlv.anaconda.exception.ErrorIOFileException;
-
 /* Maitrise info - g?nie logiciel */
 /* Anaconda (Livingstone project) */
 /* Created on 1 mars 2004 */
+
+import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import javax.swing.*;
+
+//import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 /**
  *	Manage the view of the help

@@ -6,27 +6,18 @@
  */
 package fr.umlv.anaconda;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import fr.umlv.anaconda.command.Find;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 import fr.umlv.anaconda.tools.Extension;
+import fr.umlv.anaconda.tools.Tools;
 
 /**
  * @author FIGUEROA
@@ -187,7 +178,8 @@ public class InfoPanel extends JPanel {
 		add(label_nb_elements);
 		if (f != null) {
 			if (Extension.isImage(f.getName())) {
-				Image image = new ImageIcon(f.getAbsolutePath()).getImage().getScaledInstance(200,200, Image.SCALE_FAST);
+				Image img = new ImageIcon(f.getAbsolutePath()).getImage();
+				Image image = Tools.resizeImg(img, 145, 190, label_nb_elements);
 				ImageIcon image_icon = new ImageIcon(image);
 				JLabel apercu =  new JLabel(image_icon);
 				add(apercu);

@@ -3,8 +3,12 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
@@ -32,6 +36,7 @@ public class Cut implements Command {
 		}
 
 		PressPaper.addToPressPaper(selected_file, deleted);
+		AllCommand.getAction("paste").setEnabled(true);
 	}
 
 	public void run(ArrayList selected_file) {
@@ -48,6 +53,7 @@ public class Cut implements Command {
 		}
 
 		PressPaper.addToPressPaper(selected_file, deleted);
+		AllCommand.getAction("paste").setEnabled(true);
 	}
 
 	public void undo() {
@@ -58,6 +64,17 @@ public class Cut implements Command {
 
 	public boolean canUndo() {
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Couper   Ctrl+X") {
+			public void actionPerformed(ActionEvent e) {
+				run();
+			}
+		};
 	}
 
 }

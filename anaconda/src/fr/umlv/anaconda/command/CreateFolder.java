@@ -1,12 +1,14 @@
 /*
  * Created on 3 févr. 2004
- * 
- * To change the template for this generated file go to Window - Preferences -
- * Java - Code Generation - Code and Comments
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.tree.TreePath;
 
 
 import fr.umlv.anaconda.Main;
@@ -17,9 +19,6 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 /**
  * @author FIGUEROA
- * 
- * To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Generation - Code and Comments
  */
 public class CreateFolder implements Command {
 	private File current_folder = null;
@@ -39,7 +38,7 @@ public class CreateFolder implements Command {
 			return;
 		}*/
 
-		current_folder = Main.currentFolder;/*(File) selected_file.get(0)*/;
+		current_folder = Main.getFolder();/*(File) selected_file.get(0)*/;
 		if( !current_folder.isDirectory() )
 			current_folder = current_folder.getParentFile();
 		
@@ -115,5 +114,18 @@ public class CreateFolder implements Command {
 
 	public boolean canUndo() {
 		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Cree Repertoire") {
+			public void actionPerformed(ActionEvent e) {
+				TreePath path = Main.getTreeSelectionPath();
+				run();
+				Main.refresh();
+			}
+		};
 	}
 }

@@ -5,7 +5,11 @@ package fr.umlv.anaconda.command;
  *
  */
 
+import java.awt.event.ActionEvent;
 import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
@@ -49,5 +53,17 @@ public class Move implements Command {
 	public boolean canUndo() {
 		return true;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return 
+		new AbstractAction("Deplacer    Ctrl+Alt+X") {
+			public void actionPerformed(ActionEvent e) {
+				run();
+			}
+		};
+	}
+	
 }

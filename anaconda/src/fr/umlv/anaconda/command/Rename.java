@@ -1,9 +1,12 @@
 package fr.umlv.anaconda.command;
 
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
@@ -101,5 +104,17 @@ public class Rename implements Command {
 
 	public boolean canUndo() {
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anaconda.command.Command#getAction()
+	 */
+	public Action getAction() {
+		return new AbstractAction("Renommer") {
+			public void actionPerformed(ActionEvent e) {
+				run();
+				Main.refresh();
+			}
+		};
 	}
 }

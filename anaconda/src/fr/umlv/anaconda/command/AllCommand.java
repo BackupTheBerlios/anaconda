@@ -3,6 +3,13 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import fr.umlv.anaconda.Main;
+
 /**
  */
 public class AllCommand {
@@ -56,6 +63,7 @@ public class AllCommand {
 				}
 				return cmd;
 			}
+		System.err.println("Commande inconnue");
 		return null;
 	}
 	
@@ -77,4 +85,28 @@ public class AllCommand {
 	public static boolean canRedo(){
 		return can_redo;
 	}
+	
+	
+	public static Action getAction(String cmd_name) {
+		for (int i = 0; i < command_name.length; i++)
+			if (cmd_name.equalsIgnoreCase(command_name[i])) {
+				return tab_command[i].getAction();
+			} 
+		return ActionFactory(cmd_name);
+	}
+	
+	public static Action ActionFactory(String cmd_name) {
+		
+		if (cmd_name.equalsIgnoreCase("refresh")) {
+			return new AbstractAction("Actualiser") {
+				public void actionPerformed(ActionEvent e) {
+					Main.refresh();
+				}
+			};
+		} 
+		
+		return null;
+	}
+
+	
 }
