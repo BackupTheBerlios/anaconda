@@ -16,6 +16,7 @@ public class Main {
 	/* VARIABLE DE NAVIGATION */
 	final public static File root = new File(System.getProperty("user.home"));
 	protected static File currentFolder = root;
+	protected static File lastFolder = null;
 	/* VARIABLE D'APPLICATION */
 	final public static ModelTree treeModel = new ModelTree(root);
 	final public static JTree tree = new JTree(treeModel);
@@ -35,8 +36,6 @@ public class Main {
 	/* PILE DE PRECEDENT SUIVANT */
 	final public static Stack backFolderStack = new Stack();
 	final public static Stack nextFolderStack = new Stack();
-	public static File oldCurrentFolder = null;
-	public static File newCurrentFolder = null;
 	/* MENU DEROULANT */
 	final static JPopupMenu clickInFile = new JPopupMenu();
 	final static JPopupMenu clickOutFile = new JPopupMenu();
@@ -81,10 +80,15 @@ public class Main {
 	}
 	
 	public static void refresh() {
+		TreePath currentPath = tree.getSelectionPath();
 		treeModel.setFolder(currentFolder);
+		tree.setSelectionPath(currentPath);
+		tree.expandPath(currentPath);
+		tree.scrollPathToVisible(currentPath);
 		tableModel.setFolder(currentFolder);
 	}
 	public static void setFolder(File newFolder) {
+		lastFolder = currentFolder;
 		currentFolder = newFolder;
 		try {
 			adrZone.setText(newFolder.getCanonicalPath());
@@ -173,7 +177,12 @@ public class Main {
 				}
 				switch(e.getButton()) {
 					case MouseEvent.BUTTON1 :
-					if(file != null && e.getClickCount() == 1) {
+					if(file == null) {
+						lastFolder = currentFolder;
+					}
+					else if(e.getClickCount() == 1) {
+						backFolderStack.push(currentFolder);
+						if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
 						tree.setSelectionPath(path);
 						tree.expandPath(path);
 						if(!file.equals(currentFolder)) setFolder(file);
@@ -241,9 +250,17 @@ public class Main {
 				}
 				switch(e.getButton()) {
 					case MouseEvent.BUTTON1 :
-					if(e.getClickCount() == 2) {
-						if(file == null || file.equals(currentFolder)) break;
+					if(e.getClickCount() == 1) {
+						info_panel.setAsGeneral(file, getSelectionItems().size());
+					}
+					else if(e.getClickCount() == 2) {
+						if(file == null || file.equals(currentFolder)) {
+							lastFolder = currentFolder;
+							break;
+						} 
 						if(file.isDirectory()) {
+							backFolderStack.push(currentFolder);
+							if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
 							boolean down = currentFolder.equals(file.getParentFile());
 							TreePath currentPath = tree.getSelectionPath();
 							setFolder(file);
@@ -254,6 +271,9 @@ public class Main {
 								tree.expandPath(currentPath);
 								tree.scrollPathToVisible(currentPath);
 							}
+						}
+						else {
+							new Launch().run(file);
 						}
 					}
 					break;
@@ -308,7 +328,6 @@ public class Main {
 							goOut();
 						}
 				});
-		oldCurrentFolder = newCurrentFolder = currentFolder;
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
 		initTable();/*****/tableModel.setDimmension(50, 5);
@@ -604,38 +623,18 @@ public class Main {
 		next.setEnabled(false);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(newCurrentFolder != null)
-					nextFolderStack.push(newCurrentFolder);
-				newCurrentFolder = currentFolder;
-				setFolder(oldCurrentFolder);
-				oldCurrentFolder = (File) backFolderStack.pop();
+				nextFolderStack.push(currentFolder);
+				setFolder((File) backFolderStack.pop());
 				next.setEnabled(true);
-		/*		String fileName = oldCurrentFolder.getAbsolutePath();
-				adrZone.setText(
-					fileName
-						+ ((fileName.endsWith(File.separator))
-							? ""
-							: File.separator)); */
 				if (backFolderStack.empty())
 					back.setEnabled(false);
-
 			}
 		});
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(oldCurrentFolder != null)
-					backFolderStack.push(oldCurrentFolder);
-				oldCurrentFolder = currentFolder;
-				setFolder(newCurrentFolder); 
-				newCurrentFolder = (File) nextFolderStack.pop();
+				backFolderStack.push(currentFolder);
+				setFolder((File) nextFolderStack.pop()); 
 				back.setEnabled(true);
-	/*			String fileName = newCurrentFolder.getAbsolutePath();
-				adrZone.setText(
-					fileName
-						+ ((fileName.endsWith(File.separator))
-							? ""
-							: File.separator));
-*/
 				if (nextFolderStack.empty())
 					next.setEnabled(false);
 			}
@@ -646,8 +645,6 @@ public class Main {
 				System.out.println(e.paramString());
 				File file = new File(adrZone.getText());
 				if (file.exists()) {
-					oldCurrentFolder = currentFolder;
-					newCurrentFolder = file;
 					setFolder(file);
 					back.setEnabled(true);
 					next.setEnabled(false);
@@ -681,12 +678,10 @@ public class Main {
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		/***********************************************/
 		/* MENU DEROULANT */
-		//final JPopupMenu clickInFile = new JPopupMenu();
 		clickInFile.add(new JMenuItem("Nouveau Fichier    Ctrl+T"));
 		clickInFile.add(new JMenuItem("Nouveau Repertoire    Ctrl+R"));
 		clickInFile.add(
 			new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
-		//final JPopupMenu clickOutFile = new JPopupMenu();
 		clickOutFile.add(new JMenuItem(copyAction));
 		clickOutFile.add(new JMenuItem(cutAction));
 		clickOutFile.add(new JMenuItem(pasteAction));
@@ -703,31 +698,11 @@ public class Main {
 				lastFocused = TREE_FOCUS;
 				selectAllAction.setEnabled(false);
 				pasteAction.setEnabled(true);
-				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-				File file = null;
-				if (path != null)
-					file = (File) path.getLastPathComponent();
-				switch (e.getButton()) {
-					case MouseEvent.BUTTON1 :
-						if (file != null && e.getClickCount() == 1) {
-							if(oldCurrentFolder != null) backFolderStack.push(oldCurrentFolder);
-							oldCurrentFolder = currentFolder;
-							if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
-							back.setEnabled(true);
-							next.setEnabled(false);
-/*
-							if (ComparatorsManager.cmp.compare(oldCurrentFolder, file)
-								!= 0) {
-								String fileName = file.getAbsolutePath();
-								adrZone.setText(
-									fileName
-										+ ((fileName.endsWith(File.separator))
-											? ""
-											: File.separator));
-							}
-							*/
-						}
-						break;
+				if (e.getButton() == MouseEvent.BUTTON1 &&
+					e.getClickCount() == 1 && lastFolder != null &&
+					!currentFolder.equals(lastFolder)) {
+					back.setEnabled(true);
+					next.setEnabled(false);
 				}
 			}
 		});
@@ -736,31 +711,11 @@ public class Main {
 				lastFocused = TABLE_FOCUS;
 				selectAllAction.setEnabled(true);
 				pasteAction.setEnabled(false);
-				switch (e.getButton()) {
-					case MouseEvent.BUTTON1 :
-					File file = currentFolder;
-					//if(file == null || file.equals(currentFolder)) break;
-						info_panel.setAsGeneral( file, getSelectionItems().size());
-						if (e.getClickCount() == 2) {
-							if (file.isDirectory()) {
-								if(oldCurrentFolder != null) backFolderStack.push(oldCurrentFolder);
-								oldCurrentFolder = currentFolder;
-								if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
-								back.setEnabled(true);
-								next.setEnabled(false);
-								/*
-								String fileName = file.getAbsolutePath();
-								adrZone.setText(
-									fileName
-										+ ((fileName.endsWith(File.separator))
-											? ""
-											: File.separator));
-											*/
-							} else {
-								new Launch().run(file);
-							}
-						}
-						break;
+				if (e.getButton() == MouseEvent.BUTTON1 &&
+					e.getClickCount() == 2 && lastFolder != null &&
+					!currentFolder.equals(lastFolder)) {
+					back.setEnabled(true);
+					next.setEnabled(false);
 				}
 			}
 		});
