@@ -109,8 +109,10 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
 	public Object getSelectedItem() {
-		return current.get(this.index);
+		if (this.index>=0)
+			return current.get(this.index);
 		//TODO lancement auto du bon rep ?
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -165,22 +167,6 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 	}
 
 	
-	/* récup de la cmd find */
-	public void find(File root_file, String name, LinkedList list)
-		throws TooMuchFilesException {
-
-		File[] children = root_file.listFiles();
-		if (children != null) {
-			for (int i = 0; i < children.length; i++) {
-				if (Pattern.matches(name, children[i].getName())) {
-					list.add(children[i]);
-				}
-				if (children[i].isDirectory())
-					find(children[i], name, list);
-			}
-		}
-
-	}
 
 	
 }

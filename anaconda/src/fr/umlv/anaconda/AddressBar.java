@@ -4,16 +4,21 @@ package fr.umlv.anaconda;
 /* Anaconda (Livingstone project) */
 /* Created on 21 févr. 2004 */
 
+import java.util.LinkedList;
 import java.util.Vector;
+import java.util.regex.Pattern;
 //import java.util.regex.Pattern;
 
 import javax.swing.*;
 
+import fr.umlv.anaconda.command.Find;
 import fr.umlv.anaconda.exception.ErrorIOFileException;
+import fr.umlv.anaconda.exception.TooMuchFilesException;
 
 //import fr.umlv.anaconda.exception.TooMuchFilesException;
 //import java.util.*;
 //import javax.swing.event.*;
+import java.awt.Component;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -143,5 +148,48 @@ public class AddressBar extends JComboBox {
 		};
 	}
 
+		public void Completion() {
+			((AddressBarComboBoxModel)getModel()).switch2comp();
+//			this.grabFocus();
+//			this.requestFocus();
+//			for (long i=0; i<100000000L; ++i)
+//				;
+			boolean flag = true;
+			setPopupVisible(true);
+//			while (this.hasFocus()) {
+//			while (isPopupVisible()) {
+//			while (flag) {
+				showCompl((String)getEditor().getItem());
+				//showPopup();
+				setPopupVisible(true);
+//			}
+	//		this.hidePopup();
+//			((AddressBarComboBoxModel)getModel()).switch2hist();
+		}
+		
+		
+		private void showCompl(String str) {
+			int i = str.lastIndexOf(File.separator);
+			File root = new File(str.substring(0, i));
+			String name = str.substring(i);
+			LinkedList list = new LinkedList();
+			find(root, name/*, list*/);
+	//		addItem(list);
+		}
+		
 
+	/* récup de la cmd find */
+	public void find(File root_file, String trunc_name) {
+		removeAllItems();
+		File[] children = root_file.listFiles();
+		if (children != null) {
+			for (int i = 0; i < children.length; i++) {
+				//	if (Pattern.matches(trunc_name, children[i].getName())) {
+					if (children[i].getName().startsWith(trunc_name)) {
+					addItem(children[i].getAbsoluteFile());
+				}
+			}
+		}
+	}
+	
 }

@@ -10,6 +10,7 @@ import javax.swing.tree.*;
 import fr.umlv.anaconda.appearance.Themes;
 import fr.umlv.anaconda.command.AllCommand;
 import fr.umlv.anaconda.command.Launch;
+import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 public class Main {
@@ -30,7 +31,7 @@ public class Main {
 	final public static int TABLE_FOCUS = 0;
 	final public static int TREE_FOCUS = 1;
 	final public static int NONE_FOCUS = 2;
-	private static int lastFocused = NONE_FOCUS;
+	protected static int lastFocused = NONE_FOCUS;
 	private static ArrayList selection_items = new ArrayList();
 	protected static AddressBar adrZone=null;
 	/* PILE DE PRECEDENT SUIVANT */
@@ -305,13 +306,15 @@ public class Main {
 	public static void main(String[] args) {
 		IconsManager im = new IconsManager();
 		final JFrame mainFrame = new JFrame(" - Anaconda - ");
-		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		mainFrame.setSize(800, 600);
 		mainFrame.addWindowListener(new WindowAdapter() {
 						public void windowClosing(WindowEvent evt) {
 							goOut();
 						}
 				});
+
+		ActionMap am = new ActionMap();//TODO action map...
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
 		initTable();/*****/tableModel.setDimmension(50, 5);
@@ -418,6 +421,8 @@ public class Main {
 				AllCommand.redoLastCommand();
 			}
 		};
+		
+		am.put(new Integer(KeyEvent.VK_F5), refreshAction); //TODO actionMap
 
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
@@ -538,7 +543,7 @@ public class Main {
 		menuBar.add(file);
 		menuBar.add(edit);
 		menuBar.add(disp);
-		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+		menuBar.add(Box.createGlue());
 		menuBar.add(help);
 
 		/* TOOLBAR */
@@ -586,20 +591,29 @@ public class Main {
 		JToolBar adressBar = new JToolBar();
 		adressBar.setFloatable(false);
 		JButton delAdr = new JButton("effacer");
-		JLabel adr = new JLabel("adresse");
+		JLabel adr = new JLabel(" adresse : ");
 		JButton openAdr = new JButton("ouvrir");
-		String fileName = currentFolder.getAbsolutePath();
-		adrZone =
+		JButton autoAdr = new JButton("auto-completion");
+		autoAdr.addActionListener(new AbstractAction(){
+			public void actionPerformed(ActionEvent arg0) {
+				adrZone.Completion();
+			}
+		}
+			);
+		//String fileName = currentFolder.getAbsolutePath();
+		adrZone = new AddressBar(currentFolder);
+		/*adrZone =
 			new AddressBar(
 				fileName
-					/*+ ((fileName.endsWith(File.separator))
+					+ ((fileName.endsWith(File.separator))
 						? ""
-						: File.separator)*/);
-		adrZone.setActionCommand("test");
+						: File.separator)); */
+//		adrZone.setActionCommand("test");
 		adressBar.add(delAdr);
+		adressBar.add(openAdr);
 		adressBar.add(adr);
 		adressBar.add(adrZone);
-		adressBar.add(openAdr);
+		adressBar.add(autoAdr);
 
 		/* PANELBAR */
 		JPanel panelBar = new JPanel();
@@ -635,36 +649,40 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(e.getActionCommand());
-				System.out.println(e.paramString());
+//				System.out.println(e.getActionCommand());
+//				System.out.println(e.paramString());
 				File file = new File(adrZone.getText());
 				if (file.exists()) {
 					setFolder(file);
 					back.setEnabled(true);
 					next.setEnabled(false);
-					adrZone.addItem(new String(file.getAbsolutePath()));
+//					adrZone.addItem(file);
+					adrZone.addItem(file.getAbsolutePath());
 				} else
-					JOptionPane.showMessageDialog(
+/*					JOptionPane.showMessageDialog(
 						null,
 						"Le fichier/repertoire <"
 							+ file.getAbsolutePath()
 							+ "> n'a pas ete trouve.",
 						"Fichier/repertoire non trouve",
-						JOptionPane.ERROR_MESSAGE);
-				String fileName = currentFolder.getAbsolutePath();
+						JOptionPane.ERROR_MESSAGE); */
+					new DoNotExistFileException(file).show();
+				/*				String fileName = currentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
-						/*+ ((fileName.endsWith(File.separator))
+					+ ((fileName.endsWith(File.separator))
 							? ""
-							: File.separator)*/);
+							: File.separator)); */
+				adrZone.setText(currentFolder);
 			}
 		});
-		adrZone.addKeyListener(adrZone.listenerFactory());
-		adrZone.getEditor().addActionListener(adrZone.actionListenerFactory());
+//		adrZone.addKeyListener(adrZone.listenerFactory());
+//		adrZone.getEditor().addActionListener(adrZone.actionListenerFactory());
 		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				adrZone.setText("");
+//				adrZone.setText("");
+				adrZone.getEditor().setItem("");
 			}
 		});
 		mainFrame.setJMenuBar(menuBar);
@@ -692,6 +710,9 @@ public class Main {
 		clickOutFile.add(new JMenuItem(deleteAction));
 		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(showPropertiesAction));
+		
+	//	table.add //TODO action map
+		
 		/***********************************************/
 		/* LISTERNER SUR L'ARBRE ET LA LISTE */
 		tree.addMouseListener(new MouseAdapter() {
