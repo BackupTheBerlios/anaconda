@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.NoSelectedFilesException;
+import fr.umlv.anaconda.tools.PressPaper;
 
 public class Copy implements Command {
 	private final static boolean deleted = false;

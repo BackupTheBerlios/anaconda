@@ -4,7 +4,7 @@
  * Pour changer le mod?le de ce fichier g?n?r?, allez ? :
  * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
  */
-package fr.umlv.anaconda.command;
+package fr.umlv.anaconda.tools;
 
 import java.io.File;
 /**
