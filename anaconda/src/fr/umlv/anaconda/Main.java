@@ -324,6 +324,7 @@ public class Main {
 			fileName
 				+ ((fileName.endsWith(File.separator)) ? "" : File.separator)));
 		adrZone.setEditable(true);
+		adrZone.addKeyListener(((AddressBarComboBoxModel)adrZone.getModel()).listenerFactory());
 		
 		adressBar.add(delAdr);
 		adressBar.add(adr);
@@ -367,6 +368,8 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				e.getActionCommand();
+			//	if (e.getActionCommand().)
 				File file = new File((String)adrZone.getEditor().getItem()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();

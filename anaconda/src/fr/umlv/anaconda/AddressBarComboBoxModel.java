@@ -4,6 +4,7 @@
  */
 package fr.umlv.anaconda;
 
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.event.*;
@@ -150,6 +151,17 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 
 	public void switch2hist() {
 		this.current = this.history; 
+	}
+
+	public KeyListener listenerFactory() {
+		return new KeyListener() {
+				public void keyPressed(KeyEvent e) {}
+				public void keyReleased(KeyEvent e){}
+				public void keyTyped(KeyEvent e){
+					if (e.getKeyCode() == KeyEvent.VK_TAB)
+						System.out.println ("autocompletion ??");	
+				}
+		};
 	}
 
 }
