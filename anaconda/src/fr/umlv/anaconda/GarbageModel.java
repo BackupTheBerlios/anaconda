@@ -26,8 +26,16 @@ public class GarbageModel extends AbstractListModel{
 	
 	public void addElement(File file){
 		list.add(file);
-		System.out.println("adding " + file.toString() + "  " );
 		fireIntervalAdded(GarbageModel.this,getSize()-1,getSize()-1);
+	}
+	
+	
+	public void removeElement(File f){
+		int indice;
+		if((indice = list.indexOf(f)) != -1){
+			fireIntervalRemoved(GarbageModel.this,indice,indice);			
+			list.remove(indice);
+		}
 	}
 	
 	public int getSize(){
@@ -35,6 +43,6 @@ public class GarbageModel extends AbstractListModel{
 	}
 	
 	public Object getElementAt(int position){
-		return list.get(position);
+			return list.get(position);
 	}
 }
