@@ -19,7 +19,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 public class Paste extends AbstractAction implements Command {
@@ -39,7 +39,7 @@ public class Paste extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 
 		File dest = (File) o;
 
@@ -76,7 +76,7 @@ public class Paste extends AbstractAction implements Command {
 	 * are pasted to.
 	 */
 	private void pasteFile(File parent, File child)
-		throws DoNotExistFileException, ErrorPastingFileException {
+		throws DoNotExistFileException, ErrorIOFileException {
 		File file = new File(parent, child.getName());
 
 		if (child.isDirectory()) {
@@ -104,7 +104,7 @@ public class Paste extends AbstractAction implements Command {
 				} catch (FileNotFoundException e) {
 					throw new DoNotExistFileException(child);
 				} catch (IOException e) {
-					throw new ErrorPastingFileException(child);
+					throw new ErrorIOFileException(child);
 				}
 			}
 		}
@@ -117,7 +117,7 @@ public class Paste extends AbstractAction implements Command {
 			CanNotReadException,
 			CanNotDeleteException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 		if (!dest_rep.exists())
 			throw new DoNotExistFileException(dest_rep);
 		if (!dest_rep.isDirectory())
@@ -147,7 +147,7 @@ public class Paste extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 
 		if (is_cut)
 			 (new Cut()).run(last_selection);
@@ -160,6 +160,8 @@ public class Paste extends AbstractAction implements Command {
 		ArrayList selected_file = Main.getSelectionItems();
 		if (selected_file.size() < 1)
 			//TODO cas ou on n a rien selectionne.
+			// (new NoSelectedFilesException()).show;
+			// return;
 			;
 
 		try {
@@ -172,7 +174,7 @@ public class Paste extends AbstractAction implements Command {
 			e.show();
 		} catch (DoNotExistFileException e) {
 			e.show();
-		} catch (ErrorPastingFileException e) {
+		} catch (ErrorIOFileException e) {
 			e.show();
 		}
 	}

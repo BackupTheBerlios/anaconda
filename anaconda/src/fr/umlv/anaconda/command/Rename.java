@@ -3,11 +3,16 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
+
+import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 
-public class Rename {
+public class Rename extends AbstractAction {
 	private File file;
 	private String origin_name;
 	private String new_name;
@@ -45,4 +50,15 @@ public class Rename {
 			throw new CanNotWriteException(file);
 		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		ArrayList selected_file = Main.getSelectionItems();
+		if (selected_file.size() != 1)
+			//TODO cas ou on n a rien selectionne.
+			// (new TooMuchFilesException()).show();
+			// return;
+			;
+		run(Main.getSelectionItems());
+	}
+
 }

@@ -6,18 +6,18 @@ package fr.umlv.anaconda.exception;
 import java.io.File;
 import javax.swing.JOptionPane;
 
-public class ErrorPastingFileException extends Exception {
+public class ErrorIOFileException extends Exception {
 
 	private File f;
 
-	public ErrorPastingFileException(File file) {
+	public ErrorIOFileException(File file) {
 		this.f = file;
 	}
 
 	public void show() {
 		JOptionPane.showMessageDialog(
 			null,
-			"Erreur de collage",
+			"Erreur d entree sortie sur ",
 			f.getName(),
 			JOptionPane.ERROR_MESSAGE);
 	}

@@ -10,6 +10,8 @@ import junit.framework.TestCase;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+
+import fr.umlv.anaconda.exception.CanNotDeleteException;
 /**
  * @author ofiguero
  * 
@@ -38,6 +40,8 @@ public class DeleteTest extends TestCase {
 			delete.run(file);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (CanNotDeleteException e) {
+			e.show();
 		}
 	}
 }

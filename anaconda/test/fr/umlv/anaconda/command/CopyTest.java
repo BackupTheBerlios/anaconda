@@ -15,7 +15,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 import junit.framework.TestCase;
@@ -69,22 +69,16 @@ public class CopyTest extends TestCase {
 			e1.printStackTrace();
 		} catch (IsNotDirectoryException e) {
 			e.show();
-			System.out.println("mauvais nom de repertoire.");
 		} catch (CanNotWriteException e) {
 			e.show();
-			System.out.println("pas de droit d ecriture.");
 		} catch (CanNotReadException e) {
 			e.show();
-			System.out.println("pas de droit de lecture.");
 		} catch (DoNotExistFileException e) {
 			e.show();
-			System.out.println("repertoire inexistant.");
-		} catch (ErrorPastingFileException e) {
+		} catch (ErrorIOFileException e) {
 			e.show();
-			System.out.println("erreur de copie.");
 		} catch (CanNotDeleteException e) {
 			e.show();
-			System.out.println("ne peut supprimer");
 		}
 	}
 }

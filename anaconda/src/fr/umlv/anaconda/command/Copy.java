@@ -13,7 +13,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 public class Copy extends AbstractAction implements Command {
@@ -53,13 +53,15 @@ public class Copy extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		ArrayList selected_file = Main.getSelectionItems();
 		if (selected_file.size() < 1)
 			//TODO cas ou on n a rien selectionne.
+			// (new NoSelectedFilesException()).show();
+			// return;
 			;
 
 		run(Main.getSelectionItems());

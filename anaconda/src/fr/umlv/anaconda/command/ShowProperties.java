@@ -4,6 +4,7 @@
 package fr.umlv.anaconda.command;
 
 import java.io.File;
+import java.util.Properties;
 
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
@@ -15,15 +16,15 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 /**
  */
 public class ShowProperties implements Command {
-	private String last_permission;
-	boolean can_read;
-	boolean can_write;
-	boolean can_execute;
-	boolean can_delete;
-	boolean is_hidden;
-	long size;
-	long last_modified;
-	
+	private boolean can_read;
+	private boolean can_write;
+	private boolean can_execute;
+	private boolean can_delete;
+	private boolean is_hidden;
+	private long size;
+	private long last_modified;
+	private String name;
+
 	public void run(Object o)
 		throws
 			IsNotDirectoryException,
@@ -33,10 +34,12 @@ public class ShowProperties implements Command {
 			ErrorPastingFileException {
 
 		File f = (File) o;
-		/*FilePermission fp = new FilePermission("C:\\","read,write,delete,execute");
-		
-		can_delete = fp.implies(new FilePermission("C:\\fichier","delete"));*/
-		
+		/*
+		 * FilePermission fp = new
+		 * FilePermission("C:\\","read,write,delete,execute");
+		 *  
+		 */
+
 		can_read = f.canRead();
 		can_write = f.canWrite();
 		//can_delete;
@@ -46,7 +49,7 @@ public class ShowProperties implements Command {
 		System.out.println(
 			f.getPath()
 				+ "\n"
-				+ can_read 
+				+ can_read
 				+ "\n"
 				+ can_write
 				+ "\n"
@@ -74,20 +77,22 @@ public class ShowProperties implements Command {
 
 	}
 	public static void main(String[] args) {
-		try {
-			File f = new File("C:\\");
-			(new CreateFile()).run(f);
-			(new ShowProperties()).run(f);
-		} catch (IsNotDirectoryException e) {
-			e.printStackTrace();
-		} catch (CanNotWriteException e) {
-			e.printStackTrace();
-		} catch (CanNotReadException e) {
-			e.printStackTrace();
-		} catch (DoNotExistFileException e) {
-			e.printStackTrace();
-		} catch (ErrorPastingFileException e) {
-			e.printStackTrace();
-		}
+		Properties p = System.getProperties();
+		System.out.println(p.getProperty("user.dir"));
+		System.out.println(p.getProperty("file.separator"));
+		System.out.println(
+			new String(
+				p.getProperty("user.home")
+					+ p.getProperty("file.separator")
+					+ "testcopy1.txt"));
+		/*
+		 * try { File f = new File("C:\\"); (new CreateFile()).run(f); (new
+		 * ShowProperties()).run(f); } catch (IsNotDirectoryException e) {
+		 * e.printStackTrace(); } catch (CanNotWriteException e) {
+		 * e.printStackTrace(); } catch (CanNotReadException e) {
+		 * e.printStackTrace(); } catch (DoNotExistFileException e) {
+		 * e.printStackTrace(); } catch (ErrorPastingFileException e) {
+		 * e.printStackTrace();
+		 */
 	}
 }

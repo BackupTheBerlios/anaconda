@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 
 import fr.umlv.anaconda.Main;
+import fr.umlv.anaconda.exception.CanNotWriteException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 /**
  * @author FIGUEROA
@@ -27,7 +29,8 @@ public class CreateFile extends AbstractAction implements Command {
 	private final String default_name = "fichier";
 	private String current_name = null;
 
-	public void run(Object current_folder) {
+	public void run(Object current_folder)
+		throws CanNotWriteException, ErrorIOFileException {
 		this.current_folder = (File) current_folder;
 		File f;
 		int i = 1;
@@ -38,13 +41,14 @@ public class CreateFile extends AbstractAction implements Command {
 		}
 		try {
 			f.createNewFile();
+		} catch (SecurityException e) {
+			throw new CanNotWriteException(f);
 		} catch (IOException e) {
-			//TODO Cas d un echec de creation de fichier.
-			e.printStackTrace();
+			throw new ErrorIOFileException(f);
 		}
 	}
 
-	public void redo() {
+	public void redo() throws CanNotWriteException, ErrorIOFileException {
 		File f;
 		int i = 1;
 		current_name = default_name;
@@ -54,9 +58,10 @@ public class CreateFile extends AbstractAction implements Command {
 		}
 		try {
 			f.createNewFile();
+		} catch (SecurityException e) {
+			throw new CanNotWriteException(f);
 		} catch (IOException e) {
-			//TODO Cas d un echec de creation de fichier.
-			e.printStackTrace();
+			throw new ErrorIOFileException(f);
 		}
 	}
 
@@ -67,11 +72,19 @@ public class CreateFile extends AbstractAction implements Command {
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
-		if (selected_file.size() < 1)
+		if (selected_file.size() != 1)
 			//TODO cas ou on n a rien selectionne.
+			// (new NoSelectedFilesException).show();
+			// return;
 			;
 
-		run(selected_file.get(0));
+		try {
+			run(selected_file.get(0));
+		} catch (CanNotWriteException e) {
+			e.show();
+		} catch (ErrorIOFileException e) {
+			e.show();
+		}
 	}
 
 }

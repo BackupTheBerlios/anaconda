@@ -13,7 +13,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 public class Cut extends AbstractAction implements Command {
@@ -46,7 +46,7 @@ public class Cut extends AbstractAction implements Command {
 			CanNotReadException,
 			CanNotDeleteException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 	}
 
 	public void redo()
@@ -55,13 +55,15 @@ public class Cut extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		ArrayList selected_file = Main.getSelectionItems();
 		if (selected_file.size() < 1)
 			//TODO cas ou on n a rien selectionne.
+			// (new NoSelectedFilesException()).show();
+			// return;
 			;
 
 		run(Main.getSelectionItems());

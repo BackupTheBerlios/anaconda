@@ -10,7 +10,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 
@@ -21,7 +21,7 @@ public interface Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException;
+			ErrorIOFileException;
 
 	public void redo()
 		throws
@@ -29,7 +29,7 @@ public interface Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException;
+			ErrorIOFileException;
 
 	public void undo()
 		throws
@@ -38,5 +38,5 @@ public interface Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException,
-			ErrorPastingFileException;
+			ErrorIOFileException;
 }
