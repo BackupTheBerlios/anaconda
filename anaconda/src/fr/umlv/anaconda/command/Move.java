@@ -20,12 +20,7 @@ import fr.umlv.anaconda.tools.PressPaper;
 public class Move implements Command {
 	private static Cut cut = new Cut();
 	private static Paste last_paste;
-	/*private File dest = null;
-	private ArrayList selection;*/
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#run()
-	 */
 	public void run() {
 		File dest = ChoozRep.frameChoozRep();
 
@@ -41,33 +36,6 @@ public class Move implements Command {
 		last_paste = new Paste();
 		last_paste.run(dest);
 		PressPaper.clear();
-		/*selection = Main.getSelectionItems();
-		if (dest == null || !dest.isDirectory()) {
-			dest = ChoozRep.frameChoozRep();
-		}
-		
-		if (!dest.isDirectory()) {
-			(new IsNotDirectoryException(dest)).show();
-			return;
-		}
-		
-		if (!dest.canWrite()) {
-			(new CanNotWriteException(dest)).show();
-			return;
-		}
-		
-		if (dest != null && dest.isDirectory()) {
-			File origin;
-			for (int i = 0; i < selection.size(); i++) {
-				origin = (File) selection.get(i);
-				origin.renameTo(
-					new File(
-						dest.getAbsolutePath()
-							+ File.separatorChar
-							+ origin.getName()));
-			}
-			Main.model.setFolder(Main.newCurrentFolder);
-		}*/
 	}
 
 	public void redo() {

@@ -4,6 +4,7 @@
 package fr.umlv.anaconda.command;
 
 import java.io.File;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -134,7 +135,10 @@ public class ShowProperties implements Command {
 		String file_separator = p.getProperty("file.separator");
 		File f = new File(new String(home + file_separator + "tmp"));
 		(new ShowProperties()).run(f);
-
+		
+		f.setReadOnly();
+		(new ShowProperties()).run(f);
+		Permission file_permission = new Permission("write");
 	}
 
 	public boolean canUndo() {

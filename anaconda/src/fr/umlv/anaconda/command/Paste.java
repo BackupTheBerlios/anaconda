@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
@@ -22,7 +23,8 @@ public class Paste implements Command {
 	private Delete deleter = new Delete();
 	private NoSelectedFilesException no_selection =
 		new NoSelectedFilesException();
-
+	private JProgressBar progress_bar = new JProgressBar();
+	
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
@@ -200,7 +202,7 @@ public class Paste implements Command {
 
 	public class DoThread extends Thread {
 		public void run() {
-			for (Iterator it = PressPaper.getSelectedFiles().iterator();
+			for (Iterator it = last_selection.iterator();
 				it.hasNext();
 				) {
 				File file = (File) it.next();
