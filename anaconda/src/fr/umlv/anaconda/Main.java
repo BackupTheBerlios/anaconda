@@ -22,6 +22,7 @@ import java.awt.event.*;
  */
 public class Main {
 	/**/
+	public static File homeFile = new File(System.getProperty("user.home"));
 	/******************************* PILE DE PRECEDENT SUIVANT******************************/
 	public static File oldCurrentFolder;
 	public static File newCurrentFolder;
@@ -436,6 +437,11 @@ public class Main {
 		panelBar.add(adressBar, BorderLayout.CENTER);
 
 		/* Listeners des BAR */
+		home.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						model.setFolder(homeFile);
+					}
+		});
 		back.setEnabled(false);
 		next.setEnabled(false);
 		back.addActionListener(new ActionListener() {
