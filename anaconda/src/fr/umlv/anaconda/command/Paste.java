@@ -4,24 +4,13 @@
 package fr.umlv.anaconda.command;
 
 import java.awt.HeadlessException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
-import fr.umlv.anaconda.exception.CanNotReadException;
-import fr.umlv.anaconda.exception.CanNotWriteException;
-import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
-import fr.umlv.anaconda.exception.IsNotDirectoryException;
-import fr.umlv.anaconda.exception.NoSelectedFilesException;
-import fr.umlv.anaconda.exception.TooMuchFilesException;
+import fr.umlv.anaconda.exception.*;
 
 public class Paste extends Thread implements Command {
 	private static boolean is_cut;
