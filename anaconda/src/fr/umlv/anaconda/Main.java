@@ -1,4 +1,4 @@
-package fr.umlv.anac;
+package fr.umlv.anaconda;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -48,9 +48,9 @@ public class Main {
                     if(name.compareTo("") == 0)
                         name = ((Model)value).getFolder().getAbsolutePath();
                     ((JLabel)c).setText(name);
-                    if(selected) ((JLabel)c).setIcon(new ImageIcon("images/iconFocus.gif"));
-                    else if(expanded) ((JLabel)c).setIcon(new ImageIcon("images/iconOpen.gif"));
-                    else ((JLabel)c).setIcon(new ImageIcon("images/iconNode.gif"));
+                    if(selected) ((JLabel)c).setIcon(new ImageIcon(Main.class.getResource("/images/iconFocus.gif")));
+                    else if(expanded) ((JLabel)c).setIcon(new ImageIcon(Main.class.getResource("/images/iconOpen.gif")));
+                    else ((JLabel)c).setIcon(new ImageIcon(Main.class.getResource("/images/iconNode.gif")));
                     return c;
                 }
             });
@@ -81,11 +81,11 @@ public class Main {
                     else if(name.compareTo("") == 0) name = ((File)value).getAbsolutePath();
                     ((JLabel)c).setText(name);
 				/************************/
-                    ImageIcon iconRep = new ImageIcon("images/iconRep.gif");
-                    ImageIcon iconFather = new ImageIcon("images/iconFather.gif");
-                    ImageIcon iconText = new ImageIcon("images/iconText.gif");
-                    ImageIcon iconImg = new ImageIcon("images/iconImg.gif");
-                    ImageIcon iconExe = new ImageIcon("images/iconExe.gif");
+                    ImageIcon iconRep = new ImageIcon(Main.class.getResource("/images/iconRep.gif"));
+                    ImageIcon iconFather = new ImageIcon(Main.class.getResource("/images/iconFather.gif"));
+                    ImageIcon iconText = new ImageIcon(Main.class.getResource("/images/iconText.gif"));
+                    ImageIcon iconImg = new ImageIcon(Main.class.getResource("/images/iconImg.gif"));
+                    ImageIcon iconExe = new ImageIcon(Main.class.getResource("/images/iconExe.gif"));
 				
                     if(((File)value).isDirectory()) ((JLabel)c).setIcon(iconRep);
                     else { 
@@ -102,7 +102,7 @@ public class Main {
         JScrollPane scrollList = new JScrollPane(list);
         /******************************/
         JPanel infoPanel = new JPanel();
-        ImageIcon anacondaLogo = new ImageIcon("images/anaconda_logo.gif");
+        ImageIcon anacondaLogo = new ImageIcon(Main.class.getResource("/images/anaconda_logo.gif"));
         infoPanel.add(new JLabel(anacondaLogo));
         infoPanel.setBackground(Color.WHITE);
 		
@@ -207,12 +207,12 @@ public class Main {
         
         /* TOOLBAR */
         JToolBar toolBar = new JToolBar();
-        final JButton back = new JButton(new ImageIcon("images/back.gif"));
-        final JButton next = new JButton(new ImageIcon("images/next.gif"));
-        JButton cut = new JButton(new ImageIcon("images/cut.gif"));
-        JButton copy = new JButton(new ImageIcon("images/copy.gif"));
-        JButton paste = new JButton(new ImageIcon("images/paste.gif"));
-        JButton find = new JButton(new ImageIcon("images/find.gif"));
+        final JButton back = new JButton(new ImageIcon(Main.class.getResource("/images/back.gif")));
+        final JButton next = new JButton(new ImageIcon(Main.class.getResource("/images/next.gif")));
+        JButton cut = new JButton(new ImageIcon(Main.class.getResource("/images/cut.gif")));
+        JButton copy = new JButton(new ImageIcon(Main.class.getResource("/images/copy.gif")));
+        JButton paste = new JButton(new ImageIcon(Main.class.getResource("/images/paste.gif")));
+        JButton find = new JButton(new ImageIcon(Main.class.getResource("/images/find.gif")));
         
         //back.setBackground(Color.WHITE);
         //next.setBackground(Color.WHITE);
@@ -235,7 +235,8 @@ public class Main {
         JLabel adr = new JLabel("adresse");
         JButton openAdr = new JButton("ouvrir");
         final JTextField adrZone = new JTextField(20);
-        adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+        String fileName = model.getFolder().getAbsolutePath();
+        adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
        
         adressBar.add(delAdr);
         adressBar.add(adr);
@@ -254,7 +255,8 @@ public class Main {
         back.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                   model.setFolder(oldCurrentFolder);
-                  adrZone.setText(oldCurrentFolder.getAbsolutePath()+File.separator);
+                  String fileName = oldCurrentFolder.getAbsolutePath(); 
+				  adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                   back.setEnabled(false);
                   next.setEnabled(true);
                 }
@@ -262,7 +264,8 @@ public class Main {
         next.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     model.setFolder(newCurrentFolder);
-                    adrZone.setText(newCurrentFolder.getAbsolutePath()+File.separator);
+					String fileName = newCurrentFolder.getAbsolutePath(); 
+					adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                     back.setEnabled(true);
                     next.setEnabled(false);
                 }
@@ -270,28 +273,21 @@ public class Main {
         adrZone.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println(adrZone.getText());
-                    if(!adrZone.getText().startsWith(File.separator)){
-                        File file = new File(model.getFolder().getAbsolutePath()+File.separator+adrZone.getText());
-                        if(file.exists()){
-                            oldCurrentFolder = model.getFolder();
-                            newCurrentFolder = file;
-                            model.setFolder(file);
-                            back.setEnabled(true);
-                            next.setEnabled(false);
-                        }
-
+                    File file = new File(adrZone.getText());
+                    if(file.exists()){
+                    	oldCurrentFolder = model.getFolder();
+                        newCurrentFolder = file;
+                        model.setFolder(file);
+                        back.setEnabled(true);
+                        next.setEnabled(false);
                     }
-                    else{
-                        File file = new File(adrZone.getText());
-                        if(file.exists()){
-                            oldCurrentFolder = model.getFolder();
-                            newCurrentFolder = file;
-                            model.setFolder(file);
-                            back.setEnabled(true);
-                            next.setEnabled(false);
-                        }
-                    }
-                    adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+                    else
+                    	JOptionPane.showMessageDialog(null,
+								"Le fichier/repertoire <" + file.getAbsolutePath() + "> n'a pas ete trouve.",
+								"Fichier/repertoire non trouve",
+								JOptionPane.ERROR_MESSAGE);
+					String fileName = model.getFolder().getAbsolutePath(); 
+					adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                 }
             });
         openAdr.addActionListener((adrZone.getActionListeners())[0]);
@@ -318,7 +314,8 @@ public class Main {
                             newCurrentFolder = file;
                             if(Model.cmp.compare(oldCurrentFolder, file) != 0) {
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()+File.separator);
+								String fileName = file.getAbsolutePath(); 
+								adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                                 list.setSelectedIndex(0);
                             }
                         }
@@ -342,7 +339,9 @@ public class Main {
                             if(file.isDirectory()) {
                                 newCurrentFolder = file;
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()+File.separator);
+                                tree.expandPath(new TreePath(model));
+								String fileName = file.getAbsolutePath(); 
+								adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                                 list.setSelectedIndex(0);
                             }
                         }
@@ -352,7 +351,6 @@ public class Main {
                     case MouseEvent.BUTTON3:
                         JPopupMenu popup = new JPopupMenu();
                         int index = list.locationToIndex(new Point(e.getX(), e.getY()));
-                        //System.out.println(index);
                         File file = (File)listModel.getElementAt(index);
                         if(file == null) {
                             JMenuItem newFileItemPop = new JMenuItem("Nouveau Fichier    Ctrl+T");

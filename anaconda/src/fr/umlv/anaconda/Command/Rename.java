@@ -1,7 +1,7 @@
 /*
  * Created on 1 févr. 2004
  */
-package fr.umlv.anac.Command;
+package fr.umlv.anaconda.Command;
 
 import java.io.File;
 

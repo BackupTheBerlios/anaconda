@@ -1,4 +1,4 @@
-package fr.umlv.anac;
+package fr.umlv.anaconda;
 
 import javax.swing.*;
 import javax.swing.event.*;
