@@ -13,7 +13,7 @@ public class MyTabbedPane extends JPanel {
 	/**
 	 * 
 	 */
-	public MyTabbedPane(Model model,FindModel findModel) {
+	public MyTabbedPane(Model model,FindModel findModel,GarbageModel garbageModel) {
 	
 		tabbedPane = new JTabbedPane();
 		listModel = new ModelListAdapter(model);
@@ -21,7 +21,7 @@ public class MyTabbedPane extends JPanel {
 		/* Creation d'un onglet */
 		Component panel1 = new JScrollPane(listFiles);/*new JList(listModel);*/
 		tabbedPane.addTab("Fichiers", null, panel1, "Contenu du repertoire courant");
-		// marque l'onglet d'indice 0 comme selectionné par defaut
+		// marque l'onglet d'indice 0 comme selectionn? par defaut
 		tabbedPane.setSelectedIndex(0); 
 		/**/
 
@@ -31,8 +31,8 @@ public class MyTabbedPane extends JPanel {
 		/**/
 
 		/* Encore un onglet */
-		Component panel3 = new JList(listModel);
-		tabbedPane.addTab("Corbeille", null, panel3, "Contient les elements supprimés");
+		Component panel3 = new JScrollPane(new JList(garbageModel));
+		tabbedPane.addTab("Corbeille", null, panel3, "Contient les elements supprim?s");
 		/**/
 
 		/* Ca extends JPanel, pratique */
@@ -56,7 +56,7 @@ public class MyTabbedPane extends JPanel {
 	/**
 	 * PEUT ETRE UTILE
 	 */
-	// creation Dynamique : permet de creer un onglet a la vollée
+	// creation Dynamique : permet de creer un onglet a la voll?e
 	// peut etre pa util ds Anaconda mais on sai jamais
 	/*
 	public  void createTab(JTabbedPane tabbedPane, String text, ImageIcon icon, Component panel, String toolTipText){
