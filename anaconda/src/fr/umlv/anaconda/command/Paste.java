@@ -10,7 +10,6 @@ import javax.swing.JProgressBar;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.PressPaper;
-import fr.umlv.anaconda.tools.Right;
 import fr.umlv.anaconda.tools.Tools;
 
 public class Paste implements Command {
@@ -22,7 +21,6 @@ public class Paste implements Command {
 	private NoSelectedFilesException no_selection =
 		new NoSelectedFilesException();
 	private JProgressBar progress_bar = new JProgressBar();
-	private int[] right;
 
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
@@ -151,8 +149,9 @@ public class Paste implements Command {
 					child.renameTo(file);
 				else {
 					FileInputStream fileInputStream;
+					int[] right;
 					try {
-						//setReadOnly(child);
+						right = setReadOnly(child);
 						fileInputStream = new FileInputStream(child);
 						FileOutputStream fileOutputStream =
 							new FileOutputStream(file);
@@ -162,13 +161,13 @@ public class Paste implements Command {
 							if (readNumber > 0)
 								fileOutputStream.write(buffer, 0, readNumber);
 						}
-						//unsetReadOnly(child);
-						//setRight(this.right,file);
+						unsetReadOnly(child,right);
+						setRight(right, file);
 					} catch (FileNotFoundException e) {
 						throw new DoNotExistFileException(child);
 					} catch (IOException e) {
 						throw new ErrorIOFileException(child);
-					} 
+					}
 				}
 			}
 		}
@@ -254,105 +253,69 @@ public class Paste implements Command {
 	public boolean canUndo() {
 		return true;
 	}
-	
-	private void setRight(int[] right, File f) throws ErrorIOFileException{
-		Runtime r = Runtime.getRuntime();
-				String file_path = f.getPath();
-				StringBuffer uplus = new StringBuffer("chmod u+");
-				StringBuffer uminus = new StringBuffer("chmod u-");
-				StringBuffer gplus = new StringBuffer("chmod g+");
-				StringBuffer gminus = new StringBuffer("chmod g-");
-				StringBuffer oplus = new StringBuffer("chmod o+");
-				StringBuffer ominus = new StringBuffer("chmod o-");
 
-				if (right[0] == 0) uminus.append("r");
-				else uplus.append("r");
-				
-				if (right[1] == 0) uminus.append("w");
-				else uplus.append("w");
-				
-				if (right[2] == 0) uminus.append("x");
-				else uplus.append("x");
-				
-				if (right[3] == 0) gminus.append("r");
-				else gplus.append("r");
-				
-				if (right[4] == 0) gminus.append("w");
-				else gplus.append("w");
-				
-				if (right[5] == 0) gminus.append("x");
-				else gplus.append("x");
-				
-				if (right[6] == 0) ominus.append("r");
-				else oplus.append("y");
-				
-				if (right[7] == 0) ominus.append("w");
-				else oplus.append("w");
-				
-				if (right[8] == 0) ominus.append("x");
-				else oplus.append("x");
-				
-				try {
-					r.exec((uplus.append(" "+file_path)).toString());
-					r.exec((uminus.append(" "+file_path)).toString());
-					r.exec((gplus.append(" "+file_path)).toString());
-					r.exec((gminus.append(" "+file_path)).toString());
-					r.exec((oplus.append(" "+file_path)).toString());
-					r.exec((ominus.append(" "+file_path)).toString());
-				} catch (IOException e) {
-					throw new ErrorIOFileException(f);
-				}
-	}
-
-	private void setReadOnly(File f)
-		throws ErrorIOFileException, CanNotReadException {
-
-		try {
-			Right r = new Right(f);
-			right = r.get();
-			System.out.println("pouettttttttttttttttt" + r);
-			StringBuffer sb = new StringBuffer("chmod a-wx ");
-			sb.append(f.getPath());
-
-			try {
-				Runtime.getRuntime().exec(sb.toString());
-			} catch (IOException e) {
-				throw new ErrorIOFileException(f);
-			} catch (SecurityException e) {
-				throw new CanNotReadException(f);
-			}
-		} catch (IOException e1) {
-			throw new ErrorIOFileException(f);
-		}
-	}
-
-	private void unsetReadOnly(File f) throws ErrorIOFileException {
+	private void setRight(int[] right, File f) throws ErrorIOFileException {
 		Runtime r = Runtime.getRuntime();
 		String file_path = f.getPath();
 		StringBuffer uplus = new StringBuffer("chmod u+");
 		StringBuffer uminus = new StringBuffer("chmod u-");
-		StringBuffer gplus = new StringBuffer("chmod g+");
-		StringBuffer gminus = new StringBuffer("chmod g-");
-		StringBuffer oplus = new StringBuffer("chmod o+");
-		StringBuffer ominus = new StringBuffer("chmod o-");
 
-		if (right[0] == 0) uminus.append("r");
-		if (right[1] == 1) uplus.append("w");
-		if (right[2] == 1) uplus.append("x");
-		if (right[3] == 0) gminus.append("r");
-		if (right[4] == 1) gplus.append("w");
-		if (right[5] == 1) gplus.append("x");
-		if (right[6] == 0) ominus.append("r");
-		if (right[7] == 1) oplus.append("w");
-		if (right[8] == 1) oplus.append("x");
-		
+		if (right[0] == 0)
+			uminus.append("r");
+		else
+			uplus.append("r");
+
+		if (right[1] == 0)
+			uminus.append("w");
+		else
+			uplus.append("w");
+			
 		try {
-			r.exec((uplus.append(" "+file_path)).toString());
-			r.exec((uminus.append(" "+file_path)).toString());
-			r.exec((gplus.append(" "+file_path)).toString());
-			r.exec((gminus.append(" "+file_path)).toString());
-			r.exec((oplus.append(" "+file_path)).toString());
-			r.exec((ominus.append(" "+file_path)).toString());
+			r.exec((uplus.append(" " + file_path)).toString());
+			r.exec((uminus.append(" " + file_path)).toString());
+		} catch (IOException e) {
+			throw new ErrorIOFileException(f);
+		}
+	}
+
+	private int[] setReadOnly(File f)
+		throws ErrorIOFileException, CanNotReadException {
+
+		int[] right = new int[2];
+
+		if (f.canRead())
+			right[0] = 1;
+		else
+			right[0] = 0;
+
+		if (f.canWrite())
+			right[1] = 1;
+		else
+			right[1] = 0;
+		try {
+			Runtime.getRuntime().exec("chmod a-w " + f.getPath());
+			return right;
+		} catch (IOException e) {
+			throw new ErrorIOFileException(f);
+		} catch (SecurityException e) {
+			throw new CanNotReadException(f);
+		}
+	}
+
+	private void unsetReadOnly(File f,int[] right) throws ErrorIOFileException {
+		Runtime r = Runtime.getRuntime();
+		String file_path = f.getPath();
+		StringBuffer uplus = new StringBuffer("chmod u+");
+		StringBuffer uminus = new StringBuffer("chmod u-");
+	
+		if (right[0] == 0)
+			uminus.append("r");
+		if (right[1] == 1)
+			uplus.append("w");
+
+		try {
+			r.exec((uplus.append(" " + file_path)).toString());
+			r.exec((uminus.append(" " + file_path)).toString());
 		} catch (IOException e) {
 			throw new ErrorIOFileException(f);
 		}
