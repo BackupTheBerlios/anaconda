@@ -18,7 +18,7 @@ import fr.umlv.anaconda.tools.ChoozRep;
  */
 public class Move implements Command {
 	private static Cut cut = new Cut();
-	private static Paste last_paste = new Paste();
+	private static Paste last_paste;
 	/*private File dest = null;
 	private ArrayList selection;*/
 
@@ -37,6 +37,7 @@ public class Move implements Command {
 		}
 
 		cut.run(Main.getSelectionItems());
+		last_paste = new Paste();
 		last_paste.run(dest);
 		/*selection = Main.getSelectionItems();
 		if (dest == null || !dest.isDirectory()) {

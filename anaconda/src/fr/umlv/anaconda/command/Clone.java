@@ -19,7 +19,7 @@ import fr.umlv.anaconda.tools.ChoozRep;
  */
 public class Clone implements Command {
 	private static Copy copy = new Copy();
-	private static Paste last_paste = new Paste();
+	private static Paste last_paste;
 
 	/* (non-Javadoc)
 	 * @see fr.umlv.anaconda.command.Command#run()
@@ -37,6 +37,7 @@ public class Clone implements Command {
 		}
 
 		copy.run(Main.getSelectionItems());
+		Clone.last_paste = new Paste();
 		last_paste.run(dest);
 		/*ArrayList selected_file = Main.getSelectionItems();
 		FileInputStream fis = null;

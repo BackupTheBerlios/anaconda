@@ -16,12 +16,12 @@ import fr.umlv.anaconda.tools.Tools;
 
 public class Paste /*extends Thread */
 implements Command {
-	private static boolean is_cut;
-	private static ArrayList last_selection = new ArrayList();
-	private static File dest_rep;
-	private static File origin_rep;
-	private static Delete deleter = new Delete();
-	private final static NoSelectedFilesException no_selection =
+	private boolean is_cut;
+	private ArrayList last_selection = new ArrayList();
+	private File dest_rep;
+	private File origin_rep;
+	private Delete deleter = new Delete();
+	private NoSelectedFilesException no_selection =
 		new NoSelectedFilesException();
 
 	/**
@@ -121,14 +121,14 @@ implements Command {
 			return;
 		}
 
-		Paste.dest_rep = dest;
+		dest_rep = dest;
 
 		if (PressPaper.isEmpty()) {
 			(new EmptyPressPaperException()).show();
 			return;
 		}
 
-		Paste.origin_rep =
+		origin_rep =
 			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
 
 		last_selection.clear();
@@ -151,14 +151,14 @@ implements Command {
 			return;
 		}
 
-		Paste.dest_rep = dest;
+		dest_rep = dest;
 
 		if (PressPaper.isEmpty()) {
 			(new EmptyPressPaperException()).show();
 			return;
 		}
 
-		Paste.origin_rep =
+		origin_rep =
 			((File) (PressPaper.getSelectedFiles().get(0))).getParentFile();
 
 		last_selection.clear();
