@@ -1,5 +1,5 @@
 /*
- * Created on 9 févr. 2004
+ * Created on 9 f?vr. 2004
  */
 package fr.umlv.anaconda;
 

@@ -33,10 +33,12 @@ public class Paste implements Command {
 		//		act = new AbstractAction("Coller Ctrl+V") {
 		act = new AbstractAction("Coller") {
 			public void actionPerformed(ActionEvent e) {
+				if(is_cut) Main.readyToPaste = false;
+				else Main.readyToPaste = true;
 				run();
 			}
 			public boolean isEnable() {
-				return !PressPaper.isEmpty();
+				return Main.readyToPaste && !PressPaper.isEmpty();
 			}
 			//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
 			//	final String ACCELERATOR_KEY = "Ctrl+V";

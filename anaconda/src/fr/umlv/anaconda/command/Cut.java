@@ -1,5 +1,5 @@
 /*
- * Created on 1 févr. 2004
+ * Created on 1 f?vr. 2004
  */
 package fr.umlv.anaconda.command;
 
@@ -73,6 +73,7 @@ public class Cut implements Command {
 //		return new AbstractAction("Couper   Ctrl+X") {
 		return new AbstractAction("Couper") {
 			public void actionPerformed(ActionEvent e) {
+				Main.readyToPaste = true;
 				run();
 			}
 		};

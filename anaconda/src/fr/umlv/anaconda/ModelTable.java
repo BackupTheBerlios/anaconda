@@ -46,7 +46,7 @@ public class ModelTable extends AbstractTableModel {
 		return table.size();
 	}
 	public void setDimmension(int row, int column) {
-		if(column < 1) column = 1;
+		if(column < 1) column = 6;
 		if(row < 1) {
 			double rowD = (double)getSize() / (double)column;
 			this.row = (int)rowD;

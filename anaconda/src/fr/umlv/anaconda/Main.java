@@ -10,10 +10,11 @@ import javax.swing.tree.*;
 import fr.umlv.anaconda.appearance.Themes;
 import fr.umlv.anaconda.command.AllCommand;
 import fr.umlv.anaconda.command.Launch;
-import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorIOFileException;
+//import fr.umlv.anaconda.exception.DoNotExistFileException;
+//import fr.umlv.anaconda.exception.ErrorIOFileException;
 
 public class Main {
+	public static boolean readyToPaste = false;
 	/* VARIABLE DE NAVIGATION */
 	final public static File root = new File(System.getProperty("user.home"));
 	protected static File currentFolder = root;
@@ -317,7 +318,8 @@ public class Main {
 		ActionMap am = new ActionMap();//TODO action map...
 		/* INITIALISATION DE L'ARBRE ET DE LA TABLE */
 		initTree();
-		initTable();/*****/tableModel.setDimmension(50, 5);
+		initTable();
+		tableModel.setDimmension(-1, -1);
 		
 		JScrollPane scrollTree = new JScrollPane(tree);
 		final JPanel infoPanel = new JPanel();
@@ -525,28 +527,40 @@ public class Main {
 		toolBar.setBorderPainted(false);
 		final JButton back = new JButton(IconsManager.BACK);
 		back.setRolloverIcon(IconsManager.ONFOCUSBACK);
+		back.setToolTipText("Precedent");
 		final JButton refresh = new JButton(IconsManager.REFRESH);
 		refresh.setRolloverIcon(IconsManager.ONFOCUSREFRESH);
 		refresh.addActionListener(refreshAction);
+		refresh.setToolTipText("Actualiser");
 		final JButton next = new JButton(IconsManager.NEXT);
 		next.setRolloverIcon(IconsManager.ONFOCUSNEXT);
+		next.setToolTipText("Suivant");
 		final JButton cut = new JButton(IconsManager.CUT);
 		cut.setRolloverIcon(IconsManager.ONFOCUSCUT);
+		cut.addActionListener(cutAction);
+		cut.setToolTipText("Couper");
 		final JButton copy = new JButton(IconsManager.COPY);
 		copy.setRolloverIcon(IconsManager.ONFOCUSCOPY);
+		copy.addActionListener(copyAction);
+		copy.setToolTipText("Copier");
 		final JButton paste = new JButton(IconsManager.PASTE);
-	//	final JButton paste = new JButton(pasteAction);
 		paste.setRolloverIcon(IconsManager.ONFOCUSPASTE);
-		paste.addActionListener(pasteAction); // ne prend pas en compte l'?tat !
-	//	paste.setAction(pasteAction);
-	//	paste.setIcon(IconsManager.PASTE);
+		paste.setAction(pasteAction);
+		paste.setIcon(IconsManager.PASTE);
+		paste.setText("");
+		paste.setToolTipText("Coller");
 		final JButton find = new JButton(IconsManager.FIND);
 		find.setRolloverIcon(IconsManager.ONFOCUSFIND);
+		find.addActionListener(findAction);
+		find.setToolTipText("Rechercher");
 		final JButton home = new JButton(IconsManager.HOME);
 		home.setRolloverIcon(IconsManager.ONFOCUSHOME);
+		home.setToolTipText("Maison");
 		final JButton garbage = new JButton(IconsManager.GARBAGE);
 		garbage.setRolloverIcon(IconsManager.ONFOCUSGARBAGE);
-		find.addActionListener(findAction);
+		garbage.addActionListener(deleteAction);
+		garbage.setToolTipText("Supprimer");
+		
 
 		toolBar.add(home);
 		toolBar.add(back);
@@ -676,7 +690,7 @@ public class Main {
 			public void mouseClicked(MouseEvent e) {
 				lastFocused = TREE_FOCUS;
 				selectAllAction.setEnabled(false);
-				pasteAction.setEnabled(true);
+				pasteAction.setEnabled(readyToPaste);
 				if (e.getButton() == MouseEvent.BUTTON1 &&
 					e.getClickCount() == 1 && lastFolder != null &&
 					!currentFolder.equals(lastFolder)) {
@@ -689,12 +703,23 @@ public class Main {
 			public void mouseClicked(MouseEvent e) {
 				lastFocused = TABLE_FOCUS;
 				selectAllAction.setEnabled(true);
-				pasteAction.setEnabled(false);
 				if (e.getButton() == MouseEvent.BUTTON1 &&
 					e.getClickCount() == 2 && lastFolder != null &&
 					!currentFolder.equals(lastFolder)) {
 					back.setEnabled(true);
 					next.setEnabled(false);
+					pasteAction.setEnabled(readyToPaste);
+				}
+				else if(e.getButton() == MouseEvent.BUTTON1 || e.getButton() == MouseEvent.BUTTON3) {
+					Point p = e.getPoint();
+					int row = table.rowAtPoint(p);
+					int column = table.columnAtPoint(p);
+					File file = (File)tableModel.getValueAt(row, column);
+					if(file == null) file = currentFolder; 
+					pasteAction.setEnabled(readyToPaste && file.isDirectory());
+				}
+				else {
+					pasteAction.setEnabled(false);
 				}
 			}
 		});

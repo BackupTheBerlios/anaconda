@@ -21,6 +21,7 @@ public class TableRenderer extends DefaultTableCellRenderer {
 		imagesExt.add(".png");
 		imagesExt.add(".bmp");
 	} */
+	final private int MAX_NAME_SIZE = 10;
 	/**
 	 * METHODES UTILES
 	 */
@@ -47,7 +48,16 @@ public class TableRenderer extends DefaultTableCellRenderer {
 		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		if(value == null) return new JLabel("");
 		File file = (File)value;
-		((JLabel)c).setText(file.getName());
+		String name = file.getName();
+		if(isSelected) ((JLabel)c).setText(name);
+		else {
+			if(name.length() <  MAX_NAME_SIZE) {
+				((JLabel)c).setText(name);
+			}
+			else {
+				((JLabel)c).setText(name.substring(0, MAX_NAME_SIZE).concat("..."));
+			}
+		}
 		((JLabel)c).setToolTipText(file.getAbsolutePath());
 		((JLabel)c).setHorizontalAlignment(SwingConstants.CENTER);
 		((JLabel)c).setVerticalAlignment(SwingConstants.CENTER);

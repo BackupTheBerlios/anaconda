@@ -1,5 +1,5 @@
 /*
- * Created on 1 févr. 2004
+ * Created on 1 f?vr. 2004
  */
 package fr.umlv.anaconda.command;
 
@@ -77,6 +77,7 @@ public class Copy implements Command {
 //		return new AbstractAction("Copier    Ctrl+C") {
 		return new AbstractAction("Copier") {
 			public void actionPerformed(ActionEvent e) {
+				Main.readyToPaste = true;
 				run();
 			}
 		};
