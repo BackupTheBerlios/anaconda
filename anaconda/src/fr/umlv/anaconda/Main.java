@@ -1,6 +1,3 @@
-/* BEUGS:
- 	- apres avoir resolu le pb de refresh de l'arbre, le serpent disparait kan on click sur '..' 
- */
 package fr.umlv.anaconda;
 
 import java.awt.*;
