@@ -1,12 +1,10 @@
 package fr.umlv.anaconda;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import fr.umlv.anaconda.appearance.Themes;
 
 import java.awt.*;
-import java.io.File;
+import javax.swing.*;
+import javax.swing.event.*;
+
+import fr.umlv.anaconda.appearance.Themes;
 
 
 public class MyTabbedPane extends JPanel {
@@ -33,13 +31,14 @@ public class MyTabbedPane extends JPanel {
 		tabbedPane.setSelectedIndex(0); 
 		
 		/* Creation de l'onglet de recherche */
-		JTable findTable = new JTable(findModel);
+		JList findList = new JList(findModel);
 		TableRenderer findRenderer = new TableRenderer();
-		findTable.setDefaultRenderer(File.class, findRenderer);
+		findList.setCellRenderer(new ListRenderer());
+		
 		
 		JPanel panelTemp2 = new JPanel();
 		panelTemp2.setLayout(new BorderLayout());
-		panelTemp2.add(findTable, BorderLayout.CENTER);
+		panelTemp2.add(findList, BorderLayout.CENTER);
 		panelTemp2.setBackground(Themes.getBgColor());
 		
 		Component panel2 = new JScrollPane(panelTemp2);
