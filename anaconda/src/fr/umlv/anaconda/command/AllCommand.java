@@ -20,7 +20,8 @@ public class AllCommand {
 			new Find(),
 			new ShowProperties(),
 			new Trash(), 
-			new About()		
+			new About(),
+			new Help()
 			};
 
 	public static final String[] command_name =
@@ -37,7 +38,8 @@ public class AllCommand {
 			"find",
 			"showproperties",
 			"trash", 
-			"about"
+			"about", 
+			"help"
 	};
 
 	public static Command last_command;

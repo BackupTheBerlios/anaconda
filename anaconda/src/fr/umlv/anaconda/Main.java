@@ -226,6 +226,12 @@ public class Main {
 			}
 		};
 
+		final Action helpAction = new AbstractAction("Aide"){
+			public void actionPerformed(ActionEvent e){
+				AllCommand.get("help").run();
+			}
+		};
+
 		final Action showBySizeAction = new AbstractAction("Taille"){
 			public void actionPerformed(ActionEvent e){
 				model.addCmp("by_size");
@@ -349,7 +355,9 @@ public class Main {
 		disp.add(subMenuBar);
 		disp.add(subMenuLangue);
 		/* ? */
-		help.add(new JMenuItem("Aide"));
+		JMenuItem itemHelp = new JMenuItem("Aide");
+		itemHelp.addActionListener(helpAction);
+		help.add(itemHelp);
 		JMenuItem itemAbout = new JMenuItem("A propos");
 		itemAbout.addActionListener(aboutAction);
 		help.add(itemAbout);
