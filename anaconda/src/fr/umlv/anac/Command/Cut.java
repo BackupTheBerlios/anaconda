@@ -79,4 +79,9 @@ public class Cut implements Command {
 
 		}
 	}
+
+	public void redo() throws IsNotDirectoryException, CanNotWriteException, CanNotReadException, DoNotExistFileException, ErrorPastingFileException {
+		// TODO Auto-generated method stub
+		
+	}
 }

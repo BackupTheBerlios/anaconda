@@ -10,25 +10,35 @@ import fr.umlv.anac.Exception.DoNotExistFileException;
 import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
+public class LaunchFile implements Command {
 
-
-
-public class LaunchFile implements Command{
-
-	/* (non-Javadoc)
-	 * @see fr.umlv.anac.Command.Command#run(java.lang.Object)
-	 */
-	public void run(Object o) throws IsNotDirectoryException, CanNotWriteException, CanNotReadException, DoNotExistFileException, ErrorPastingFileException {
-		// TODO Raccord de méthode auto-généré
+	public void run(Object o)
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anac.Command.Command#undo()
-	 */
-	public void undo() throws DoNotExistFileException, IsNotDirectoryException, CanNotWriteException, CanNotReadException, CanNotDeleteException, ErrorPastingFileException {
-		// TODO Raccord de méthode auto-généré
-		
+	public void undo()
+		throws
+			DoNotExistFileException,
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			CanNotDeleteException,
+			ErrorPastingFileException {
 	}
-	
+
+	public void redo()
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
+	}
+
 }

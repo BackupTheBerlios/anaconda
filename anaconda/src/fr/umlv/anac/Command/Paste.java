@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import fr.umlv.anac.Exception.CanNotDeleteException;
@@ -31,16 +30,16 @@ public class Paste implements Command {
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
-				
+
 		File dest = (File) o;
-		
+
 		if (!dest.exists())
 			throw new DoNotExistFileException(dest);
 		if (!dest.isDirectory())
 			throw new IsNotDirectoryException(dest);
 		if (!dest.canWrite())
 			throw new CanNotWriteException(dest);
-			
+
 		for (Iterator it = PressPaper.getSelectedFiles().iterator();
 			it.hasNext();
 			) {
@@ -114,7 +113,15 @@ public class Paste implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException {
+	}
 
+	public void redo()
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
 	}
 
 }

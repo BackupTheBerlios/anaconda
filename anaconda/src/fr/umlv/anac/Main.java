@@ -10,11 +10,18 @@ import java.io.*;
  * 
  */
 public class Main {
+    /**/
+    public static File oldCurrentFolder;
+    public static File newCurrentFolder;
+    /**/ 
     public static void main(String[] args) throws Exception {
         final JFrame mainFrame = new JFrame("Anaconda");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(800, 600);
         final Model model = new Model();
+
+        oldCurrentFolder = newCurrentFolder  = model.getFolder();
+
         final ModelTreeAdapter treeModel = new ModelTreeAdapter(model);
         final JTree tree = new JTree(treeModel);
         /* CREATION DE L'ARBRE */
@@ -91,27 +98,6 @@ public class Main {
                     return c;
                 }
             });
-        /* LISTERNER SUR L'ARBRE ET LA LISTE */
-        tree.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    if(e.getClickCount() == 1) {
-                        File file = ((Model)tree.getSelectionPath().getLastPathComponent()).getFolder();
-                        model.setFolder(file);
-                        list.setSelectedIndex(0);
-                    }
-                }
-            });
-        list.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    if(e.getClickCount() == 2) {
-                        File file = (File)list.getSelectedValue();
-                        if(file.isDirectory()) {
-                            model.setFolder(file);
-                            list.setSelectedIndex(0);
-                        }
-                    }
-                }
-            });
         JScrollPane scrollTree = new JScrollPane(tree);
         JScrollPane scrollList = new JScrollPane(list);
         /******************************/
@@ -142,63 +128,92 @@ public class Main {
         JMenu edit = new JMenu("Edition");
         JMenu disp = new JMenu("Affichage");
         JMenu help = new JMenu("?");
-        
+
+        /* Fichier */
         JMenu subMenuNew = new JMenu("Nouveau...");
-        subMenuNew.add("Fichier    Ctrl+T");
-        subMenuNew.add("Repertoire    Ctrl+R");
-        subMenuNew.add("Fenetre d'exploration    Ctrl+E"); 
+        JMenuItem newFileItem = new JMenuItem("Fichier    Ctrl+T");
+        JMenuItem newFolderItem = new JMenuItem("Repertoire    Ctrl+R");
+        JMenuItem newFrameItem = new JMenuItem("Fenetre d'exploration    Ctrl+E");
+        subMenuNew.add(newFileItem);
+        subMenuNew.add(newFolderItem);
+        subMenuNew.add(newFrameItem);
         file.add(subMenuNew);
-        file.add(new JMenuItem("Rechercher    Ctrl+F"));
-        file.add(new JMenuItem("Proprietes    Ctrl+P"));
-     
-        edit.add(new JMenuItem("Couper   Ctrl+X"));
-        edit.add(new JMenuItem("Copier    Ctrl+C"));
-        edit.add(new JMenuItem("Coller    Ctrl+V"));
-     	edit.add(new JMenuItem("Dupliquer    Ctrl+Alt+C"));
-     	edit.add(new JMenuItem("Deplacer    Ctrl+Alt+X"));
-     	edit.add(new JMenuItem("Selectionner tout"));
-     	edit.add(new JMenuItem("Renommer"));
-     	edit.add(new JMenuItem("Supprimer"));
-     	
-     	disp.add(new JMenuItem("Actualiser"));
+        JMenuItem findItem = new JMenuItem("Rechercher    Ctrl+F");
+        JMenuItem propertiesItem = new JMenuItem("Proprietes    Ctrl+P");
+        file.add(findItem);
+        file.add(propertiesItem);
+        /* Edition */
+        JMenuItem cutItem = new JMenuItem("Couper   Ctrl+X");
+        JMenuItem copyItem = new JMenuItem("Copier    Ctrl+C");
+        JMenuItem pasteItem = new JMenuItem("Coller    Ctrl+V");
+        JMenuItem dupItem = new JMenuItem("Dupliquer    Ctrl+Alt+C");
+        JMenuItem moveItem = new JMenuItem("Deplacer    Ctrl+Alt+X");
+        JMenuItem selectAllItem = new JMenuItem("Selectionner tout");
+        JMenuItem renameItem = new JMenuItem("Renommer");
+        JMenuItem deleteItem = new JMenuItem("Supprimer");
+        edit.add(cutItem);
+        edit.add(copyItem);
+        edit.add(pasteItem);
+     	edit.add(dupItem);
+     	edit.add(moveItem);
+     	edit.add(selectAllItem);
+     	edit.add(renameItem);
+     	edit.add(deleteItem);
+        /* Affichage */
+     	JMenuItem reloadItem = new JMenuItem("Actualiser");
      	JMenu subMenuTri = new JMenu("Organiser par...");
-     	subMenuTri.add("Nom");
-     	subMenuTri.add("Type");
-     	subMenuTri.add("Taille");
-     	subMenuTri.add("Date");
+        JMenuItem triName = new JMenuItem("Nom");
+        JMenuItem triType = new JMenuItem("Type");
+        JMenuItem triSize = new JMenuItem("Taille");
+        JMenuItem triDate = new JMenuItem("Date");
+     	subMenuTri.add(triName);
+     	subMenuTri.add(triType);
+     	subMenuTri.add(triSize);
+     	subMenuTri.add(triDate);
      	JMenu subMenuType = new JMenu("Type d'affichage...");
-     	subMenuType.add("Grandes icones");
-     	subMenuType.add("Petites icones");
-     	subMenuType.add("Liste");
-     	subMenuType.add("Detail");
+        JMenuItem typeBig = new JMenuItem("Grandes icones");
+        JMenuItem typeSamll = new JMenuItem("Petites icones");
+        JMenuItem typeList = new JMenuItem("Liste");
+        JMenuItem typeDetail = new JMenuItem("Detail");
+     	subMenuType.add(typeBig);
+     	subMenuType.add(typeSamll);
+     	subMenuType.add(typeList);
+     	subMenuType.add(typeDetail);
      	JMenu subMenuBar = new JMenu("Barres...");
-     	subMenuBar.add("Barre d'outils");
-     	subMenuBar.add("Barre d'adresse");
+        JMenuItem barTools = new JMenuItem("Barre d'outils");
+        JMenuItem barAdr = new JMenuItem("Barre d'adresse");
+     	subMenuBar.add(barTools);
+     	subMenuBar.add(barAdr);
      	JMenu subMenuLangue = new JMenu("Langue...");
-     	subMenuLangue.add("Francais");
-     	subMenuLangue.add("Anglais");
-     	subMenuLangue.add("Espagnol");
+        JMenuItem french = new JMenuItem("Francais");
+        JMenuItem english = new JMenuItem("Anglais");
+        JMenuItem spanish = new JMenuItem("Espagnol");
+     	subMenuLangue.add(french);
+     	subMenuLangue.add(english);
+     	subMenuLangue.add(spanish);
+        disp.add(reloadItem);
      	disp.add(subMenuTri);
         disp.add(subMenuType);
      	disp.add(subMenuBar);
      	disp.add(subMenuLangue);
-     	
+     	/* ? */
      	help.add(new JMenuItem("Aide"));
         help.add(new JMenuItem("A propos"));
-     	
+
         menuBar.add(file);
         menuBar.add(edit);
-        menuBar.add(disp);	
+        menuBar.add(disp);
         menuBar.add(help);
         
         /* TOOLBAR */
         JToolBar toolBar = new JToolBar();
-        JButton back = new JButton(new ImageIcon("images/back.gif"));
-        JButton next = new JButton(new ImageIcon("images/next.gif"));
+        final JButton back = new JButton(new ImageIcon("images/back.gif"));
+        final JButton next = new JButton(new ImageIcon("images/next.gif"));
         JButton cut = new JButton(new ImageIcon("images/cut.gif"));
         JButton copy = new JButton(new ImageIcon("images/copy.gif"));
         JButton paste = new JButton(new ImageIcon("images/paste.gif"));
         JButton find = new JButton(new ImageIcon("images/find.gif"));
+        
         //back.setBackground(Color.WHITE);
         //next.setBackground(Color.WHITE);
         //cut.setBackground(Color.WHITE);
@@ -216,14 +231,16 @@ public class Main {
         
         /* ADRESSBAR */
         JToolBar adressBar = new JToolBar();
-        JButton del = new JButton("effacer");
+        JButton delAdr = new JButton("effacer");
         JLabel adr = new JLabel("adresse");
-        JButton open = new JButton("ouvrir");
-        JTextField adrZone = new JTextField(20);
-        adressBar.add(del);
+        JButton openAdr = new JButton("ouvrir");
+        final JTextField adrZone = new JTextField(20);
+        adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+       
+        adressBar.add(delAdr);
         adressBar.add(adr);
         adressBar.add(adrZone);
-        adressBar.add(open);
+        adressBar.add(openAdr);
         
         /* PANELBAR */
         JPanel panelBar = new JPanel();
@@ -231,12 +248,146 @@ public class Main {
         panelBar.add(toolBar, BorderLayout.NORTH);
         panelBar.add(adressBar, BorderLayout.CENTER);
         
+        /* Listeners des BAR */
+        back.setEnabled(false);
+        next.setEnabled(false);
+        back.addActionListener( new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                  model.setFolder(oldCurrentFolder);
+                  adrZone.setText(oldCurrentFolder.getAbsolutePath()+File.separator);
+                  back.setEnabled(false);
+                  next.setEnabled(true);
+                }
+            });
+        next.addActionListener( new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    model.setFolder(newCurrentFolder);
+                    adrZone.setText(newCurrentFolder.getAbsolutePath()+File.separator);
+                    back.setEnabled(true);
+                    next.setEnabled(false);
+                }
+            });
+        adrZone.addActionListener( new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    //System.out.println(adrZone.getText());
+                    if(!adrZone.getText().startsWith(File.separator)){
+                        File file = new File(model.getFolder().getAbsolutePath()+File.separator+adrZone.getText());
+                        if(file.exists()){
+                            oldCurrentFolder = model.getFolder();
+                            newCurrentFolder = file;
+                            model.setFolder(file);
+                            back.setEnabled(true);
+                            next.setEnabled(false);
+                        }
+
+                    }
+                    else{
+                        File file = new File(adrZone.getText());
+                        if(file.exists()){
+                            oldCurrentFolder = model.getFolder();
+                            newCurrentFolder = file;
+                            model.setFolder(file);
+                            back.setEnabled(true);
+                            next.setEnabled(false);
+                        }
+                    }
+                    adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+                }
+            });
+        openAdr.addActionListener((adrZone.getActionListeners())[0]);
+        delAdr.addActionListener( new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    adrZone.setText("");
+                }
+            });
         mainFrame.setJMenuBar(menuBar);
         //mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
         mainFrame.getContentPane().add(panelBar, BorderLayout.NORTH);
         mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
         /***********************************/
-        //mainFrame.setContentPane(splitPane);
+        /* LISTERNER SUR L'ARBRE ET LA LISTE */
+        tree.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    switch(e.getButton()) {
+                    case MouseEvent.BUTTON1:
+                        if(e.getClickCount() == 1) {
+                            File file = ((Model)tree.getLastSelectedPathComponent()).getFolder();
+                            oldCurrentFolder = model.getFolder();
+                            back.setEnabled(true);
+                            next.setEnabled(false);
+                            newCurrentFolder = file;
+                            if(Model.cmp.compare(oldCurrentFolder, file) != 0) {
+                                model.setFolder(file);
+                                adrZone.setText(file.getAbsolutePath()+File.separator);
+                                list.setSelectedIndex(0);
+                            }
+                        }
+                        break;
+                    case MouseEvent.BUTTON2:
+                        break;
+                    case MouseEvent.BUTTON3:
+                        break;
+                    }
+                }
+            });
+        list.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    switch(e.getButton()) {
+                    case MouseEvent.BUTTON1:
+                        if(e.getClickCount() == 2) {
+                            File file = (File)list.getSelectedValue();
+                            oldCurrentFolder = model.getFolder();
+                            back.setEnabled(true);
+                            next.setEnabled(false);
+                            if(file.isDirectory()) {
+                                newCurrentFolder = file;
+                                model.setFolder(file);
+                                adrZone.setText(file.getAbsolutePath()+File.separator);
+                                list.setSelectedIndex(0);
+                            }
+                        }
+                        break;
+                    case MouseEvent.BUTTON2:
+                        break;
+                    case MouseEvent.BUTTON3:
+                        JPopupMenu popup = new JPopupMenu();
+                        int index = list.locationToIndex(new Point(e.getX(), e.getY()));
+                        //System.out.println(index);
+                        File file = (File)listModel.getElementAt(index);
+                        if(file == null) {
+                            JMenuItem newFileItemPop = new JMenuItem("Nouveau Fichier    Ctrl+T");
+                            JMenuItem newFolderItemPop = new JMenuItem("Nouveau Repertoire    Ctrl+R");
+                            JMenuItem newFrameItemPop = new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E");
+                            popup.add(newFileItemPop);
+                            popup.add(newFolderItemPop);
+                            popup.add(newFrameItemPop);
+
+                        }
+                        else {
+                            list.setSelectedIndex(index);
+                            JMenuItem cutItemPop = new JMenuItem("Couper   Ctrl+X");
+                            JMenuItem copyItemPop = new JMenuItem("Copier    Ctrl+C");
+                            JMenuItem pasteItemPop = new JMenuItem("Coller    Ctrl+V");
+                            JMenuItem dupItemPop = new JMenuItem("Dupliquer    Ctrl+Alt+C");
+                            JMenuItem moveItemPop = new JMenuItem("Deplacer    Ctrl+Alt+X");
+                            JMenuItem selectAllItemPop = new JMenuItem("Selectionner tout");
+                            JMenuItem renameItemPop = new JMenuItem("Renommer");
+                            JMenuItem deleteItemPop = new JMenuItem("Supprimer");
+                            popup.add(cutItemPop);
+                            popup.add(copyItemPop);
+                            popup.add(pasteItemPop);
+                            pasteItemPop.setEnabled(file.isDirectory()); 
+                            popup.add(dupItemPop);
+                            popup.add(moveItemPop);
+                            popup.add(renameItemPop);
+                            popup.add(deleteItemPop);
+                            
+                        }
+                        popup.show(e.getComponent(), e.getX(), e.getY());
+                        break;
+                    }
+                }
+            });
         mainFrame.show();
     }
 }
