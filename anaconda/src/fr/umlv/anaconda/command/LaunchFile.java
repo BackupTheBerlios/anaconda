@@ -13,7 +13,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 public class LaunchFile extends AbstractAction implements Command {
@@ -24,7 +24,7 @@ public class LaunchFile extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 		//TODO launch file.
 	}
 
@@ -35,7 +35,7 @@ public class LaunchFile extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 		//TODO undo launch file.
 	}
 
@@ -45,7 +45,7 @@ public class LaunchFile extends AbstractAction implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 		//TODO redo launch file.
 	}
 

@@ -10,7 +10,7 @@ import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
-import fr.umlv.anaconda.exception.ErrorPastingFileException;
+import fr.umlv.anaconda.exception.ErrorIOFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 /**
@@ -31,7 +31,7 @@ public class ShowProperties implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 
 		File f = (File) o;
 		/*
@@ -62,7 +62,7 @@ public class ShowProperties implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 
 	}
 
@@ -73,7 +73,7 @@ public class ShowProperties implements Command {
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException,
-			ErrorPastingFileException {
+			ErrorIOFileException {
 
 	}
 	public static void main(String[] args) {
