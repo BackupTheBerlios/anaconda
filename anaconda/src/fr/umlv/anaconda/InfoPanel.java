@@ -141,7 +141,7 @@ public class InfoPanel extends JPanel {
 						}
 					}
 				} catch (TooMuchFilesException exception) {
-					//TODO verifier l'exception
+					exception.show();
 				} catch (DoNotExistFileException exception) {
 					exception.show();
 				}
@@ -179,8 +179,11 @@ public class InfoPanel extends JPanel {
 		repaint();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createTitledBorder("INFORMATIONS FICHIERS"));
-		JLabel label_nb_elements =
-			new JLabel(" " + nb_elements + " elements selectionnes");
+		JLabel label_nb_elements;
+		if(nb_elements <= 1)
+			label_nb_elements = new JLabel(" " + nb_elements + " element selectionne");
+		else
+			label_nb_elements = new JLabel(" " + nb_elements + " elements selectionnes");
 		add(label_nb_elements);
 		if (f != null) {
 			if (Extension.isImage(f.getName())) {

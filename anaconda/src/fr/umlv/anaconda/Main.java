@@ -314,7 +314,6 @@ public class Main {
 						JOptionPane.OK_CANCEL_OPTION)
 					== JOptionPane.OK_OPTION)
 					System.exit(1);
-				// TODO g?rer proprement, v?rifier si on est pas en train de travailler ?..
 			}
 		});
 

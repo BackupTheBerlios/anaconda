@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-/* Maitrise info - génie logiciel */
+/* Maitrise info - g?nie logiciel */
 /* Anaconda (Livingstone project) */
 /* Created on 1 mars 2004 */
 
@@ -27,7 +27,6 @@ public class ChoozExec {
 	 */
 	public ChoozExec() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -46,7 +45,7 @@ public class ChoozExec {
 		fileChooz.setMultiSelectionEnabled(false);
 		fileChooz.setDialogTitle("Lancement");
 		fileChooz.setApproveButtonText("Lancer");
-		fileChooz.setApproveButtonToolTipText("Lance l'application sélectionnée");
+		fileChooz.setApproveButtonToolTipText("Lance l'application s?lectionn?e");
 	//	fileChooz.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		
 		int returnVal = fileChooz.showOpenDialog(null); 

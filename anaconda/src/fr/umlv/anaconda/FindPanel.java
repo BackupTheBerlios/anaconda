@@ -65,33 +65,12 @@ public class FindPanel{
 						}
 					}
 				} catch (TooMuchFilesException exception) {
-					//TODO verifier l'exception
+					exception.show();
 				} catch (DoNotExistFileException exception) {
 					exception.show();
 				}
 			}
 		});
-
-		/*GridLayout layout = new GridLayout(4, 2);
-		panel.setLayout(layout);
-
-		panel.add(label_title);
-		panel.add(new JLabel(""));
-
-		panel.add(label_name);
-		panel.add(field_name);
-
-		panel.add(label_root);
-		panel.add(field_root_name);
-
-		panel.add(new JLabel(""));
-		JPanel panel_button = new JPanel();
-		panel_button.setLayout(new GridLayout(1, 2));
-		panel_button.add(ok_button);
-		panel.add(panel_button);*/
-
-		//getContentPane().add(panel);
-		//setSize(350, 100);
 
 	}
 	
