@@ -42,7 +42,6 @@ public class Main {
 		}
 		return selection_items;
 	}
-	
 	/* VARIABLES POUR LES ICONES */
 	final public static String iconesResourcePath = "/images/";
 	final public static String[] iconesPath = { "anaconda_logo.gif",
@@ -138,14 +137,14 @@ public class Main {
 				File parent = listModel.getModel().getFolder().getParentFile();
 				if (parent == null)
 					parent = listModel.getModel().getFolder();
-				if (parent.getName().compareTo(name) == 0)
+				if (parent.getAbsolutePath().compareTo(((File) value).getAbsolutePath()) == 0)
 					name = "..";
 				else if (name.compareTo("") == 0)
 					name = ((File) value).getAbsolutePath();
 				((JLabel) c).setText(name);
 				/************************/
 				if (((File) value).isDirectory()) {
-					if (name == "..")
+					if (name.compareTo("..") == 0)
 						((JLabel) c).setIcon(new ImageIcon(icones[FATHER_ICONE]));
 					else
 						((JLabel) c).setIcon(new ImageIcon(icones[REP_ICONE]));
@@ -429,18 +428,25 @@ public class Main {
 							next.setEnabled(false);
 							if (file.isDirectory()) {
 								newCurrentFolder = file;
+								if(model.equals(treeModel.getRoot()))
+									tree.expandRow(0);
 								model.setFolder(file);
-								TreePath path = new TreePath(model);
-								tree.expandPath(path);
-								tree.setSelectionPath(path);
-								tree.validate();
-								tree.repaint();
-								tree.repaint(
-									0,
-									0,
-									0,
-									tree.getWidth(),
-									tree.getHeight());
+								TreePath path = new TreePath(treeModel.getPathToRoot(model));
+								if(path != null) {
+									int row;
+									Model pathModel = (Model)path.getLastPathComponent();
+									for(row = 0; row < tree.getVisibleRowCount(); row ++) {
+										TreePath pathRow = tree.getPathForRow(row);
+										if(pathRow != null && model.equals(pathRow.getLastPathComponent()))
+											break;
+									}
+									if(row < tree.getVisibleRowCount()) {
+										tree.expandRow(row);
+										tree.setSelectionRow(row);
+										tree.validate();
+										tree.repaint();
+									}
+								}
 								String fileName = file.getAbsolutePath();
 								adrZone.setText(
 									fileName

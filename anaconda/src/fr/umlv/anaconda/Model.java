@@ -130,6 +130,12 @@ public class Model implements ListModel, TreeNode {
 		}
 		filterTree = list;
 	}
+	public boolean equals(Object obj) {
+		return cmp.compare(folder, ((Model)obj).getFolder()) == 0;
+	}
+	public String toString() {
+		return folder.toString();
+	}
 	protected EventListenerList listenerList = new EventListenerList();
 	/* Methodes pour le ListModel */
 	public int getSize() {
