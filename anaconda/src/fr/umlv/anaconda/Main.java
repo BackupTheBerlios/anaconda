@@ -16,6 +16,7 @@ import java.awt.event.*;
  */
 public class Main {
 	/**/
+
 	public static File oldCurrentFolder;
 	public static File newCurrentFolder;
 	final public static Model model = new Model();
@@ -23,16 +24,20 @@ public class Main {
 		new ModelTreeAdapter(model);
 	final public static JTree tree = new JTree(treeModel);
 
+
 	final public static GarbageModel garbage_model = new GarbageModel();
 	final public static Trash trash = new Trash(garbage_model);
 	final public static FindModel find_model = new FindModel();
 	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model,garbage_model);
 		   final public static ModelListAdapter listModel = tabb.getListModel();
 		   final public static JList list = tabb.getListFiles();
+	final public static ListRenderer listCellRenderer = new ListRenderer(listModel);
+	final public static TreeRenderer treeRenderer = new TreeRenderer();
 	final private static int LIST_FOCUS = 0;
 	final private static int TREE_FOCUS = 1;
 	final private static int NONE_FOCUS = 2;
 	private static int lastFocused = NONE_FOCUS;
+
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
 		ArrayList selection_items = new ArrayList();
@@ -52,7 +57,7 @@ public class Main {
 	}
 	/* VARIABLES POUR LES ICONES */
 	final public static String iconesResourcePath = "/images/";
-	final public static String[] iconesPath = { "anaconda_logo.gif",
+	final public static String[] iconesPath = { "anaconda_logo_2.gif",
 		"back.gif", "copy.gif", "cut.gif", "find.gif", "iconExe.gif",
 		"iconFather.gif", "iconFocus.gif", "iconImg.gif", "iconNode.gif",
 		"iconOpen.gif", "iconRep.gif", "iconText.gif", "next.gif", "paste.gif" };
@@ -88,37 +93,7 @@ public class Main {
 			TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setSelectionModel(treeSelection);
 		tree.setSelectionRow(0);
-		tree.setCellRenderer(new DefaultTreeCellRenderer() {
-			public Component getTreeCellRendererComponent(
-				JTree tree,
-				Object value,
-				boolean selected,
-				boolean expanded,
-				boolean leaf,
-				int row,
-				boolean hasFocus) {
-				Component c =
-					super.getTreeCellRendererComponent(
-						tree,
-						value,
-						selected,
-						expanded,
-						leaf,
-						row,
-						hasFocus);
-				String name = ((Model) value).getFolder().getName();
-				if (name.compareTo("") == 0)
-					name = ((Model) value).getFolder().getAbsolutePath();
-				((JLabel) c).setText(name);
-				if (selected)
-					((JLabel) c).setIcon(new ImageIcon(icones[FOCUS_ICONE]));
-				else if (expanded)
-					((JLabel) c).setIcon(new ImageIcon(icones[OPEN_ICONE]));
-				else
-					((JLabel) c).setIcon(new ImageIcon(icones[NODE_ICONE]));
-				return c;
-			}
-		});
+		tree.setCellRenderer(treeRenderer);
 		/* CREATION DE LA LISTE */
 		/***********************/
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -126,48 +101,9 @@ public class Main {
 		/***********************/
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setSelectedIndex(0);
-		list.setCellRenderer(new DefaultListCellRenderer() {
-			public Component getListCellRendererComponent(
-				JList list,
-				Object value,
-				int index,
-				boolean isSelected,
-				boolean cellHasFocus) {
-				Component c =
-					super.getListCellRendererComponent(
-						list,
-						value,
-						index,
-						isSelected,
-						cellHasFocus);
-				String name = ((File) value).getName();
-				File parent = listModel.getModel().getFolder().getParentFile();
-				if (parent == null)
-					parent = listModel.getModel().getFolder();
-				if (parent.getAbsolutePath().compareTo(((File) value).getAbsolutePath()) == 0)
-					name = "..";
-				else if (name.compareTo("") == 0)
-					name = ((File) value).getAbsolutePath();
-				((JLabel) c).setText(name);
-				/************************/
-				if (((File) value).isDirectory()) {
-					if (name.compareTo("..") == 0)
-						((JLabel) c).setIcon(new ImageIcon(icones[FATHER_ICONE]));
-					else
-						((JLabel) c).setIcon(new ImageIcon(icones[REP_ICONE]));
-				}
-				else {
-					if (name.endsWith(".jpg"))
-						((JLabel) c).setIcon(new ImageIcon(icones[IMG_ICONE]));
-					else if (name.endsWith(".exe"))
-						((JLabel) c).setIcon(new ImageIcon(icones[EXE_ICONE]));
-					else
-						((JLabel) c).setIcon(new ImageIcon(icones[TEXT_ICONE]));
-				}
-				/************************/
-				return c;
-			}
-		});
+		
+		list.setCellRenderer(listCellRenderer);
+
 		JScrollPane scrollTree = new JScrollPane(tree);
 		//JScrollPane scrollList = new JScrollPane(list);
 		/******************************/
@@ -229,7 +165,6 @@ public class Main {
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action paste
 				(new Paste()).start();
 			}
 		};
@@ -241,7 +176,6 @@ public class Main {
 		};
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
 				(new Move()).run();
 			}
 		};
@@ -268,6 +202,18 @@ public class Main {
 			public void actionPerformed(ActionEvent e){
 				FindFrame frame = new FindFrame(find_model);
 				frame.show();
+			}
+		};
+		final Action bigIconsAction = new AbstractAction("Grandes Iconses"){
+			public void actionPerformed(ActionEvent e){
+				listCellRenderer.setIconsSize(IconsManager.BIG_ICONS);
+				refreshAction.actionPerformed(e);
+			}
+		};
+		final Action smallIconsAction = new AbstractAction("Grandes Iconses"){
+			public void actionPerformed(ActionEvent e){
+				listCellRenderer.setIconsSize(IconsManager.SMALL_ICONS);
+				refreshAction.actionPerformed(e);
 			}
 		};
 
@@ -336,11 +282,13 @@ public class Main {
 		subMenuTri.add(triDate);
 		JMenu subMenuType = new JMenu("Type d'affichage...");
 		JMenuItem typeBig = new JMenuItem("Grandes icones");
-		JMenuItem typeSamll = new JMenuItem("Petites icones");
+		typeBig.addActionListener(bigIconsAction);
+		JMenuItem typeSmall = new JMenuItem("Petites icones");
+		typeSmall.addActionListener(smallIconsAction);
 		JMenuItem typeList = new JMenuItem("Liste");
 		JMenuItem typeDetail = new JMenuItem("Detail");
 		subMenuType.add(typeBig);
-		subMenuType.add(typeSamll);
+		subMenuType.add(typeSmall);
 		subMenuType.add(typeList);
 		subMenuType.add(typeDetail);
 		JMenu subMenuBar = new JMenu("Barres...");
@@ -604,6 +552,8 @@ public class Main {
 				}
 			}
 		});
+		tree.setForeground(new Color(210,230,255));
+		tree.setBackground(new Color(210,230,255));
 		mainFrame.show();
 	}
 }
