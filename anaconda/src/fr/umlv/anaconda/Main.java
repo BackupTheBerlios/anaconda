@@ -1,11 +1,12 @@
 package fr.umlv.anaconda;
 
+import java.io.*;
+import java.util.*;
+import java.net.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.util.ArrayList;
 
 /**
  * 
@@ -41,6 +42,32 @@ public class Main {
 			}
 		}
 		return selection_items;
+	}
+	/* VARIABLES POUR LES ICONES */
+	final public static String iconesResourcePath = "/images/";
+	final public static String[] iconesPath = { "anaconda_logo.gif",
+		"back.gif", "copy.gif", "cut.gif", "find.gif", "iconExe.gif",
+		"iconFather.gif", "iconFocus.gif", "iconImg.gif", "iconNode.gif",
+		"iconOpen.gif", "iconRep.gif", "iconText.gif", "next.gif", "paste.gif" };
+	final public static int LOGO_ICONE = 0;
+	final public static int BACK_ICONE = 1;
+	final public static int COPY_ICONE = 2;
+	final public static int CUT_ICONE = 3;
+	final public static int FIND_ICONE = 4;
+	final public static int EXE_ICONE = 5;
+	final public static int FATHER_ICONE = 6;
+	final public static int FOCUS_ICONE = 7;
+	final public static int IMG_ICONE = 8;
+	final public static int NODE_ICONE = 9;
+	final public static int OPEN_ICONE = 10;
+	final public static int REP_ICONE = 11;
+	final public static int TEXT_ICONE = 12;
+	final public static int NEXT_ICONE = 13;
+	final public static int PASTE_ICONE = 14;
+	final public static URL[] icones = new URL[iconesPath.length];
+	static {
+		for(int i = 0; i < iconesPath.length; i ++)
+			icones[i] = Main.class.getResource(iconesResourcePath + iconesPath[i]);
 	}
 	/**/
 	public static void main(String[] args) throws Exception {
@@ -78,17 +105,11 @@ public class Main {
 					name = ((Model) value).getFolder().getAbsolutePath();
 				((JLabel) c).setText(name);
 				if (selected)
-					((JLabel) c).setIcon(
-						new ImageIcon(
-							Main.class.getResource("/images/iconFocus.gif")));
+					((JLabel) c).setIcon(new ImageIcon(icones[FOCUS_ICONE]));
 				else if (expanded)
-					((JLabel) c).setIcon(
-						new ImageIcon(
-							Main.class.getResource("/images/iconOpen.gif")));
+					((JLabel) c).setIcon(new ImageIcon(icones[OPEN_ICONE]));
 				else
-					((JLabel) c).setIcon(
-						new ImageIcon(
-							Main.class.getResource("/images/iconNode.gif")));
+					((JLabel) c).setIcon(new ImageIcon(icones[NODE_ICONE]));
 				return c;
 			}
 		});
@@ -123,33 +144,20 @@ public class Main {
 					name = ((File) value).getAbsolutePath();
 				((JLabel) c).setText(name);
 				/************************/
-				ImageIcon iconRep =
-					new ImageIcon(
-						Main.class.getResource("/images/iconRep.gif"));
-				ImageIcon iconFather =
-					new ImageIcon(
-						Main.class.getResource("/images/iconFather.gif"));
-				ImageIcon iconText =
-					new ImageIcon(
-						Main.class.getResource("/images/iconText.gif"));
-				ImageIcon iconImg =
-					new ImageIcon(
-						Main.class.getResource("/images/iconImg.gif"));
-				ImageIcon iconExe =
-					new ImageIcon(
-						Main.class.getResource("/images/iconExe.gif"));
-
-				if (((File) value).isDirectory())
-					 ((JLabel) c).setIcon(iconRep);
-				else {
-					((JLabel) c).setIcon(iconText);
-					if (name.endsWith(".jpg"))
-						 ((JLabel) c).setIcon(iconImg);
-					if (name.endsWith(".exe"))
-						 ((JLabel) c).setIcon(iconExe);
+				if (((File) value).isDirectory()) {
+					if (name == "..")
+						((JLabel) c).setIcon(new ImageIcon(icones[FATHER_ICONE]));
+					else
+						((JLabel) c).setIcon(new ImageIcon(icones[REP_ICONE]));
 				}
-				if (name == "..")
-					 ((JLabel) c).setIcon(iconFather);
+				else {
+					if (name.endsWith(".jpg"))
+						((JLabel) c).setIcon(new ImageIcon(icones[IMG_ICONE]));
+					else if (name.endsWith(".exe"))
+						((JLabel) c).setIcon(new ImageIcon(icones[EXE_ICONE]));
+					else
+						((JLabel) c).setIcon(new ImageIcon(icones[TEXT_ICONE]));
+				}
 				/************************/
 				return c;
 			}
@@ -158,8 +166,7 @@ public class Main {
 		JScrollPane scrollList = new JScrollPane(list);
 		/******************************/
 		JPanel infoPanel = new JPanel();
-		ImageIcon anacondaLogo =
-			new ImageIcon(Main.class.getResource("/images/anaconda_logo.gif"));
+		ImageIcon anacondaLogo = new ImageIcon(icones[LOGO_ICONE]);
 		infoPanel.add(new JLabel(anacondaLogo));
 		infoPanel.setBackground(Color.WHITE);
 
@@ -172,9 +179,7 @@ public class Main {
 		Dimension size = new Dimension(200, 200);
 		infoPanel.setMinimumSize(size);
 		infoPanel.setMaximumSize(size);
-
 		/******************************/
-
 		JSplitPane splitPane =
 			new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT,
@@ -182,7 +187,6 @@ public class Main {
 		, scrollList);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
-
 		/**********************************/
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
@@ -270,24 +274,13 @@ public class Main {
 
 		/* TOOLBAR */
 		JToolBar toolBar = new JToolBar();
-		final JButton back =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/back.gif")));
-		final JButton next =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/next.gif")));
-		JButton cut =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/cut.gif")));
-		JButton copy =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/copy.gif")));
-		JButton paste =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/paste.gif")));
-		JButton find =
-			new JButton(
-				new ImageIcon(Main.class.getResource("/images/find.gif")));
+		toolBar.setFloatable(false);
+		final JButton back = new JButton(new ImageIcon(icones[BACK_ICONE]));
+		final JButton next = new JButton(new ImageIcon(icones[NEXT_ICONE]));
+		JButton cut = new JButton(new ImageIcon(icones[CUT_ICONE]));
+		JButton copy = new JButton(new ImageIcon(icones[COPY_ICONE]));
+		JButton paste = new JButton(new ImageIcon(icones[PASTE_ICONE]));
+		JButton find = new JButton(new ImageIcon(icones[FIND_ICONE]));
 
 		//back.setBackground(Color.WHITE);
 		//next.setBackground(Color.WHITE);
@@ -306,6 +299,7 @@ public class Main {
 
 		/* ADRESSBAR */
 		JToolBar adressBar = new JToolBar();
+		adressBar.setFloatable(false);
 		JButton delAdr = new JButton("effacer");
 		JLabel adr = new JLabel("adresse");
 		JButton openAdr = new JButton("ouvrir");
@@ -357,7 +351,6 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println(adrZone.getText());
 				File file = new File(adrZone.getText());
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
