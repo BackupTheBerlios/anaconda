@@ -429,6 +429,7 @@ public class Main {
 			}
 		});
 		adrZone.addKeyListener(adrZone.listenerFactory());
+		adrZone.getEditor().addActionListener(adrZone.actionListenerFactory());
 		openAdr.addActionListener((adrZone.getActionListeners())[0]); //TODO
 		delAdr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -96,5 +96,28 @@ public class AddressBar extends JComboBox {
 		};
 	}
 
+	
+	/** a key listener factory for the combobox */
+	public ActionListener actionListenerFactory() {
+		return new ActionListener() {
+
+			public void actionPerformed(ActionEvent ae) {
+				System.out.println(ae.paramString());
+			}
+			
+			public void keyPressed(KeyEvent e) {
+				System.out.println ("key presed");
+			}
+			public void keyReleased(KeyEvent e){
+					System.out.println ("key released");
+			}
+			public void keyTyped(KeyEvent e){
+				System.out.println ("key typed");
+				if (e.getKeyCode() == KeyEvent.VK_TAB)
+					System.out.println ("autocompletion ??");	
+			}
+		};
+	}
+
 
 }
