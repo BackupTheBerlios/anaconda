@@ -245,29 +245,29 @@ public class Main {
 
 		
 		final Action showByNameAction = new AbstractAction("Nom") {
-					public void actionPerformed(ActionEvent e) {
-						model.addCmp("by_name");
-						model.setFolder(newCurrentFolder);
-					}
-				};
+			public void actionPerformed(ActionEvent e) {
+				model.addCmp("by_name");
+				model.setFolder(model.getFolder());
+			}
+		};
 
 		final Action showBySizeAction = new AbstractAction("Taille") {
 			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_size");
-				model.setFolder(newCurrentFolder);
+				model.setFolder(model.getFolder());
 			}
 		};
 
 		final Action showByTypeAction = new AbstractAction("Type") {
 			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_type");
-				model.setFolder(newCurrentFolder);
+				model.setFolder(model.getFolder());
 			}
 		};
 		final Action showByDateAction = new AbstractAction("Date") {
 			public void actionPerformed(ActionEvent e) {
 				model.addCmp("by_date");
-				model.setFolder(newCurrentFolder);
+				model.setFolder(model.getFolder());
 			}
 		};
 

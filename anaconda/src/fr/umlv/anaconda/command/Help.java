@@ -3,13 +3,11 @@ package fr.umlv.anaconda.command;
 import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.security.KeyStore;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import sun.awt.image.AcceleratedOffScreenImage;
 
 //import fr.umlv.anaconda.exception.ErrorIOFileException;
 
