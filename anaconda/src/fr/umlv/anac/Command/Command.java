@@ -23,8 +23,14 @@ import fr.umlv.anac.Exception.IsNotDirectoryException;
  * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
  */
 public interface Command {
-
-	public void run(ArrayList selectedfile)
+	public void run(Object o)
+			throws
+				IsNotDirectoryException,
+				CanNotWriteException,
+				CanNotReadException,
+				DoNotExistFileException,
+				ErrorPastingFileException;
+/*	public void run(ArrayList selectedfile)
 		throws
 			IsNotDirectoryException,
 			CanNotWriteException,
@@ -38,7 +44,7 @@ public interface Command {
 			CanNotWriteException,
 			CanNotReadException,
 			DoNotExistFileException,
-			ErrorPastingFileException;
+			ErrorPastingFileException;*/
 
 	public void undo()
 		throws
