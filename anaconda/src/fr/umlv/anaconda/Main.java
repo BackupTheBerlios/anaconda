@@ -1,13 +1,11 @@
 package fr.umlv.anaconda;
 
+import fr.umlv.anaconda.command.*;
 import java.io.*;
 import java.util.*;
 import java.net.*;
 import javax.swing.*;
 import javax.swing.tree.*;
-
-import fr.umlv.anaconda.command.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -195,16 +193,23 @@ public class Main {
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
 		/**********************************/
 		/* LES ACTIONS */
+		final Action refreshAction = new AbstractAction("Actualiser"){
+					public void actionPerformed(ActionEvent e){
+						model.setFolder(model.getFolder());
+					}
+		};
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action copy
 				(new Copy()).run();
+				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action cut
 				(new Cut()).run();
+				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
@@ -221,7 +226,6 @@ public class Main {
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
-				(new Move()).run();
 			}
 		};
 		final Action selectAllAction = new AbstractAction("Selectionner tout") {
@@ -233,12 +237,14 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
 				(new Rename()).run();
+				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
 				(new Delete()).run();
+				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action findAction = new AbstractAction("Rechercher"){
@@ -247,11 +253,7 @@ public class Main {
 				frame.show();
 			}
 		};
-		final Action refreshAction = new AbstractAction("Actualiser"){
-					public void actionPerformed(ActionEvent e){
-						model.setFolder(model.getFolder());
-					}
-				};
+
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");

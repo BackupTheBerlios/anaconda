@@ -27,13 +27,6 @@ public class Model implements ListModel, TreeNode {
 				return compare(this, obj) == 0;
 			}
 	};
-	/* gestion du cash */
-	final private static LinkedHashMap cash = new LinkedHashMap() {
-			private static final int MAX_ENTRIES = 15;
-			protected boolean removeEldestEntry(Map.Entry eldest) {
-				return size() > MAX_ENTRIES;
-			}
-	};
 	private File folder;
 	private File folderParent;
 	private File[] folderChilds;
@@ -64,15 +57,11 @@ public class Model implements ListModel, TreeNode {
 		return (filterTree == null)? 0: filterTree.length;
 	}
 	public void setFolder(File newFolder) {
-		if(cmp.compare(folder, newFolder) == 0) return ;
+		//if(cmp.compare(folder, newFolder) == 0) return ;
 		folder = newFolder;
 		folderParent = folder.getParentFile();
-		if(cash.containsKey(folder)) folderChilds = (File[])cash.get(folder);
-		else {
-			folderChilds = folder.listFiles();
-			if(folderChilds != null) Arrays.sort(folderChilds, cmp);
-			putFolderToCash();
-		}
+		folderChilds = folder.listFiles();
+		if(folderChilds != null) Arrays.sort(folderChilds, cmp);
 		setFilterList();
 		setFilterTree();
 		int size = getFolderChildsSize();
@@ -98,9 +87,6 @@ public class Model implements ListModel, TreeNode {
 			ModelTreeAdapter.TreeBridgeListener tbl = (ModelTreeAdapter.TreeBridgeListener)eventList[i];
 			tbl.treeNodesChanged(new TreeModelEvent(tbl, path, childIndices, children));
 		}
-	}
-	private void putFolderToCash() {
-		cash.put(folder, folderChilds);
 	}
 	private void setFilterList() {
 		int[] list = null;

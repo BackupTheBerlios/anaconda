@@ -4,5 +4,6 @@
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="src" path="test"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="/usr/local/eclipse/plugins/org.junit_3.7.0/junit.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
