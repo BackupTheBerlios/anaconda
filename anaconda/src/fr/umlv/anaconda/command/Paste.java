@@ -134,6 +134,7 @@ public class Paste implements Command {
 		(new DoThread()).start();
 		if (is_cut)
 			PressPaper.clear();
+			
 	}
 
 	/**
@@ -269,7 +270,7 @@ public class Paste implements Command {
 					e.show();
 				}
 			}
-
+		Main.refresh();
 		}
 	}
 
