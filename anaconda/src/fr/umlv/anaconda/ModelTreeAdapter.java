@@ -1,6 +1,5 @@
 package fr.umlv.anaconda;
 
-//import java.io.*;
 import javax.swing.tree.*;
 import javax.swing.event.*;
 
@@ -16,7 +15,7 @@ public class ModelTreeAdapter extends DefaultTreeModel {
 	public ModelTreeAdapter(TreeNode root) {
 		super(root);
 		model = (Model)root;
-		rootModel = new Model(model.getFolder()/*new File(File.separator)*/);
+		rootModel = new Model(model.getFolder()/*new RootFile()*/);
 		model.addTreeModelListener(new TreeBridgeListener());
 	}
 	public Model getModel() {
@@ -26,20 +25,6 @@ public class ModelTreeAdapter extends DefaultTreeModel {
 	public Object getRoot() {
 		return rootModel;
 	}
-	/*
-	public TreeNode[] getPathToRoot(TreeNode aNode) {
-		if(aNode == null) return new TreeNode[] {};
-		int size = 1;
-		for(Model m = (Model)aNode; !m.equals(getRoot()); m = (Model)m.getParent())
-			size ++;
-		TreeNode[] path = new TreeNode[size];
-		for(size --; size >=0; size --) {
-			path[size] = aNode;
-			aNode = aNode.getParent();
-		}
-		return path;
-	}
-	*/
 	/* Bridge */
 	public class TreeBridgeListener implements TreeModelListener {
 		public void treeNodesChanged(TreeModelEvent e) {

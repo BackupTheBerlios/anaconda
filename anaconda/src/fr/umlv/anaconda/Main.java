@@ -208,8 +208,13 @@ public class Main {
 		};
 		final Action createFolder = new AbstractAction("Cree Repertoire"){
 			public void actionPerformed(ActionEvent e){
+				TreePath path = tree.getSelectionPath();
 				(new CreateFolder()).run();
 				refreshAction.actionPerformed(e);
+				treeModel.reload(model);
+				tree.expandPath(path);
+				tree.setSelectionPath(path);
+				tree.scrollPathToVisible(path);
 			}
 		};
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
@@ -502,17 +507,16 @@ public class Main {
 				selectAllAction.setEnabled(false);
 				pasteAction.setEnabled(true);
 				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-				int row = tree.getRowForLocation(e.getX(), e.getY());
 				File file = null;
 				if(path != null) file = ((Model)path.getLastPathComponent()).getFolder();
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 						if (file != null && e.getClickCount() == 1) {
-							if(!tree.isExpanded(row)) tree.expandRow(row);
+							if(!tree.isExpanded(path)) tree.expandPath(path);
 							else if(!((Model)path.getLastPathComponent()).equals(treeModel.getRoot()))
-								tree.collapseRow(row);
-							tree.setSelectionRow(row);
-							tree.scrollRowToVisible(row);
+								tree.collapsePath(path);
+							tree.setSelectionPath(path);
+							tree.scrollPathToVisible(path);
 							oldCurrentFolder = model.getFolder();
 							back.setEnabled(true);
 							next.setEnabled(false);
@@ -535,8 +539,8 @@ public class Main {
 						if (file == null) {
 							clickInFile.show(e.getComponent(), e.getX(), e.getY());
 						} else {
-							tree.setSelectionRow(row);
-							tree.scrollRowToVisible(row);
+							tree.setSelectionPath(path);
+							tree.scrollPathToVisible(path);
 							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
 						}
 						break;
@@ -557,23 +561,22 @@ public class Main {
 							next.setEnabled(false);
 							if (file.isDirectory()) {
 								newCurrentFolder = file;
-								if(model.equals(treeModel.getRoot()))
-									tree.expandRow(0);
 								model.setFolder(file);
-								TreePath path = new TreePath(treeModel.getPathToRoot(model));
+								TreePath path = tree.getSelectionPath();
 								if(path != null) {
-									int row;
-									//Model pathModel = (Model)path.getLastPathComponent();
-									for(row = 0; row < tree.getVisibleRowCount(); row ++) {
-										TreePath pathRow = tree.getPathForRow(row);
-										if(pathRow != null && model.equals(pathRow.getLastPathComponent()))
-											break;
+									TreePath parent = path.getParentPath();
+									if(parent != null) {
+										Model parentModel = (Model)parent.getLastPathComponent();
+										if(parentModel.getIndex(model.getParent()) != -1)
+											path = parent.pathByAddingChild(model.getParent());
+										else
+											path = parent;
 									}
-									if(row < tree.getVisibleRowCount()) {
-										tree.expandRow(row);
-										tree.setSelectionRow(row);
-										tree.scrollRowToVisible(row);
-									}
+									if(((Model)path.getLastPathComponent()).getIndex(model) != -1)
+										path = path.pathByAddingChild(model);
+									tree.expandPath(path);
+									tree.setSelectionPath(path);
+									tree.scrollPathToVisible(path);
 								}
 								String fileName = file.getAbsolutePath();
 								adrZone.getEditor().setItem( 

@@ -57,7 +57,6 @@ public class Model implements ListModel, TreeNode {
 		return (filterTree == null)? 0: filterTree.length;
 	}
 	public void setFolder(File newFolder) {
-		//if(cmp.compare(folder, newFolder) == 0) return ;
 		folder = newFolder;
 		folderParent = folder.getParentFile();
 		folderChilds = folder.listFiles();
