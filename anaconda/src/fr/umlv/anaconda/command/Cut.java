@@ -36,7 +36,7 @@ public class Cut implements Command {
 		}
 
 		PressPaper.addToPressPaper(selected_file, deleted);
-		AllCommand.getAction("paste").setEnabled(true);
+		//AllCommand.getAction("paste").setEnabled(true);
 	}
 
 	public void run(ArrayList selected_file) {
@@ -70,7 +70,8 @@ public class Cut implements Command {
 	 * @see fr.umlv.anaconda.command.Command#getAction()
 	 */
 	public Action getAction() {
-		return new AbstractAction("Couper   Ctrl+X") {
+//		return new AbstractAction("Couper   Ctrl+X") {
+		return new AbstractAction("Couper") {
 			public void actionPerformed(ActionEvent e) {
 				run();
 			}

@@ -40,7 +40,7 @@ public class Copy implements Command {
 		}
 
 		PressPaper.addToPressPaper(selected_file, deleted);
-		AllCommand.getAction("paste").setEnabled(true);
+	//	AllCommand.getAction("paste").setEnabled(true);
 	}
 
 	public void run(ArrayList selected_file) {
@@ -74,7 +74,8 @@ public class Copy implements Command {
 	 * @see fr.umlv.anaconda.command.Command#getAction()
 	 */
 	public Action getAction() {
-		return new AbstractAction("Copier    Ctrl+C") {
+//		return new AbstractAction("Copier    Ctrl+C") {
+		return new AbstractAction("Copier") {
 			public void actionPerformed(ActionEvent e) {
 				run();
 			}

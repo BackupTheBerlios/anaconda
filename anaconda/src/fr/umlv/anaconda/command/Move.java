@@ -59,7 +59,8 @@ public class Move implements Command {
 	 */
 	public Action getAction() {
 		return 
-		new AbstractAction("Deplacer    Ctrl+Alt+X") {
+//		new AbstractAction("Deplacer    Ctrl+Alt+X") {
+		new AbstractAction("Deplace") {
 			public void actionPerformed(ActionEvent e) {
 				run();
 			}

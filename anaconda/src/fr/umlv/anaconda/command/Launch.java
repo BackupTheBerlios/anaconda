@@ -14,7 +14,6 @@ import javax.swing.Action;
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
 import fr.umlv.anaconda.tools.ChoozExec;
-import fr.umlv.anaconda.tools.Tools;
 
 /**
  * Manage to launch files

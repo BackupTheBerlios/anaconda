@@ -62,7 +62,8 @@ public class Clone implements Command {
 	 */
 	public Action getAction() {
 		return 
-		new AbstractAction("Dupliquer    Ctrl+Alt+C") {
+//		new AbstractAction("Dupliquer    Ctrl+Alt+C") {
+		new AbstractAction("Dupliquer") {
 			public void actionPerformed(ActionEvent e) {
 				run();
 			}

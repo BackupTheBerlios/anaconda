@@ -22,15 +22,19 @@ public class Paste implements Command {
 		new NoSelectedFilesException();
 //	private JProgressBar progress_bar = new JProgressBar();
 
-	private Action act;
+	private static Action act;
 	
 	public Paste() {
 		super();
 		
-		act = new AbstractAction("Coller Ctrl+V") {
+//		act = new AbstractAction("Coller Ctrl+V") {
+		act = new AbstractAction("Coller") {
 			public void actionPerformed(ActionEvent e) {
 				run();
-			}
+			} 
+		public boolean isEnable() {
+			return !PressPaper.isEmpty();
+		}
 		//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
 		//	final String ACCELERATOR_KEY = "Ctrl+V";
 		//	final String NAME = "Coller";

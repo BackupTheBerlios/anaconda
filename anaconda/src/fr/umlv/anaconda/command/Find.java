@@ -13,9 +13,6 @@ import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
 /**
  * @author FIGUEROA
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class Find extends Thread implements Command {
 
