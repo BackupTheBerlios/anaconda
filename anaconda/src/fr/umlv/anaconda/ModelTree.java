@@ -40,7 +40,22 @@ public class ModelTree extends DefaultTreeModel {
 	}
 	public void setFolder(File file) {
 		getChildCount(file);
-		//TODO ba encore les fire
+		Object[] pathTmp = new Object[1024];
+		pathTmp[0] = file;
+		int count = 1;
+		while(!file.equals(root) && file.getParentFile() != null) {
+			file = file.getParentFile();
+			pathTmp[count ++] = file;
+		}
+		Object[] path = new Object[count];
+		for(int i = 0; i < count; i ++) {
+			path[i] = pathTmp[count - i -1];
+		}
+		int[] indice = new int[file.listFiles().length];
+		for(int i = 0; i < indice.length; i ++) {
+			indice[i] = i;
+		}
+		fireTreeStructureChanged(this, path, indice, file.listFiles());
 	}
 	/**
 	 * METHODES POUR LE DefaultTreeModel

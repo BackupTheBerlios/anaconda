@@ -1,3 +1,6 @@
+/* BEUGS:
+ 	- apres avoir resolu le pb de refresh de l'arbre, le serpent disparait kan on click sur '..' 
+ */
 package fr.umlv.anaconda;
 
 import java.awt.*;
@@ -35,8 +38,8 @@ public class Main {
 	/* PILE DE PRECEDENT SUIVANT */
 	final public static Stack backFolderStack = new Stack();
 	final public static Stack nextFolderStack = new Stack();
-	public static File oldCurrentFolder;
-	public static File newCurrentFolder;
+	public static File oldCurrentFolder = null;
+	public static File newCurrentFolder = null;
 	/* MENU DEROULANT */
 	final static JPopupMenu clickInFile = new JPopupMenu();
 	final static JPopupMenu clickOutFile = new JPopupMenu();
@@ -85,6 +88,7 @@ public class Main {
 		tableModel.setFolder(currentFolder);
 	}
 	public static void setFolder(File newFolder) {
+		/*****/System.out.println(newFolder.getAbsolutePath());
 		currentFolder = newFolder;
 		try {
 			adrZone.setText(newFolder.getCanonicalPath());
@@ -155,6 +159,7 @@ public class Main {
 				if(selected) ((JLabel)c).setIcon(IconsManager.focus_icon);
 				else if(expanded) ((JLabel)c).setIcon(IconsManager.small_father_icon);
 				else ((JLabel)c).setIcon(IconsManager.small_folder_icon);
+				((JLabel)c).setBackground(Themes.getBgColor());
 				return c;
 			}
 		});
@@ -328,6 +333,7 @@ public class Main {
 			new JSplitPane(
 				JSplitPane.HORIZONTAL_SPLIT,
 				splitTreeInfo, tabb);
+		splitPane.setBackground(Themes.getBgColor());
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
 		splitPane.setDividerSize(2);
@@ -378,25 +384,25 @@ public class Main {
 		final Action showByNameAction = new AbstractAction("Nom") {
 					public void actionPerformed(ActionEvent e) {
 						ComparatorsManager.addCmp("by_name");
-						setFolder(newCurrentFolder);
+						setFolder(currentFolder);
 					}
 				};
 		final Action showBySizeAction = new AbstractAction("Taille") {
 			public void actionPerformed(ActionEvent e) {
 				ComparatorsManager.addCmp("by_size");
-				setFolder(newCurrentFolder);
+				setFolder(currentFolder);
 			}
 		};
 		final Action showByTypeAction = new AbstractAction("Type") {
 			public void actionPerformed(ActionEvent e) {
 				ComparatorsManager.addCmp("by_type");
-				setFolder(newCurrentFolder);
+				setFolder(currentFolder);
 			}
 		};
 		final Action showByDateAction = new AbstractAction("Date") {
 			public void actionPerformed(ActionEvent e) {
 				ComparatorsManager.addCmp("by_date");
-				setFolder(newCurrentFolder);
+				setFolder(currentFolder);
 			}
 		};
 		final Action undoAction = new AbstractAction("Annuler") {
@@ -530,6 +536,7 @@ public class Main {
 		back.setRolloverIcon(IconsManager.ONFOCUSBACK);
 		final JButton refresh = new JButton(IconsManager.REFRESH);
 		refresh.setRolloverIcon(IconsManager.ONFOCUSREFRESH);
+		refresh.addActionListener(refreshAction);
 		final JButton next = new JButton(IconsManager.NEXT);
 		next.setRolloverIcon(IconsManager.ONFOCUSNEXT);
 		final JButton cut = new JButton(IconsManager.CUT);
@@ -597,10 +604,12 @@ public class Main {
 		next.setEnabled(false);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				oldCurrentFolder = (File) backFolderStack.pop();
-				nextFolderStack.push(currentFolder);
-				next.setEnabled(true);
+				if(newCurrentFolder != null)
+					nextFolderStack.push(newCurrentFolder);
+				newCurrentFolder = currentFolder;
 				setFolder(oldCurrentFolder);
+				oldCurrentFolder = (File) backFolderStack.pop();
+				next.setEnabled(true);
 		/*		String fileName = oldCurrentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
@@ -614,10 +623,12 @@ public class Main {
 		});
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(oldCurrentFolder != null)
+					backFolderStack.push(oldCurrentFolder);
+				oldCurrentFolder = currentFolder;
+				setFolder(newCurrentFolder); 
 				newCurrentFolder = (File) nextFolderStack.pop();
-				backFolderStack.push(currentFolder);
 				back.setEnabled(true);
-				setFolder(newCurrentFolder);
 	/*			String fileName = newCurrentFolder.getAbsolutePath();
 				adrZone.setText(
 					fileName
@@ -699,19 +710,12 @@ public class Main {
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 						if (file != null && e.getClickCount() == 1) {
-							if (!tree.isExpanded(path))
-								tree.expandPath(path);
-							else if (
-								!((File) path.getLastPathComponent()).equals(
-									treeModel.getRoot()))
-								tree.collapsePath(path);
-							tree.setSelectionPath(path);
-							tree.scrollPathToVisible(path);
+							if(oldCurrentFolder != null) backFolderStack.push(oldCurrentFolder);
 							oldCurrentFolder = currentFolder;
-							backFolderStack.push(oldCurrentFolder);
+							if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
 							back.setEnabled(true);
 							next.setEnabled(false);
-
+/*
 							if (ComparatorsManager.cmp.compare(oldCurrentFolder, file)
 								!= 0) {
 								String fileName = file.getAbsolutePath();
@@ -721,6 +725,7 @@ public class Main {
 											? ""
 											: File.separator));
 							}
+							*/
 						}
 						break;
 				}
@@ -733,24 +738,24 @@ public class Main {
 				pasteAction.setEnabled(false);
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
-					Point p = new Point(e.getX(), e.getY());
-					int row = table.rowAtPoint(p);
-					int column = table.columnAtPoint(p);
-					File file = (File)tableModel.getValueAt(row, column);
-					if(file == null || file.equals(currentFolder)) break;
+					File file = currentFolder;
+					//if(file == null || file.equals(currentFolder)) break;
 						info_panel.setAsGeneral( file, getSelectionItems().size());
 						if (e.getClickCount() == 2) {
-							oldCurrentFolder = currentFolder;
-							backFolderStack.push(oldCurrentFolder);
-							back.setEnabled(true);
-							next.setEnabled(false);
 							if (file.isDirectory()) {
+								if(oldCurrentFolder != null) backFolderStack.push(oldCurrentFolder);
+								oldCurrentFolder = currentFolder;
+								if(!nextFolderStack.isEmpty()) nextFolderStack.clear();
+								back.setEnabled(true);
+								next.setEnabled(false);
+								/*
 								String fileName = file.getAbsolutePath();
 								adrZone.setText(
 									fileName
 										+ ((fileName.endsWith(File.separator))
 											? ""
 											: File.separator));
+											*/
 							} else {
 								new Launch().run(file);
 							}

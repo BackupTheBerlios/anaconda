@@ -48,9 +48,9 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 				leaf,
 				row,
 				hasFocus);
-		String name = ((Model) value).getFolder().getName();
+		String name = Main.currentFolder.getName();
 		if (name.compareTo("") == 0)
-			name = ((Model) value).getFolder().getAbsolutePath();
+			name = Main.currentFolder.getAbsolutePath();
 		((JLabel) c).setText(name);
 		if (selected)
 			 ((JLabel) c).setIcon(focus_icon);
@@ -59,6 +59,7 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 		else
 			 ((JLabel) c).setIcon(close_node_icon);
 		backgroundNonSelectionColor = Themes.getBgColor();
+		((JLabel)c).setBackground(Themes.getBgColor());
 		return c;
 	}
 
