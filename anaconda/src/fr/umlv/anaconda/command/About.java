@@ -1,8 +1,8 @@
 package fr.umlv.anaconda.command;
 
-/* Maitrise info - génie logiciel */
+/* Maitrise info - g?nie logiciel */
 /* Anaconda (Livingstone project) */
-/* Created on 28 févr. 2004 */
+/* Created on 28 f?vr. 2004 */
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,9 +30,6 @@ public class About implements Command {
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#run()
-	 */
 	public void run() {
 		final JFrame frame = new JFrame("A propos...");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -60,27 +57,13 @@ public class About implements Command {
 		frame.show();
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#redo()
-	 */
 	public void redo() {
-		// TODO Auto-generated method stub
-
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#undo()
-	 */
 	public void undo() {
-		// TODO Auto-generated method stub
-
 	}
 
-	/* (non-Javadoc)
-	 * @see fr.umlv.anaconda.command.Command#canUndo()
-	 */
-	public boolean canUndo() {
-		// TODO Auto-generated method stub
+	public boolean canUndo() {	
 		return false;
 	}
 
