@@ -18,7 +18,7 @@ public class DoNotExistFileException extends Exception {
 		JOptionPane.showMessageDialog(
 			null,
 			"Fichier inexistant",
-			f.getName(),
+			"<".concat( f.getName() ).concat("> est introuvable."),
 			JOptionPane.WARNING_MESSAGE);
 	}
 }

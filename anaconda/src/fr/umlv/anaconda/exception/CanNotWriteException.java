@@ -18,7 +18,7 @@ public class CanNotWriteException extends Exception {
 		JOptionPane.showMessageDialog(
 			null,
 			"Ecriture impossible",
-			f.getName(),
+			"Impossible d'écrire <".concat( f.getName() ).concat(">."),
 			JOptionPane.WARNING_MESSAGE);
 	}
 }

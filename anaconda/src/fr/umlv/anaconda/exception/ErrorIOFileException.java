@@ -17,8 +17,8 @@ public class ErrorIOFileException extends Exception {
 	public void show() {
 		JOptionPane.showMessageDialog(
 			null,
-			"Erreur d entree sortie sur ",
-			f.getName(),
+			"Erreur d entree sortie",
+			"Probleme d'entree/sortie sur <".concat( f.getName() ).concat(">."),
 			JOptionPane.ERROR_MESSAGE);
 	}
 

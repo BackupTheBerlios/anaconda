@@ -18,7 +18,7 @@ public class IsNotDirectoryException extends Exception {
 		JOptionPane.showMessageDialog(
 			null,
 			"Ce n'est pas un repertoire",
-			f.getName(),
+			"<".concat( f.getName() ).concat("> n'est pas un répertoire."),
 			JOptionPane.WARNING_MESSAGE);
 	}
 }

@@ -18,7 +18,7 @@ public class CanNotDeleteException extends Exception {
 		JOptionPane.showMessageDialog(
 			null,
 			"Suppression impossible",
-			f.getName(),
+			"Impossible de supprimer <".concat( f.getName() ).concat(">."),
 			JOptionPane.WARNING_MESSAGE);
 	}
 

@@ -17,7 +17,7 @@ public class CanNotReadException extends Exception {
 		JOptionPane.showMessageDialog(
 			null,
 			"Lecture impossible",
-			f.getName(),
+			"Impossible de lire <".concat( f.getName() ).concat(">."),
 			JOptionPane.WARNING_MESSAGE);
 	}
 }
