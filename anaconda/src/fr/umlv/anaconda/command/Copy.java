@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 
+import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
@@ -57,6 +58,6 @@ public class Copy extends AbstractAction  implements Command {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		run(Main.);
+		run(Main.getSelectionItems());
 	}
 }

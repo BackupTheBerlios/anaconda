@@ -3,6 +3,7 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.AbstractAction;
+
+import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
@@ -18,7 +22,7 @@ import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorPastingFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
-public class Paste implements Command {
+public class Paste extends AbstractAction implements Command {
 	private static boolean is_cut;
 	private ArrayList last_selection = new ArrayList();
 	private File dest;
@@ -127,13 +131,10 @@ public class Paste implements Command {
 			File last_site =
 				(File) last_selection.get(last_selection.indexOf(to_replace));
 
-			if (is_cut) {
+			if (is_cut)
 				pasteFile(last_site, to_replace);
-				tab_file[i].delete(); //TODO revoir avec supprimer.
-			} else
-				tab_file[i].delete();
-			//TODO revoir avec supprimer.
-
+			tab_file[i].delete();//TODO revoir avec supprimer.
+			
 		}
 	}
 
@@ -144,12 +145,28 @@ public class Paste implements Command {
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
-		
+
 		if (is_cut)
 			 (new Cut()).run(last_selection);
 		else
 			 (new Copy()).run(last_selection);
 		run(dest);
+	}
+
+	public void actionPerformed(ActionEvent arg0) {
+		try {
+			run(Main.getSelectionItems());
+		} catch (IsNotDirectoryException e) {
+			// TODO Si le file ou on veut coller n est pas un rep.
+		} catch (CanNotWriteException e) {
+			// TODO Si on ne peut pas ecrire sur le rep.
+		} catch (CanNotReadException e) {
+			// TODO Si on ne peut pas lire le rep.
+		} catch (DoNotExistFileException e) {
+			// TODO Si on le rep n existe pas.
+		} catch (ErrorPastingFileException e) {
+			// TODO Si on ne peut pas coller un file.
+		}
 	}
 
 }

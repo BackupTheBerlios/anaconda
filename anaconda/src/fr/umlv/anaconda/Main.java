@@ -25,7 +25,6 @@ public class Main {
 	public static ArrayList selection_items = new ArrayList();
 
 	public static ArrayList getSelectionItems() {
-		
 		selection_items.clear();
 		Object[] o = list.getSelectedValues();
 	
@@ -43,6 +42,7 @@ public class Main {
 		}
 		return selection_items;
 	}
+	
 	/* VARIABLES POUR LES ICONES */
 	final public static String iconesResourcePath = "/images/";
 	final public static String[] iconesPath = { "anaconda_logo.gif",

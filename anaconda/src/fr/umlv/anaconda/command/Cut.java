@@ -3,7 +3,12 @@
  */
 package fr.umlv.anaconda.command;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+
+import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
 import fr.umlv.anaconda.exception.CanNotWriteException;
@@ -11,7 +16,7 @@ import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.ErrorPastingFileException;
 import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
-public class Cut implements Command {
+public class Cut extends AbstractAction implements Command {
 	private final static boolean deleted = true;
 
 	/**
@@ -52,5 +57,10 @@ public class Cut implements Command {
 			CanNotReadException,
 			DoNotExistFileException,
 			ErrorPastingFileException {
+	}
+
+	
+	public void actionPerformed(ActionEvent arg0) {
+		run(Main.getSelectionItems());
 	}
 }
