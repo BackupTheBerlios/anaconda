@@ -235,7 +235,7 @@ public class Main {
         JLabel adr = new JLabel("adresse");
         JButton openAdr = new JButton("ouvrir");
         final JTextField adrZone = new JTextField(20);
-        adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+        adrZone.setText(model.getFolder().getAbsolutePath()/*+File.separator*/);
        
         adressBar.add(delAdr);
         adressBar.add(adr);
@@ -254,7 +254,7 @@ public class Main {
         back.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                   model.setFolder(oldCurrentFolder);
-                  adrZone.setText(oldCurrentFolder.getAbsolutePath()+File.separator);
+                  adrZone.setText(oldCurrentFolder.getAbsolutePath()/*+File.separator*/);
                   back.setEnabled(false);
                   next.setEnabled(true);
                 }
@@ -262,7 +262,7 @@ public class Main {
         next.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     model.setFolder(newCurrentFolder);
-                    adrZone.setText(newCurrentFolder.getAbsolutePath()+File.separator);
+                    adrZone.setText(newCurrentFolder.getAbsolutePath()/*+File.separator*/);
                     back.setEnabled(true);
                     next.setEnabled(false);
                 }
@@ -270,28 +270,20 @@ public class Main {
         adrZone.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println(adrZone.getText());
-                    if(!adrZone.getText().startsWith(File.separator)){
-                        File file = new File(model.getFolder().getAbsolutePath()+File.separator+adrZone.getText());
-                        if(file.exists()){
-                            oldCurrentFolder = model.getFolder();
-                            newCurrentFolder = file;
-                            model.setFolder(file);
-                            back.setEnabled(true);
-                            next.setEnabled(false);
-                        }
-
+                    File file = new File(adrZone.getText());
+                    if(file.exists()){
+                    	oldCurrentFolder = model.getFolder();
+                        newCurrentFolder = file;
+                        model.setFolder(file);
+                        back.setEnabled(true);
+                        next.setEnabled(false);
                     }
-                    else{
-                        File file = new File(adrZone.getText());
-                        if(file.exists()){
-                            oldCurrentFolder = model.getFolder();
-                            newCurrentFolder = file;
-                            model.setFolder(file);
-                            back.setEnabled(true);
-                            next.setEnabled(false);
-                        }
-                    }
-                    adrZone.setText(model.getFolder().getAbsolutePath()+File.separator);
+                    else
+                    	JOptionPane.showMessageDialog(null,
+								"Le fichier/repertoire <" + file.getAbsolutePath() + "> n'a pas ete trouve.",
+								"Fichier/repertoire non trouve",
+								JOptionPane.ERROR_MESSAGE);
+                    adrZone.setText(model.getFolder().getAbsolutePath()/*+File.separator*/);
                 }
             });
         openAdr.addActionListener((adrZone.getActionListeners())[0]);
@@ -318,7 +310,7 @@ public class Main {
                             newCurrentFolder = file;
                             if(Model.cmp.compare(oldCurrentFolder, file) != 0) {
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()+File.separator);
+                                adrZone.setText(file.getAbsolutePath()/*+File.separator*/);
                                 list.setSelectedIndex(0);
                             }
                         }
@@ -342,7 +334,7 @@ public class Main {
                             if(file.isDirectory()) {
                                 newCurrentFolder = file;
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()+File.separator);
+                                adrZone.setText(file.getAbsolutePath()/*+File.separator*/);
                                 list.setSelectedIndex(0);
                             }
                         }
@@ -352,7 +344,6 @@ public class Main {
                     case MouseEvent.BUTTON3:
                         JPopupMenu popup = new JPopupMenu();
                         int index = list.locationToIndex(new Point(e.getX(), e.getY()));
-                        //System.out.println(index);
                         File file = (File)listModel.getElementAt(index);
                         if(file == null) {
                             JMenuItem newFileItemPop = new JMenuItem("Nouveau Fichier    Ctrl+T");
