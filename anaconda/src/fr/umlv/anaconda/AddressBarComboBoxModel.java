@@ -50,7 +50,7 @@ public class AddressBarComboBoxModel implements MutableComboBoxModel {
 		super();
 		history = new LinkedList();
 		history.add(path);
-		history.add("./");
+		history.add(new File("/").getAbsolutePath());
 //		completion = new LinkedList();
 		current = new LinkedList();
 		current = history;
