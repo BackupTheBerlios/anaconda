@@ -4,7 +4,7 @@ import java.io.IOException;
 
 //import fr.umlv.anaconda.exception.ErrorIOFileException;
 
-/* Maitrise info - génie logiciel */
+/* Maitrise info - g?nie logiciel */
 /* Anaconda (Livingstone project) */
 /* Created on 1 mars 2004 */
 
@@ -19,8 +19,10 @@ import java.io.IOException;
  */
 public class Help implements Command {
 	/** where the help main page should be found */
-	private static final String HELP_LOCATION = "http://developer.berlios.de/projects/anaconda/";
-	
+	//private static final String HELP_LOCATION = "http://developer.berlios.de/projects/anaconda/";
+	private static final String HELP_LOCATION = "http://f1.grp.yahoofs.com/v1/EGxDQI27hSnSVsGzTpnQeY0FxQiK76DhbWS6hrjZu2EgnBcdfviLObsmw_Ug53nBFifDRBdr3G9uNS0uIGR4tw/aide_anaconda.html";
+	// pas sur ke cette adresse soit valable...
+
 	/**
 	 * Default constructor
 	 */
@@ -39,8 +41,9 @@ public class Help implements Command {
 			if (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"))
 				r.exec("cmd /c start "+HELP_LOCATION);
 			else
-				r.exec("start "+HELP_LOCATION);
-			// pas sur ke ça marche pour linux...
+			//	r.exec("start "+HELP_LOCATION);
+			// pas sur ke ca marche pour linux...
+			r.exec("mozilla "+HELP_LOCATION);
 		}
 		catch (IOException ex)
 		{
