@@ -1,6 +1,15 @@
 package fr.umlv.anaconda.command;
 
+import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.security.KeyStore;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+
+import sun.awt.image.AcceleratedOffScreenImage;
 
 //import fr.umlv.anaconda.exception.ErrorIOFileException;
 
@@ -23,6 +32,8 @@ public class Help implements Command {
 	private static final String HELP_LOCATION = "http://f1.grp.yahoofs.com/v1/EGxDQI27hSnSVsGzTpnQeY0FxQiK76DhbWS6hrjZu2EgnBcdfviLObsmw_Ug53nBFifDRBdr3G9uNS0uIGR4tw/aide_anaconda.html";
 	// pas sur ke cette adresse soit valable...
 
+	protected boolean isAvailable = true;
+	
 	/**
 	 * Default constructor
 	 */
@@ -68,5 +79,55 @@ public class Help implements Command {
 	public boolean canUndo() {
 		return false;
 	}
+	
+	public Action getAction_old() {
+		return new Action(){
 
+			public boolean isEnabled() {
+				return isAvailable;
+			}
+
+			public void setEnabled(boolean arg0) {
+				isAvailable = arg0;
+			}
+
+			public void addPropertyChangeListener(PropertyChangeListener arg0) {
+				//Rien a faire ?
+			}
+
+			public void removePropertyChangeListener(PropertyChangeListener arg0) {
+				//Rien a faire ?
+			}
+
+			public Object getValue(String arg0) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public void putValue(String arg0, Object arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}};
+	}
+
+	public Action getAction() {
+		return new AbstractAction(){
+			
+		//	public static final String ACCELERATOR_KEY = /*KeyEvent.VK_F1*/;
+		//	public final String ACCELERATOR_KEY = KeyStroke.getKeyStroke("VK_F1").toString();
+			//this.putValue(Action.ACCELERATOR)
+			
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(KeyStroke.getKeyStroke("VK_F1").toString());
+				run();
+			}
+			
+		};
+	}
+	
 }

@@ -235,12 +235,15 @@ public class Main {
 			}
 		};
 
-		final Action helpAction = new AbstractAction("Aide") {
+	/*	final Action helpAction = new AbstractAction("Aide") {
 			public void actionPerformed(ActionEvent e) {
 				AllCommand.get("help").run();
 			}
 		};
+*/
+		final Action helpAction = ((Help)(AllCommand.get("help"))).getAction();
 
+		
 		final Action showByNameAction = new AbstractAction("Nom") {
 					public void actionPerformed(ActionEvent e) {
 						model.addCmp("by_name");
