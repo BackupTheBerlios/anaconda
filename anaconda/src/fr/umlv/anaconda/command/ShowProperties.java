@@ -4,9 +4,7 @@
 package fr.umlv.anaconda.command;
 
 import java.io.File;
-import java.security.Permission;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
 
 import fr.umlv.anaconda.Main;
@@ -119,22 +117,7 @@ public class ShowProperties implements Command {
 	
 	private void viewProperties(File f) {
 
-		System.out.println(
-				"Prop : \t\t<"+name+">\n"+
-			"read \t\t\t"
-				+ can_read
-				+ "\nwrite \t\t\t"
-				+ can_write
-				+ "\ndelete \t\t\t"
-				+ can_delete
-				+ "\nis directory \t"
-				+ is_directory
-				+ "\nis hidden \t\t"
-				+ is_hidden
-				+ "\nlength \t\t\t"
-				+ size
-				+ "\nlast modified \t"
-				+ new Date(last_modified));
+		Main.info_panel.setAsProperties(name,can_read,can_write,can_delete,is_directory,is_hidden,size,last_modified);
 
 	}
 }

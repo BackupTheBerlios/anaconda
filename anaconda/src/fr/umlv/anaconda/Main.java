@@ -174,6 +174,7 @@ public class Main {
 		final Action selectAllAction = new AbstractAction("Selectionner tout") {
 			public void actionPerformed(ActionEvent e) {
 				list.setSelectionInterval(0, listModel.getSize() - 1);
+				info_panel.setAsGeneral(listModel.getSize()-1);
 			}
 		};
 		final Action renameAction = new AbstractAction("Renommer") {
@@ -583,6 +584,8 @@ public class Main {
 				pasteAction.setEnabled(false);
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
+						/*System.out.println("Click de souris");*/
+						info_panel.setAsGeneral(getSelectionItems().size());
 						if (e.getClickCount() == 2) {
 							File file = (File) list.getSelectedValue();
 							oldCurrentFolder = model.getFolder();

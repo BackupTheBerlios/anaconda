@@ -8,6 +8,7 @@ import javax.swing.event.*;
  */
 public class ModelListAdapter extends AbstractListModel {
     final private Model model;
+    public static int cpt = 0;
     public ModelListAdapter() {
         this(new Model());
     }

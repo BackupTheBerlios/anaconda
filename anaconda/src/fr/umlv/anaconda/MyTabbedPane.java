@@ -1,6 +1,10 @@
 package fr.umlv.anaconda;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
+
 
 public class MyTabbedPane extends JPanel {
 	private JTabbedPane tabbedPane;
@@ -28,8 +32,19 @@ public class MyTabbedPane extends JPanel {
 
 		/* Creation de l'onglet corbeille */
 		Component panel3 = new JScrollPane(new JList(garbageModel));
-		tabbedPane.addTab("Corbeille", null, panel3, "Contient les elements supprim?s");
+		tabbedPane.addTab("Corbeille", null, panel3, "Contient les elements supprimes");
 
+		tabbedPane.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent e){
+				int index = tabbedPane.getSelectedIndex();
+				switch(index){
+					case 0: Main.info_panel.setAsDefault();break;
+					case 1: Main.info_panel.setAsFind(Main.find_model);break;
+				}
+				
+			}
+		});
+		
 		setLayout(new BorderLayout()); 
 		add(tabbedPane, BorderLayout.CENTER);
 	}
