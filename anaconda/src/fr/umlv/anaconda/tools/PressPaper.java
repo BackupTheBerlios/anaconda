@@ -2,6 +2,8 @@ package fr.umlv.anaconda.tools;
 
 import java.util.*;
 
+import fr.umlv.anaconda.command.AllCommand;
+
 /**
  * Contains all usefull methods.
  */
@@ -21,6 +23,7 @@ public class PressPaper {
 		selectedFiles.clear();
 		selectedFiles.addAll(selection);
 		willDeleted = deleted;
+		AllCommand.getAction("paste").setEnabled(true);
 	}
 	
 	/**
