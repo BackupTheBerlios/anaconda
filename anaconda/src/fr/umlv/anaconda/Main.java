@@ -279,7 +279,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Voulez vous vraiment quitter ?"," Quitter ",JOptionPane.OK_CANCEL_OPTION)==JOptionPane.OK_OPTION)
 					System.exit(1);	
-				// TODO gérer proprement, vérifier si on est pas en train de travailler ?..
+				// TODO g?rer proprement, v?rifier si on est pas en train de travailler ?..
 			}
 		}
 				);
@@ -430,7 +430,7 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ACTION".concat(e.toString())); //TODO récup le bon évenement
+				System.out.println("ACTION".concat(e.toString())); //TODO r?cup le bon ?venement
 				File file = new File((String)adrZone.getEditor().getItem()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
@@ -465,8 +465,8 @@ public class Main {
 		//mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
 		mainFrame.getContentPane().add(panelBar, BorderLayout.NORTH);
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
-		/***********************************/
-		/* LISTERNER SUR L'ARBRE ET LA LISTE */
+		/***********************************************/
+		/* MENU DEROULANT */
 		final JPopupMenu clickInFile = new JPopupMenu();
 		clickInFile.add(new JMenuItem("Nouveau Fichier    Ctrl+T"));
 		clickInFile.add(new JMenuItem("Nouveau Repertoire    Ctrl+R"));
@@ -481,24 +481,29 @@ public class Main {
 		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(deleteAction));
 		/***********************************************/
-		//pasteMenu.addActionListener(pasteAction);
-		//pasteItem.addActionListener(pasteAction);
+		/* LISTERNER SUR L'ARBRE ET LA LISTE */
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				lastFocused = TREE_FOCUS;
 				selectAllAction.setEnabled(false);
 				pasteAction.setEnabled(true);
-				int index = tree.getRowForLocation(e.getX(), e.getY());
-				File file = (File) listModel.getElementAt(index);
+				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+				int row = tree.getRowForLocation(e.getX(), e.getY());
+				File file = null;
+				if(path != null) file = ((Model)path.getLastPathComponent()).getFolder();
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 						if (file != null && e.getClickCount() == 1) {
+							if(!tree.isExpanded(row)) tree.expandRow(row);
+							else if(!((Model)path.getLastPathComponent()).equals(treeModel.getRoot()))
+								tree.collapseRow(row);
+							tree.setSelectionRow(row);
+							tree.scrollRowToVisible(row);
 							oldCurrentFolder = model.getFolder();
 							back.setEnabled(true);
 							next.setEnabled(false);
 							newCurrentFolder = file;
-							if (Model.cmp.compare(oldCurrentFolder, file)
-								!= 0) {
+							if (Model.cmp.compare(oldCurrentFolder, file) != 0) {
 								model.setFolder(file);
 								String fileName = file.getAbsolutePath();
 								adrZone.getEditor().setItem( 
@@ -516,7 +521,8 @@ public class Main {
 						if (file == null) {
 							clickInFile.show(e.getComponent(), e.getX(), e.getY());
 						} else {
-							tree.setSelectionRow(index);
+							tree.setSelectionRow(row);
+							tree.scrollRowToVisible(row);
 							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
 						}
 						break;
@@ -543,7 +549,7 @@ public class Main {
 								TreePath path = new TreePath(treeModel.getPathToRoot(model));
 								if(path != null) {
 									int row;
-									Model pathModel = (Model)path.getLastPathComponent();
+									//Model pathModel = (Model)path.getLastPathComponent();
 									for(row = 0; row < tree.getVisibleRowCount(); row ++) {
 										TreePath pathRow = tree.getPathForRow(row);
 										if(pathRow != null && model.equals(pathRow.getLastPathComponent()))
@@ -552,8 +558,7 @@ public class Main {
 									if(row < tree.getVisibleRowCount()) {
 										tree.expandRow(row);
 										tree.setSelectionRow(row);
-										tree.validate();
-										tree.repaint();
+										tree.scrollRowToVisible(row);
 									}
 								}
 								String fileName = file.getAbsolutePath();
