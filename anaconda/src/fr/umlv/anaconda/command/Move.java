@@ -18,7 +18,7 @@ import fr.umlv.anaconda.tools.ChoozRep;
  */
 public class Move implements Command {
 
-	private File dest;
+	private File dest=null;
 	private ArrayList selection;
 	
 	/* (non-Javadoc)
@@ -33,8 +33,9 @@ public class Move implements Command {
 		File origin;
 		for (int i=0; i<selection.size(); i++) {
 			origin = (File) selection.get(i);
-			origin.renameTo(new File( dest.getAbsolutePath()+origin.getName() ));
+			origin.renameTo( new File( dest.getAbsolutePath()+File.separatorChar+origin.getName() ) );
 		}
+		Main.model.setFolder(Main.newCurrentFolder);
 	}
 
 	/* (non-Javadoc)

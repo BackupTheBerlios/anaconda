@@ -226,6 +226,7 @@ public class Main {
 		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action du paste
+				(new Move()).run();
 			}
 		};
 		final Action selectAllAction = new AbstractAction("Selectionner tout") {
