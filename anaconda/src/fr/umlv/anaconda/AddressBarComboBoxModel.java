@@ -135,6 +135,7 @@ public class AddressBarComboBoxModel /*implements MutableComboBoxModel*/ extends
 		else {
 			index = 0;
 		}
+		switch2hist();
 	}
 
 	/* (non-Javadoc)
