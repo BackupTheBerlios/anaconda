@@ -1,6 +1,4 @@
-/*
- * Created on 3 févr. 2004
- */
+
 package fr.umlv.anaconda.command;
 
 import java.io.File;
@@ -17,8 +15,7 @@ import fr.umlv.anaconda.exception.IsNotDirectoryException;
 
 import junit.framework.TestCase;
 
-/**
- */
+
 public class CutTest extends TestCase {
 	public void testCut() {	
 		Properties p = System.getProperties();

@@ -4,7 +4,7 @@
 package fr.umlv.anaconda.command;
 
 import java.io.File;
-import java.util.Properties;
+import java.util.Date;
 
 import fr.umlv.anaconda.exception.CanNotDeleteException;
 import fr.umlv.anaconda.exception.CanNotReadException;
@@ -24,6 +24,8 @@ public class ShowProperties implements Command {
 	private long size;
 	private long last_modified;
 	private String name;
+	private boolean is_directory;
+	private static SecurityManager sm = new SecurityManager();
 
 	public void run(Object o)
 		throws
@@ -34,26 +36,54 @@ public class ShowProperties implements Command {
 			ErrorIOFileException {
 
 		File f = (File) o;
+		String file_path = f.getPath();
 		/*
 		 * FilePermission fp = new
 		 * FilePermission("C:\\","read,write,delete,execute");
 		 *  
 		 */
+		try {
+			sm.checkDelete(file_path);
+			can_delete = true;
+		} catch (SecurityException e) {
+			can_delete = false;
+		}
 
-		can_read = f.canRead();
-		can_write = f.canWrite();
-		//can_delete;
+		try {
+			sm.checkRead(file_path);
+			can_read = true;
+		} catch (SecurityException e) {
+			can_read = false;
+		}
+
+		try {
+			sm.checkWrite(file_path);
+			can_write = true;
+		} catch (SecurityException e) {
+			can_write = false;
+		}
+
+		is_directory = f.isDirectory();
 		is_hidden = f.isHidden();
 		size = f.length();
 		last_modified = f.lastModified();
+
 		System.out.println(
-			f.getPath()
-				+ "\n"
+			"read \t\t\t"
 				+ can_read
-				+ "\n"
+				+ "\nwrite \t\t\t"
 				+ can_write
-				+ "\n"
-				+ can_delete);
+				+ "\ndelete \t\t\t"
+				+ can_delete
+				+ "\nis directory \t"
+				+ is_directory
+				+ "\nis hidden \t\t"
+				+ is_hidden
+				+ "\nlength \t\t\t"
+				+ size
+				+ "\nlast modified \t"
+				+ new Date(last_modified));
+
 	}
 
 	public void redo()
@@ -76,23 +106,16 @@ public class ShowProperties implements Command {
 			ErrorIOFileException {
 
 	}
-	public static void main(String[] args) {
-		Properties p = System.getProperties();
-		System.out.println(p.getProperty("user.dir"));
-		System.out.println(p.getProperty("file.separator"));
-		System.out.println(
-			new String(
-				p.getProperty("user.home")
-					+ p.getProperty("file.separator")
-					+ "testcopy1.txt"));
-		/*
-		 * try { File f = new File("C:\\"); (new CreateFile()).run(f); (new
-		 * ShowProperties()).run(f); } catch (IsNotDirectoryException e) {
-		 * e.printStackTrace(); } catch (CanNotWriteException e) {
-		 * e.printStackTrace(); } catch (CanNotReadException e) {
-		 * e.printStackTrace(); } catch (DoNotExistFileException e) {
-		 * e.printStackTrace(); } catch (ErrorPastingFileException e) {
-		 * e.printStackTrace();
-		 */
+	public static void main(String[] args)
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorIOFileException {
+
+		File f = new File("C:\\tmp\\testcopy1.txt");
+		(new ShowProperties()).run(f);
+
 	}
 }
