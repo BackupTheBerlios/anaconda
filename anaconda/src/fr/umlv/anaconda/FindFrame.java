@@ -1,8 +1,8 @@
 /*
- * Créé le 5 févr. 2004
+ * Cr?? le 5 f?vr. 2004
  *
- * Pour changer le modèle de ce fichier généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
+ * Pour changer le mod?le de ce fichier g?n?r?, allez ? :
+ * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
  */
 package fr.umlv.anaconda;
 
@@ -14,6 +14,7 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,8 +25,8 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
 /**
  * @author ofiguero
  *
- * Pour changer le modèle de ce commentaire de type généré, allez à :
- * Fenêtre&gt;Préférences&gt;Java&gt;Génération de code&gt;Code et commentaires
+ * Pour changer le mod?le de ce commentaire de type g?n?r?, allez ? :
+ * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
  */
 public class FindFrame extends JFrame {
 
@@ -44,46 +45,7 @@ public class FindFrame extends JFrame {
 
 	public FindFrame(final FindModel model) {
 		super("Recherche de fichiers");
-		//		GridBagLayout layout = new GridBagLayout();
-		//	    Constraints constraints = new Constraints();
-		//
-		//		panel.setLayout(layout);
 
-		//		/*TITLE*/
-		//		constraints.setConstraints( 0 , 0 , 5 , 1 , 1 , 1 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(label_title);
-		//		
-		//		/*FILE TO FIND*/
-		//		constraints.setConstraints( 0 , 1 , 2 , 1 , 1 , 2 ,Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(label_name);
-		//		
-		//		constraints.setConstraints( 2 , 1 , 3 , 1 , 1 , 2 ,Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(field_name);
-		//		
-		//		/*ROOT FILE*/
-		//		constraints.setConstraints( 0 , 2 , 2 , 1 , 1 , 3 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(label_root);
-		//		
-		//		constraints.setConstraints( 2 , 2 , 2 , 1 , 1 , 3 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(field_root_name);
-		//		
-		//		constraints.setConstraints( 4 , 2 , 1 , 1 , 1 , 3 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(choose_button);
-		//		
-		//		/*CONFIRM BUTTONS*/
-		//		constraints.setConstraints( 3 , 3 , 1 ,  1 , 1 , 4 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(ok_button);
-		//		
-		//		constraints.setConstraints( 4 , 3 , 1 ,  1 , 1 , 4 , Constraints.HORIZONTAL,Constraints.CENTER);
-		//		layout.setConstraints(label_title,constraints);
-		//		panel.add(cancel_button);
 
 		//TODO faire une fenetre de recherche plus jolie
 		ok_button.addActionListener(new ActionListener() {
@@ -94,8 +56,14 @@ public class FindFrame extends JFrame {
 					if (root_name != null && name != null) {
 						File root_file = new File(root_name);
 						Find find = new Find();
-						find.set(root_file,name,model);
-						find.start();
+
+						if (find.set(root_file, name, model) == 0) {
+							JOptionPane.showMessageDialog(
+								null,
+								" Une recherche est deja en cours ...");
+						} else {
+							find.start();
+						}
 					}
 				} catch (TooMuchFilesException exception) {
 					//TODO verifier l'exception
@@ -104,6 +72,13 @@ public class FindFrame extends JFrame {
 				}
 				FindFrame.this.dispose();
 			}
+		});
+		cancel_button.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent e){
+				FindFrame.this.dispose();
+			}
+			
 		});
 		GridLayout layout = new GridLayout(4, 2);
 		panel.setLayout(layout);

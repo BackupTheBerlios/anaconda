@@ -1,5 +1,5 @@
 /*
- * Created on 3 févr. 2004
+ * Created on 3 f?vr. 2004
  *
  * To change the template for this generated file go to
  * Window - Preferences - Java - Code Generation - Code and Comments
@@ -34,19 +34,18 @@ public class Find extends Thread implements Command {
 	}
 
 	public void run() {
-		if (searching == false) {
-			searching = true;
-			launchFind();
-			searching = false;
-		} else {
-			JOptionPane.showMessageDialog(
-				null,
-				" Une recherche est deja en cours ...");
-		}
+
+		searching = true;
+		launchFind();
+		searching = false;
+
 	}
 
-	public void set(File file, String name, FindModel model)
+	public int set(File file, String name, FindModel model)
 		throws TooMuchFilesException, DoNotExistFileException {
+		if (searching == true)
+			return 0;
+
 		if (!file.exists())
 			throw new DoNotExistFileException(file);
 		model.init();
@@ -54,6 +53,8 @@ public class Find extends Thread implements Command {
 		list = new ArrayList();
 		root_file = (File) file;
 		this.name = name;
+		return 1;
+
 	}
 
 	public void launchFind() {
