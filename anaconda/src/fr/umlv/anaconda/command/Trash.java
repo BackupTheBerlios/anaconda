@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.AbstractAction;
@@ -33,11 +32,12 @@ public class Trash implements Command {
 	/*
 	 * public void run(Object o){ //TODO Enlever la methode run de command
 	 */
-	private FileWriter out = null;
-	private BufferedWriter writer = null;
-	private HashMap files_deleted = new HashMap();
+	private FileWriter garbage_out = null;
+	private BufferedWriter garbage_writer = null;
+	//private HashMap files_deleted = new HashMap();
+	private ArrayList file_list = new ArrayList();
+	private ArrayList old_paths = new ArrayList();
 	private ArrayList new_files_deleted = new ArrayList();
-	private ArrayList files_deleted_history = new ArrayList();
 	private static GarbageModel garbage_model = null;
 	private File home = new File(System.getProperty("user.home"));
 	private File garbage = new File(home, ".anaconda_garbage");
@@ -90,17 +90,15 @@ public class Trash implements Command {
 						Main.refresh();
 					} else if (exit_program) {
 						try {
+							garbage_out.close();
+							garbage_writer.close();
+							garbage.delete();
+							garbage_history.createNewFile();
 							FileWriter writer = new FileWriter(garbage_history);
 							BufferedWriter out = new BufferedWriter(writer);
-							for (Iterator it = files_deleted_history.iterator();
-								it.hasNext();
-								) {
-								FileInformation fi =
-									(FileInformation) it.next();
-								writer.write(
-									fi.getFile().getAbsolutePath() + '\n');
-								writer.write(
-									fi.getOldPath().getAbsolutePath() + '\n');
+							for (Iterator it = file_list.iterator(),it1 = old_paths.iterator();it.hasNext() && it1.hasNext();) {
+								writer.write( ((File)it.next()).getAbsolutePath() + '\n');
+								writer.write( ((File)it1.next()).getAbsolutePath() + '\n');
 							}
 							writer.close();
 							out.close();
@@ -111,6 +109,7 @@ public class Trash implements Command {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						break;
 
 					}
 				}
@@ -193,7 +192,9 @@ public class Trash implements Command {
 		File parent_file = null;
 		for (Iterator it = list.iterator(); it.hasNext();) {
 			File f = (File) it.next();
-			if ((target_file = (File) files_deleted.get(f)) != null) {
+			int index = file_list.indexOf(f);
+			if (index != -1) {
+				target_file = (File)old_paths.get(index);
 				/* Si l'element a restaurer est un fichier */
 				if (f.isFile()) {
 					try {
@@ -214,11 +215,8 @@ public class Trash implements Command {
 						}
 						in.close();
 						out.close();
-						FileInformation fi =
-							new FileInformation(f, (File) files_deleted.get(f));
-						int index;
-						if ((index = files_deleted_history.indexOf(fi)) != -1)
-							files_deleted_history.remove(index);
+						file_list.remove(index);
+						old_paths.remove(index);
 						f.delete();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -230,10 +228,12 @@ public class Trash implements Command {
 				else {
 					try {
 						target_file.mkdirs();
-						FileInformation fi = new FileInformation(f,(File) files_deleted.get(f));
+						file_list.remove(index);
+						old_paths.remove(index);
+						/*FileInformation fi = new FileInformation(f,(File) files_deleted.get(f));
 						int index;
-						if ((index = files_deleted_history.indexOf(fi)) != -1)
-							files_deleted_history.remove(index);
+						if ((index = files_deleted_history.indexOf(fi.getFile())) != -1)
+							files_deleted_history.remove(index);*/
 						f.delete();
 					} catch (SecurityException e) {
 						System.err.println(
@@ -270,6 +270,20 @@ public class Trash implements Command {
 		new_files_deleted.add(new FileInformation(file, new File(old_path)));
 		garbage_model.addElement(file);
 	}
+	
+	
+	public void delete(ArrayList list){
+		int index;
+		File f;
+		for(Iterator it = list.iterator();it.hasNext();){
+			f = (File)it.next();
+			if((index = file_list.indexOf(f)) != -1){
+				file_list.remove(index);
+				old_paths.remove(index);
+				garbage_model.removeElement(f);
+			}
+		}
+	}
 
 	/**
 	 * Save the garbage history
@@ -279,13 +293,13 @@ public class Trash implements Command {
 	public void saveGarbageHistory() throws IOException {
 		for (Iterator it = new_files_deleted.iterator(); it.hasNext();) {
 			FileInformation fi = (FileInformation) it.next();
-			writer.write(fi.getFile().getAbsolutePath() + '\n');
-			writer.write(fi.getOldPath().getAbsolutePath() + '\n');
-			files_deleted.put(fi.getFile(), fi.getOldPath());
-			files_deleted_history.add(fi);
+			garbage_writer.write(fi.getFile().getAbsolutePath() + '\n');
+			garbage_writer.write(fi.getOldPath().getAbsolutePath() + '\n');
+			file_list.add(fi.getFile());
+			old_paths.add(fi.getOldPath());
 		}
 		new_files_deleted.clear();
-		writer.flush();
+		garbage_writer.flush();
 	}
 
 	/**
@@ -301,11 +315,8 @@ public class Trash implements Command {
 				String old_path;
 				while ((file_name = br.readLine()) != null) {
 					old_path = br.readLine();
-					files_deleted.put(new File(file_name), new File(old_path));
-					files_deleted_history.add(
-						new FileInformation(
-							new File(file_name),
-							new File(old_path)));
+					file_list.add(new File(file_name));
+					old_paths.add(new File(old_path));
 					garbage_model.addElement(new File(file_name));
 				}
 			} catch (FileNotFoundException e) {
@@ -323,11 +334,11 @@ public class Trash implements Command {
 		}
 
 		try {
-			out = new FileWriter(garbage_history);
+			garbage_out = new FileWriter(garbage_history);
 		} catch (IOException e) {
 			System.err.println("IOException e");
 		}
-		writer = new BufferedWriter(out);
+		garbage_writer = new BufferedWriter(garbage_out);
 
 	}
 	public void redo() {
@@ -363,6 +374,11 @@ public class Trash implements Command {
 				+ old_path.getAbsolutePath()
 				+ " - "
 				+ file.getAbsolutePath();
+		}
+		public boolean equals(File file){
+			if(this.file.equals(file))
+				return true;
+			return false;
 		}
 	}
 

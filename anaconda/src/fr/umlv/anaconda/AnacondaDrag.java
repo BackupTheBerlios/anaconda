@@ -52,7 +52,7 @@ public class AnacondaDrag {
 		 * @param e the event object
 		 */
 		public void dragGestureRecognized(DragGestureEvent e) {
-			System.out.println("draggestureRecognized:");
+			//System.out.println("draggestureRecognized:");
  
 			//_env.addListSelection(Object o);
 
@@ -114,7 +114,7 @@ public class AnacondaDrag {
 		 * @param e the event
 		 */
 		public void dragDropEnd(DragSourceDropEvent e) {
-			System.out.println("dragdropend");
+			//System.out.println("dragdropend");
    
 			//     System.out.println("on est dragdropend");
 			if( e.getDropSuccess() == false ) {
@@ -142,7 +142,7 @@ public class AnacondaDrag {
 		 */
 		public void dragEnter(DragSourceDragEvent e) {
       
-			System.out.println("dragenter");
+			//System.out.println("dragenter");
   
 			//System.out.println( "draglabel enter " + e);
 			DragSourceContext context = e.getDragSourceContext();
@@ -158,7 +158,7 @@ public class AnacondaDrag {
 		 * @param e the event
 		 */
 		public void dragOver(DragSourceDragEvent e) {
-			System.out.println("dragover");
+			//System.out.println("dragover");
 			DragSourceContext context = e.getDragSourceContext();
 			int sa = context.getSourceActions();
 			int ua = e.getUserAction();
@@ -174,7 +174,7 @@ public class AnacondaDrag {
 		 * @param e the event
 		 */
 		public void dragExit(DragSourceEvent e) {
-			System.out.println("dragExit");
+			//System.out.println("dragExit");
 			//System.out.println( "draglabel exit " + e);      
 			DragSourceContext context = e.getDragSourceContext();
 		}
@@ -185,7 +185,7 @@ public class AnacondaDrag {
 		 * @param e the event     
 		 */
 		public void dropActionChanged (DragSourceDragEvent e) {
-			System.out.println("dropActionChanged");
+			//System.out.println("dropActionChanged");
 			DragSourceContext context = e.getDragSourceContext();      
 			context.setCursor(DragSource.DefaultCopyNoDrop);	  	
 		}

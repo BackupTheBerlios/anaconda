@@ -135,28 +135,29 @@ public class InfoPanel extends JPanel {
 			}
 		});
 
+		
+		
+		
 		setBorder(BorderFactory.createTitledBorder("RECHERCHE"));
-		JPanel find_panel = new JPanel();
-		JPanel title_panel = new JPanel();
-		GridLayout layout = new GridLayout(4, 2);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		title_panel.add(label_title);
-		add(title_panel);
-		find_panel.setSize(100, 100);
-		find_panel.setLayout(layout);
+		/*JPanel find_panel = new JPanel();
+		JPanel title_panel = new JPanel();*/
+		//GridLayout layout = new GridLayout(4, 2);
+		
+		//add(label_title);
+		//add(title_panel);
 
+		JPanel find_panel = new JPanel();
+		find_panel.setBackground(Themes.getBgColor());
+		find_panel.setLayout(new BoxLayout(find_panel, BoxLayout.Y_AXIS));
+		find_panel.setMaximumSize(new Dimension(200,100));
 		find_panel.add(label_name);
 		find_panel.add(field_name);
-
+		
 		find_panel.add(label_root);
 		find_panel.add(field_root_name);
-
-		find_panel.add(new JLabel(""));
-		JPanel panel_button = new JPanel();
-		panel_button.setLayout(new GridLayout(1, 2));
-		panel_button.add(ok_button);
-		find_panel.add(panel_button);
-		add(find_panel);
+		find_panel.add(ok_button);
+		add(find_panel,BorderLayout.CENTER);
+		//add(find_panel);
 		revalidate();
 	}
 
@@ -183,51 +184,5 @@ public class InfoPanel extends JPanel {
 		}
 		revalidate();
 	}
-
-	/*public class PropertiesThread extends Thread {
-		ArrayList list;
-		public PropertiesThread() {
-	
-		}
-	
-		public void setList(ArrayList list) {
-			this.list = list;
-		}
-	
-		public void run() {
-			System.out.println("unr " + list.size());
-			if (list.size() > 1) {
-				System.out.println("debut du run");
-				int cpt = 0;
-				int files_cpt = 0;
-				int folder_cpt = 0;
-				for (Iterator it = list.iterator(); it.hasNext();) {
-					cpt++;
-					if (((File) it).exists()) {
-						if (((File) it).isFile()) {
-							files_cpt++;
-						} else {
-							folder_cpt++;
-						}
-					}
-				}
-				removeAll();
-				repaint();
-				setBorder(
-					BorderFactory.createTitledBorder("INFORMATIONS FICHIERS"));
-				setLayout(new BoxLayout(Main.info_panel, BoxLayout.Y_AXIS));
-				JLabel nb_elements =
-					new JLabel(" " + cpt + " elements selectionnes");
-				add(nb_elements);
-				JLabel nb_files =
-					new JLabel(" " + files_cpt + " fichiers selectionnes");
-				add(nb_files);
-				JLabel nb_folders =
-					new JLabel(" " + folder_cpt + " repertores selectionnes");
-				add(nb_folders);
-				revalidate();
-			}
-		}
-	}*/
 
 }

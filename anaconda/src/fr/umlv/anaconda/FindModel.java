@@ -24,7 +24,6 @@ public class FindModel extends AbstractListModel {
 		if(getSize() == MAX_SIZE)
 		   throw new TooMuchFilesException();
 		list.add(file);
-		System.err.println("Adding from " + this.getSize() + getSize());
 		fireIntervalAdded(FindModel.this,getSize()-1,getSize()-1);
 	}
 	

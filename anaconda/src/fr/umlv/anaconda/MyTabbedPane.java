@@ -41,6 +41,7 @@ public class MyTabbedPane extends JPanel {
 		
 		/* Creation de l'onglet de recherche */
 		final JList findList = new JList(findModel);
+		findList.setBackground(Themes.getBgColor());
 		findList.addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent e){
 				Object[] selected_files = findList.getSelectedValues();	
@@ -68,9 +69,12 @@ public class MyTabbedPane extends JPanel {
 		panelTemp3.setLayout(new BorderLayout());
 		garbage_list = new JList(garbageModel);
 		garbage_list.setCellRenderer(new ListRenderer("garbage"));
+		garbage_list.setBackground(Themes.getBgColor());
 		final JPopupMenu clickInGarbage = new JPopupMenu();
 		final Action restoreAction = AllCommand.getAction("restore");
+		final Action deleteAction = AllCommand.getAction("delete");
 		clickInGarbage.add(new JMenuItem(restoreAction));
+		clickInGarbage.add(new JMenuItem(deleteAction));
 		garbage_list.addMouseListener(new MouseAdapter() {
 		public void mouseClicked(MouseEvent e) {
 

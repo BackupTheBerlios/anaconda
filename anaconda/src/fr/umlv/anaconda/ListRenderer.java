@@ -91,17 +91,17 @@ public class ListRenderer extends DefaultListCellRenderer {
 		}
 		((JLabel) c).setText(name);
 		((JLabel) c).setHorizontalAlignment(SwingConstants.LEFT);
-		((JLabel) c).setVerticalAlignment(SwingConstants.TOP);
+		((JLabel) c).setVerticalAlignment(SwingConstants.CENTER);
 		((JLabel) c).setHorizontalTextPosition(SwingConstants.RIGHT);
-		((JLabel) c).setVerticalTextPosition(SwingConstants.TOP);
+		((JLabel) c).setVerticalTextPosition(SwingConstants.CENTER);
 		/** ********************* */
 		if(((File)value).isDirectory()) ((JLabel)c).setIcon(TableRenderer.FOLDER_ICON);
 		else {
 			int indexExt = file.getName().lastIndexOf('.');
 			if(indexExt != -1) {
-				//if(imagesExt.contains(file.getName().substring(indexExt))) ((JLabel) c).setIcon(TableRenderer.IMAGE_ICON);
 				if(Extension.isImage(file.getName())) ((JLabel) c).setIcon(TableRenderer.IMAGE_ICON);
 				else if(file.getName().endsWith(".exe")) ((JLabel) c).setIcon(TableRenderer.EXE_ICON);
+				else if(file.getName().equals("Elements de la corbeille")) ((JLabel) c).setIcon(IconsManager.GARBAGE);
 				else ((JLabel)c).setIcon(TableRenderer.FILE_ICON);
 			}
 			else ((JLabel)c).setIcon(TableRenderer.FILE_ICON);

@@ -56,7 +56,7 @@ public class Help implements Command {
 		Runtime r = Runtime.getRuntime();
 		try
 		{
-			if (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"))
+			if (os.startsWith("Windows"))
 				r.exec("cmd /c start "+HELP_LOCATION);
 			else
 			//	r.exec("start "+HELP_LOCATION);

@@ -103,7 +103,13 @@ public class AllCommand {
 					Main.refresh();
 				}
 			};
-		} 
+		} else if (cmd_name.equalsIgnoreCase("restore")) {
+		return new AbstractAction("Restaurer") {
+			public void actionPerformed(ActionEvent e) {
+				((Trash)tab_command[11]).restore();
+			}
+		};
+	}
 		
 		return null;
 	}

@@ -22,6 +22,7 @@ public class GarbageModel extends AbstractListModel{
 	private File garbage = new File(home,"anaconda_garbage");
 	
 	public GarbageModel(){
+		list.add(new File("Elements de la corbeille"));
 	}
 	
 	public void addElement(File file){
@@ -43,6 +44,10 @@ public class GarbageModel extends AbstractListModel{
 	}
 	
 	public Object getElementAt(int position){
+		if(position < list.size())
 			return list.get(position);
+		else
+			
+			return new File("");
 	}
 }

@@ -10,6 +10,7 @@ import javax.swing.tree.*;
 import fr.umlv.anaconda.appearance.Themes;
 import fr.umlv.anaconda.command.AllCommand;
 import fr.umlv.anaconda.command.Launch;
+import fr.umlv.anaconda.command.Trash;
 //import fr.umlv.anaconda.exception.DoNotExistFileException;
 //import fr.umlv.anaconda.exception.ErrorIOFileException;
 
@@ -113,8 +114,10 @@ public class Main {
 						"Voulez vous vraiment quitter ?",
 						" Quitter ",
 						JOptionPane.OK_CANCEL_OPTION)
-				== JOptionPane.OK_OPTION)
+				== JOptionPane.OK_OPTION){
+			((Trash)AllCommand.get("trash")).stop();
 			System.exit(1);
+				}
 	}	
 
 	public static void initTree() {
@@ -360,7 +363,7 @@ public class Main {
 			}
 		};
 		final Action renameAction = AllCommand.getAction("rename");
-		final Action deleteAction = AllCommand.getAction("delete");
+		final Action trashAction = AllCommand.getAction("trash");
 		final Action findAction = new AbstractAction("Rechercher") {
 			public void actionPerformed(ActionEvent e) {
 				info_panel.setAsFind(find_model);
@@ -457,7 +460,7 @@ public class Main {
 		JMenuItem moveItem = new JMenuItem(moveAction);
 		JMenuItem selectAllItem = new JMenuItem(selectAllAction);
 		JMenuItem renameItem = new JMenuItem(renameAction);
-		JMenuItem deleteItem = new JMenuItem(deleteAction);
+		JMenuItem trashItem = new JMenuItem(trashAction);
 		edit.add(undoItem);
 		edit.add(redoItem);
 		edit.add(new JSeparator());
@@ -470,7 +473,7 @@ public class Main {
 		edit.add(new JSeparator());
 		edit.add(selectAllItem);
 		edit.add(renameItem);
-		edit.add(deleteItem);
+		edit.add(trashItem);
 		/* Affichage */
 		JMenuItem reloadItem = new JMenuItem(refreshAction);
 		JMenu subMenuTri = new JMenu("Organiser par...");
@@ -554,7 +557,7 @@ public class Main {
 		home.setToolTipText("Maison");
 		final JButton garbage = new JButton(IconsManager.GARBAGE);
 		garbage.setRolloverIcon(IconsManager.ONFOCUSGARBAGE);
-		garbage.addActionListener(deleteAction);
+		garbage.addActionListener(trashAction);
 		garbage.setToolTipText("Supprimer");
 		
 
@@ -657,7 +660,7 @@ public class Main {
 		clickOutFile.add(new JMenuItem(dupAction));
 		clickOutFile.add(new JMenuItem(moveAction));
 		clickOutFile.add(new JSeparator());
-		clickOutFile.add(new JMenuItem(deleteAction));
+		clickOutFile.add(new JMenuItem(trashAction));
 		clickOutFile.add(new JMenuItem(renameAction));
 		clickOutFile.add(new JMenuItem(showPropertiesAction));
 		

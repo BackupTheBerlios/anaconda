@@ -143,7 +143,7 @@ public class AnacondaDrop {
 		 * invoke acceptDrag or rejectDrag based on isDragOk
 		 */
 		public void dragEnter(DropTargetDragEvent e) {
-			System.out.println( "dtlistener dragEnter");    
+			//System.out.println( "dtlistener dragEnter");    
 			if(isDragOk(e) == false) {
 				//System.out.println( "enter not ok");
 				//	DropLabel.this.borderColor=Color.red;            
@@ -162,7 +162,7 @@ public class AnacondaDrop {
 		 * invoke acceptDrag or rejectDrag based on isDragOk
 		 */
 		public void dragOver(DropTargetDragEvent e) {
-			System.out.println( "dragover");
+			//System.out.println( "dragover");
         
 			if(isDragOk(e) == false) {
 				//System.out.println( "dtlistener dragOver not ok" );
@@ -177,7 +177,7 @@ public class AnacondaDrop {
     
 		public void dropActionChanged(DropTargetDragEvent e) {
         
-			System.out.println( "dropactionchanged");
+			//System.out.println( "dropactionchanged");
 			if(isDragOk(e) == false) {
 				//System.out.println( "dtlistener changed not ok" );
 				e.rejectDrag();      
@@ -188,7 +188,7 @@ public class AnacondaDrop {
 		}
     
 		public void dragExit(DropTargetEvent e) {
-			System.out.println( "dtlistener dragExit");
+			//System.out.println( "dtlistener dragExit");
 			//DropLabel.this.borderColor=Color.green;            
 			// showBorder(false);
 		}
@@ -226,7 +226,7 @@ public class AnacondaDrop {
 						{
 							String stlist=st.substring(j,i);
     
-							System.out.println("on copie12<"+stlist+">");
+							//System.out.println("on copie12<"+stlist+">");
 
 							if(list.size()==0)
 								list.add(stlist);
@@ -318,15 +318,15 @@ public class AnacondaDrop {
 		 * do the transfer
 		 */
 		public void drop(DropTargetDropEvent e) {
-			System.out.println( "dtlistener drop");
+			//System.out.println( "dtlistener drop");
       
 			DataFlavor chosen = chooseDropFlavor(e);
 			if (chosen == null) {
-				System.err.println( "No flavor match found" );
+				//System.err.println( "No flavor match found" );
 				e.rejectDrop();      	
 				return;
 			}
-			System.err.println( "Chosen data flavor is " + chosen.getMimeType());
+			//System.err.println( "Chosen data flavor is " + chosen.getMimeType());
 
 			// the actual operation
 			int da = e.getDropAction();
@@ -336,7 +336,7 @@ public class AnacondaDrop {
 			//System.out.println( "drop: dropAction: " + da);
       
 			if ( ( sa & acceptableActions ) == 0 ) {
-				System.err.println( "No action match found" );
+				//System.err.println( "No action match found" );
 				e.rejectDrop();      		
 				//showBorder(false);      		
 				return;
@@ -365,7 +365,7 @@ public class AnacondaDrop {
 				//showBorder(false);      		
 				return;
 			}
-			System.out.println( "Got data: " + data.getClass().getName() );
+			//System.out.println( "Got data: " + data.getClass().getName() );
       
 			Point point=e.getLocation();
 			/**/
@@ -376,7 +376,7 @@ public class AnacondaDrop {
 				}
 			else
 				if(comp instanceof JTable)
-					{  System.out.println("table");
+					{ // System.out.println("table");
 					//dropJTable((JTable)comp,data.toString(),point);
 					}
 			/**/       
@@ -389,10 +389,10 @@ public class AnacondaDrop {
         
 	
         
-						System.out.println("on copy 5"+s);
+						//System.out.println("on copy 5"+s);
       
 					} else if (data instanceof InputStream) {
-						System.out.println("inpustream");
+						//System.out.println("inpustream");
 						InputStream input = (InputStream)data;
 						InputStreamReader isr = null;
 						//	BufferedReader br = null;
@@ -426,7 +426,7 @@ public class AnacondaDrop {
 							   br.close();
 							*/
 							// DropLabel.this.setText(str.toString());
-							System.out.println("on copy 3");
+							//System.out.println("on copy 3");
 						} catch(IOException ioe) {
 							/*
 							  bug #4094987

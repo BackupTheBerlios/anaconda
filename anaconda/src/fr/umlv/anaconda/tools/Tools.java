@@ -89,6 +89,7 @@ public class Tools {
 	public static boolean isWin(){
 		//	a utiliser pour savoir comment lancer ?..
 		final String os = System.getProperty("os.name");
-		return (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"));
+		//return (os.endsWith("NT")||os.endsWith("2000")||os.endsWith("XP"));
+		return os.startsWith("Windows");
 	}
 }

@@ -26,15 +26,16 @@ public class Paste implements Command {
 	public static int max;
 	public static int cur;
 
-
 	public Paste() {
 		super();
 
 		//		act = new AbstractAction("Coller Ctrl+V") {
 		act = new AbstractAction("Coller") {
 			public void actionPerformed(ActionEvent e) {
-				if(is_cut) Main.readyToPaste = false;
-				else Main.readyToPaste = true;
+				if (is_cut)
+					Main.readyToPaste = false;
+				else
+					Main.readyToPaste = true;
 				run();
 			}
 			public boolean isEnable() {
@@ -43,8 +44,10 @@ public class Paste implements Command {
 			//	final String SMALL_ICON=IconsManager.PASTE.getDescription();
 			//	final String ACCELERATOR_KEY = "Ctrl+V";
 			//	final String NAME = "Coller";
-			//	final String SHORT_DESCRIPTION = "Coller depuis le presse papier";
-			//	final String LONG_DESCRIPTION ="Coller un element prealablement copier ou coupe";
+			//	final String SHORT_DESCRIPTION = "Coller depuis le presse
+			// papier";
+			//	final String LONG_DESCRIPTION ="Coller un element prealablement
+			// copier ou coupe";
 
 		};
 		act.setEnabled(false);
@@ -134,7 +137,7 @@ public class Paste implements Command {
 		(new DoThread()).start();
 		if (is_cut)
 			PressPaper.clear();
-			
+
 	}
 
 	/**
@@ -186,32 +189,35 @@ public class Paste implements Command {
 							FileOutputStream fileOutputStream =
 								new FileOutputStream(file);
 							byte[] buffer = new byte[1024];
-							while (fileInputStream.available() > 0) {
+							while (fileInputStream.available() > 0){
 								int readNumber = fileInputStream.read(buffer);
-								cur+=readNumber;
+								cur += readNumber;
 								if (readNumber > 0)
 									fileOutputStream.write(
 										buffer,
 										0,
 										readNumber);
 							}
+							fileInputStream.close();
+							fileOutputStream.close();
 							unsetReadOnly(child, right);
 							setRight(right, file);
-						}
-						else{
+						} else {
 							fileInputStream = new FileInputStream(child);
 							FileOutputStream fileOutputStream =
 								new FileOutputStream(file);
 							byte[] buffer = new byte[1024];
 							while (fileInputStream.available() > 0) {
 								int readNumber = fileInputStream.read(buffer);
-								cur+=readNumber;
+								cur += readNumber;
 								if (readNumber > 0)
 									fileOutputStream.write(
 										buffer,
 										0,
 										readNumber);
 							}
+							fileInputStream.close();
+							fileOutputStream.close();
 						}
 					} catch (FileNotFoundException e) {
 						throw new DoNotExistFileException(child);
@@ -253,14 +259,14 @@ public class Paste implements Command {
 	public class DoThread extends Thread {
 		public void run() {
 			initMax();
-			cur=0;
+			cur = 0;
 			for (Iterator it = last_selection.iterator(); it.hasNext();) {
 				File file = (File) it.next();
 				if (!file.exists())
 					 (new DoNotExistFileException(file)).show();
 				if (!file.canRead())
 					 (new CanNotReadException(file)).show();
-				try {		
+				try {
 					pasteFile(dest_rep, file);
 				} catch (DoNotExistFileException e) {
 					e.show();
@@ -270,30 +276,30 @@ public class Paste implements Command {
 					e.show();
 				}
 			}
-		Main.refresh();
+			Main.refresh();
 		}
 	}
 
-	private void initMax(){
+	private void initMax() {
 		File tmp;
 		max = 0;
-		for(Iterator it = last_selection.iterator();it.hasNext();){
-			tmp = (File)it.next();
-			if(tmp.isFile())
-				max+=tmp.length();
+		for (Iterator it = last_selection.iterator(); it.hasNext();) {
+			tmp = (File) it.next();
+			if (tmp.isFile())
+				max += tmp.length();
 			else
-				max +=lengthRep(tmp);
+				max += lengthRep(tmp);
 		}
 	}
-	
-	private int lengthRep(File f){
+
+	private int lengthRep(File f) {
 		int len = 0;
 		File[] list_file = f.listFiles();
-		for(int i=0;i<list_file.length;i++){
-			if(list_file[i].isFile())
-				len+=list_file[i].length();
+		for (int i = 0; i < list_file.length; i++) {
+			if (list_file[i].isFile())
+				len += list_file[i].length();
 			else
-				len+=lengthRep(list_file[i]);
+				len += lengthRep(list_file[i]);
 		}
 		return len;
 	}
@@ -301,7 +307,7 @@ public class Paste implements Command {
 	public class UndoThread extends Thread {
 		public void run() {
 			initMax();
-			cur=0;
+			cur = 0;
 			File[] tab_file = dest_rep.listFiles();
 			for (int i = 0; i < tab_file.length; i++) {
 				for (Iterator j = last_selection.iterator(); j.hasNext();) {
@@ -399,7 +405,9 @@ public class Paste implements Command {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.umlv.anaconda.command.Command#getAction()
 	 */
 	public Action getAction() {

@@ -16,13 +16,13 @@ import fr.umlv.anaconda.tools.Tools;
 public class Delete implements Command {
 
 	public void run() {
-		ArrayList selected_file = Main.getSelectionItems();
+		ArrayList selected_file = Main.tabb.getGarbageSelectedFiles();
 
 		if (selected_file.size() < 1) {
 			(new NoSelectedFilesException()).show();
 			return;
 		}
-
+		((Trash)AllCommand.get("trash")).delete(selected_file);
 		for (Iterator i = selected_file.iterator(); i.hasNext();) {
 			File to_delete = (File) i.next();
 
@@ -35,6 +35,7 @@ public class Delete implements Command {
 					e.show();
 				}
 		}
+
 	}
 
 	public void run(File selected_file) {
