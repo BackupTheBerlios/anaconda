@@ -8,7 +8,7 @@ package fr.umlv.anaconda;
 
 import java.awt.Component;
 import java.io.File;
-import java.util.ArrayList;
+
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -16,17 +16,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
 
+import fr.umlv.anaconda.tools.Extension;
+
+
+
 
 public class ListRenderer extends DefaultListCellRenderer {
 	
-	private static ArrayList imagesExt = new ArrayList();
-	static {
-		imagesExt.add(".jpg");
-		imagesExt.add(".jpeg");
-		imagesExt.add(".gif");
-		imagesExt.add(".bmp");
-		imagesExt.add(".png");
-	}
+
 	 
 	private ImageIcon father_icon = IconsManager.big_father_icon;
 	private ImageIcon folder_icon = IconsManager.big_folder_icon;
@@ -112,7 +109,7 @@ public class ListRenderer extends DefaultListCellRenderer {
 		} else {
 			int extIndex = name.lastIndexOf('.');
 			if(extIndex != -1) {
-				if (imagesExt.contains(name.substring(extIndex)))
+				if (Extension.isImage(name))
 					((JLabel) c).setIcon(image_icon);
 				else if (name.endsWith(".exe"))
 					 ((JLabel) c).setIcon(exe_icon);

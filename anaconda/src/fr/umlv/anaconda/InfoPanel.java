@@ -7,12 +7,13 @@
 package fr.umlv.anaconda;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Date;
-
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,6 +27,7 @@ import javax.swing.JTextField;
 import fr.umlv.anaconda.command.Find;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
+import fr.umlv.anaconda.tools.Extension;
 
 /**
  * @author FIGUEROA
@@ -172,54 +174,36 @@ public class InfoPanel extends JPanel {
 		revalidate();
 	}
 
-	public void setAsGeneral(int nb_elements) {
-		/*System.out.println("setAGeneral " + list.size());
+	public void setAsGeneral(File f, int nb_elements) {
 
-		if (list.size() > 1) {
-			int cpt = 0;
-			int files_cpt = 0;
-			int folder_cpt = 0;
-			for (Iterator it = list.iterator(); it.hasNext();) {
-
-				cpt++;
-				System.out.println((it.getClass()).toString());
-				File f = (File)it;
-				if (f.exists()) {
-					if ( f.isFile()) {
-						files_cpt++;
-					} else {
-						folder_cpt++;
-					}
-				}
-			}*/
-			removeAll();
-			repaint();
-			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-			setBorder(
-				BorderFactory.createTitledBorder("INFORMATIONS FICHIERS"));
-			JLabel label_nb_elements =
-				new JLabel(" " + nb_elements + " elements selectionnes");
-			add(label_nb_elements);
-			/*JLabel nb_files =
-				new JLabel(" " + files_cpt + " fichiers selectionnes");
-			add(nb_files);
-			JLabel nb_folders =
-				new JLabel(" " + folder_cpt + " repertores selectionnes");
-			add(nb_folders);*/
-			revalidate();
-		/*}*/
+		removeAll();
+		repaint();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBorder(BorderFactory.createTitledBorder("INFORMATIONS FICHIERS"));
+		JLabel label_nb_elements =
+			new JLabel(" " + nb_elements + " elements selectionnes");
+		add(label_nb_elements);
+		if (f != null) {
+			if (Extension.isImage(f.getName())) {
+				Image image = new ImageIcon(f.getAbsolutePath()).getImage().getScaledInstance(200,200, Image.SCALE_FAST);
+				ImageIcon image_icon = new ImageIcon(image);
+				JLabel apercu =  new JLabel(image_icon);
+				add(apercu);
+			}
+		}
+		revalidate();
 	}
 
 	/*public class PropertiesThread extends Thread {
 		ArrayList list;
 		public PropertiesThread() {
-
+	
 		}
-
+	
 		public void setList(ArrayList list) {
 			this.list = list;
 		}
-
+	
 		public void run() {
 			System.out.println("unr " + list.size());
 			if (list.size() > 1) {
