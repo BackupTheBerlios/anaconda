@@ -43,6 +43,7 @@ public class Main {
 	final private static int NONE_FOCUS = 2;
 	private static int lastFocused = NONE_FOCUS;
 	private static ArrayList selection_items = new ArrayList();
+	private static Color bg_color = new Color(210,230,255); 
 	
 	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
@@ -59,6 +60,10 @@ public class Main {
 			break;
 		}
 		return selection_items;
+	}
+	
+	public static Color getBgColor() {
+		return bg_color;
 	}
 
 	/* METHODE MAIN */
@@ -569,8 +574,8 @@ public class Main {
 				}
 			}
 		});
-		tree.setForeground(new Color(210,230,255));
-		tree.setBackground(new Color(210,230,255));
+		tree.setForeground(getBgColor());
+		tree.setBackground(getBgColor());
 		mainFrame.show();
 	}
 }

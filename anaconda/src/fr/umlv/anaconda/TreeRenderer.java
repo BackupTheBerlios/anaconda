@@ -56,6 +56,7 @@ public class TreeRenderer extends DefaultTreeCellRenderer {
 			 ((JLabel) c).setIcon(open_node_icon);
 		else
 			 ((JLabel) c).setIcon(close_node_icon);
+		backgroundNonSelectionColor = Main.getBgColor();
 		return c;
 	}
 
