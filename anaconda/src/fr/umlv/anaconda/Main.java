@@ -159,10 +159,11 @@ public class Main {
 				if(selected) ((JLabel)c).setIcon(IconsManager.focus_icon);
 				else if(expanded) ((JLabel)c).setIcon(IconsManager.small_father_icon);
 				else ((JLabel)c).setIcon(IconsManager.small_folder_icon);
-				((JLabel)c).setBackground(Themes.getBgColor());
+			//	((JLabel)c).setBackground(Themes.getBgColor());
 				return c;
 			}
-		});
+		}); 
+		((DefaultTreeCellRenderer)tree.getCellRenderer()).setBackgroundNonSelectionColor(Themes.getBgColor());
 		/* POSITIONNEMENT DES EVENEMENT SOURIS */
 		tree.addMouseListener(new MouseAdapter() {
 			private TreePath oldPath = null;
