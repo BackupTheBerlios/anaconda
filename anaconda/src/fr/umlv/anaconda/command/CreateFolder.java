@@ -28,7 +28,7 @@ public class CreateFolder implements Command {
 	private String current_name = null;
 
 	public void run() {
-		ArrayList selected_file = Main.getSelectionItems();
+		/*ArrayList selected_file = Main.getSelectionItems();
 
 		if (selected_file.size() < 1) {
 			(new NoSelectedFilesException()).show();
@@ -38,9 +38,9 @@ public class CreateFolder implements Command {
 		if (selected_file.size() > 1) {
 			(new TooMuchFilesException()).show();
 			return;
-		}
+		}*/
 
-		current_folder = (File) selected_file.get(0);
+		current_folder = Main.model.getFolder();/*(File) selected_file.get(0)*/;
 		if( !current_folder.isDirectory() )
 			current_folder = current_folder.getParentFile();
 		

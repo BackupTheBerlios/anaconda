@@ -1,11 +1,13 @@
 package fr.umlv.anaconda;
 
-import fr.umlv.anaconda.command.*;
 import java.io.*;
 import java.util.*;
 import java.net.*;
 import javax.swing.*;
 import javax.swing.tree.*;
+
+import fr.umlv.anaconda.command.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -20,11 +22,11 @@ public class Main {
 	final public static ModelTreeAdapter treeModel =
 		new ModelTreeAdapter(model);
 	final public static JTree tree = new JTree(treeModel);
-	/*final public static ModelListAdapter listModel =
-		new ModelListAdapter(model);
-	final public static JList list = new JList(listModel);*/
+
+	final public static GarbageModel garbage_model = new GarbageModel();
+	final public static Trash trash = new Trash(garbage_model);
 	final public static FindModel find_model = new FindModel();
-	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model);
+	final public static MyTabbedPane tabb = new MyTabbedPane(model,find_model,garbage_model);
 		   final public static ModelListAdapter listModel = tabb.getListModel();
 		   final public static JList list = tabb.getListFiles();
 	final private static int LIST_FOCUS = 0;
@@ -195,19 +197,30 @@ public class Main {
 		/* LES ACTIONS */
 		final Action refreshAction = new AbstractAction("Actualiser"){
 					public void actionPerformed(ActionEvent e){
+						
+						System.out.println("raffraichissement de " + model.getFolder().toString());
 						model.setFolder(model.getFolder());
 					}
 		};
+		final Action createFile = new AbstractAction("Cree Fichier"){
+			public void actionPerformed(ActionEvent e){
+				(new CreateFile()).run();
+				refreshAction.actionPerformed(e);
+			}
+		};
+		final Action createFolder = new AbstractAction("Cree Repertoire"){
+			public void actionPerformed(ActionEvent e){
+				(new CreateFolder()).run();
+				refreshAction.actionPerformed(e);
+			}
+		};
 		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action copy
 				(new Copy()).run();
-				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action cut
 				(new Cut()).run();
 			}
 		};
@@ -215,7 +228,6 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action paste
 				(new Paste()).start();
-				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
@@ -236,16 +248,15 @@ public class Main {
 		};
 		final Action renameAction = new AbstractAction("Renommer") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
 				(new Rename()).run();
 				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action deleteAction = new AbstractAction("Supprimer") {
 			public void actionPerformed(ActionEvent e) {
-				//TODO action du paste
-				(new Delete()).run();
-				refreshAction.actionPerformed(e);
+				//Delete de la corbeille
+				//(new Delete()).run();
+				trash.start();
 			}
 		};
 		final Action findAction = new AbstractAction("Rechercher"){
@@ -265,7 +276,9 @@ public class Main {
 		/* Fichier */
 		JMenu subMenuNew = new JMenu("Nouveau...");
 		JMenuItem newFileItem = new JMenuItem("Fichier    Ctrl+T");
+		newFileItem.addActionListener(createFile);
 		JMenuItem newFolderItem = new JMenuItem("Repertoire    Ctrl+R");
+		newFolderItem.addActionListener(createFolder);
 		JMenuItem newFrameItem =
 			new JMenuItem("Fenetre d'exploration    Ctrl+E");
 		subMenuNew.add(newFileItem);
@@ -359,9 +372,6 @@ public class Main {
 		JButton copy = new JButton(new ImageIcon(icones[COPY_ICONE]));
 		JButton paste = new JButton(new ImageIcon(icones[PASTE_ICONE]));
 		JButton find = new JButton(new ImageIcon(icones[FIND_ICONE]));
-		cut.addActionListener(cutAction);
-		copy.addActionListener(copyAction);
-		paste.addActionListener(pasteAction);
 		find.addActionListener(findAction);
 
 		//back.setBackground(Color.WHITE);
