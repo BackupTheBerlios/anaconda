@@ -578,9 +578,8 @@ public class Main {
 		JToolBar adressBar = new JToolBar();
 		adressBar.setFloatable(false);
 		JButton delAdr = new JButton(" X ");
-		JLabel adr = new JLabel(" adresse : ");
-		JButton openAdr = new JButton("GO");
-		JButton autoAdr = new JButton("auto-completion");
+		JLabel adr = new JLabel(" Adresse : ");
+		JButton openAdr = new JButton(" GO ");
 		//String fileName = currentFolder.getAbsolutePath();
 		adrZone = new AddressBar(currentFolder);
 		/*adrZone =
@@ -590,11 +589,10 @@ public class Main {
 						? ""
 						: File.separator)); */
 //		adrZone.setActionCommand("test");
-		adressBar.add(openAdr);
-		adressBar.add(delAdr);
 		adressBar.add(adr);
 		adressBar.add(adrZone);
-//		adressBar.add(autoAdr);
+		adressBar.add(openAdr);
+		adressBar.add(delAdr);
 
 		/* PANELBAR */
 		JPanel panelBar = new JPanel();
