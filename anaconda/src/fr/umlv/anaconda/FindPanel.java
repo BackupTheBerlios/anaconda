@@ -6,13 +6,12 @@
  */
 package fr.umlv.anaconda;
 
-import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,12 +27,12 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
  * Pour changer le mod?le de ce commentaire de type g?n?r?, allez ? :
  * Fen?tre&gt;Pr?f?rences&gt;Java&gt;G?n?ration de code&gt;Code et commentaires
  */
-public class FindFrame extends JFrame {
+public class FindPanel{
 
 	public String name;
 	public String root_file_name;
 
-	JPanel panel = new JPanel();
+	final public static JPanel panel = new JPanel();
 	JLabel label_title = new JLabel("RECHERCHE DE FICHIERS/REPERTOIRES ");
 	JLabel label_name = new JLabel("fichier a trouver : ");
 	JTextField field_name = new JTextField();
@@ -41,10 +40,10 @@ public class FindFrame extends JFrame {
 	JTextField field_root_name = new JTextField();
 	JButton choose_button = new JButton("choisir");
 	JButton ok_button = new JButton("OK");
-	JButton cancel_button = new JButton("Annuler");
 
-	public FindFrame(final FindModel model) {
-		super("Recherche de fichiers");
+
+	public FindPanel(final FindModel model) {
+		//super("Recherche de fichiers");
 
 
 		//TODO faire une fenetre de recherche plus jolie
@@ -70,17 +69,10 @@ public class FindFrame extends JFrame {
 				} catch (DoNotExistFileException exception) {
 					exception.show();
 				}
-				FindFrame.this.dispose();
 			}
 		});
-		cancel_button.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent e){
-				FindFrame.this.dispose();
-			}
-			
-		});
-		GridLayout layout = new GridLayout(4, 2);
+
+		/*GridLayout layout = new GridLayout(4, 2);
 		panel.setLayout(layout);
 
 		panel.add(label_title);
@@ -96,12 +88,15 @@ public class FindFrame extends JFrame {
 		JPanel panel_button = new JPanel();
 		panel_button.setLayout(new GridLayout(1, 2));
 		panel_button.add(ok_button);
-		panel_button.add(cancel_button);
-		panel.add(panel_button);
+		panel.add(panel_button);*/
 
-		getContentPane().add(panel);
-		setSize(350, 100);
+		//getContentPane().add(panel);
+		//setSize(350, 100);
 
+	}
+	
+	public static JPanel getPanel(){
+		return panel;
 	}
 
 	public String getNameToFind() {

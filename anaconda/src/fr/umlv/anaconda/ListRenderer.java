@@ -90,6 +90,9 @@ public class ListRenderer extends DefaultListCellRenderer {
 			else if (name.compareTo("") == 0)
 				name = ((File) value).getAbsolutePath();
 		}
+		if(name.length()>20){
+			name = (name.substring(0,10)).concat("...");
+		}
 		((JLabel) c).setText(name);
 		((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
 		((JLabel) c).setVerticalAlignment(SwingConstants.CENTER);

@@ -29,6 +29,7 @@ public class Main {
 	final public static ModelTreeAdapter treeModel =
 		new ModelTreeAdapter(model);
 	final public static JTree tree = new JTree(treeModel);
+	final public static InfoPanel info_panel = new InfoPanel();
 
 
 	final public static GarbageModel garbage_model = new GarbageModel();
@@ -92,13 +93,11 @@ public class Main {
 
 		JScrollPane scrollTree = new JScrollPane(tree);
 		/******************************/
-		JPanel infoPanel = new JPanel();
-		ImageIcon anacondaLogo = IconsManager.logo;
-		infoPanel.add(new JLabel(anacondaLogo));
-		infoPanel.setBackground(Color.WHITE);
+		final JPanel infoPanel = new JPanel();
+
 
 		JSplitPane splitTreeInfo =
-			new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollTree, infoPanel);
+			new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollTree, info_panel);
 		splitTreeInfo.setOneTouchExpandable(true);
 		splitTreeInfo.setDividerLocation(260);
 		splitTreeInfo.setResizeWeight(1);
@@ -195,9 +194,11 @@ public class Main {
 		};
 		final Action findAction = new AbstractAction("Rechercher"){
 			public void actionPerformed(ActionEvent e){
-				FindFrame frame = new FindFrame(find_model);
-				frame.show();
+				//FindPanel find_panel = new FindPanel(find_model);
+				//info_panel.setPanel(FindPanel.getPanel());
+				info_panel.setAsFind(find_model);
 			}
+			
 		};
 		final Action bigIconsAction = new AbstractAction("Grandes Icones"){
 			public void actionPerformed(ActionEvent e){
@@ -322,21 +323,37 @@ public class Main {
 		/* TOOLBAR */
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		final JButton back = new JButton(IconsManager.back);
-		final JButton next = new JButton(IconsManager.next);
-		JButton cut = new JButton(IconsManager.cut);
-		JButton copy = new JButton(IconsManager.copy);
-		JButton paste = new JButton(IconsManager.paste);
-		JButton find = new JButton(IconsManager.find);
+		final JButton back = new JButton(IconsManager.BACK);
+		back.setRolloverIcon(IconsManager.ONFOCUSBACK);
+		final JButton refresh = new JButton(IconsManager.REFRESH);
+		refresh.setRolloverIcon(IconsManager.ONFOCUSREFRESH);
+		final JButton next = new JButton(IconsManager.NEXT);
+		next.setRolloverIcon(IconsManager.ONFOCUSNEXT);
+		final JButton cut = new JButton(IconsManager.CUT);
+		cut.setRolloverIcon(IconsManager.ONFOCUSCUT);
+		final JButton copy = new JButton(IconsManager.COPY);
+		copy.setRolloverIcon(IconsManager.ONFOCUSCOPY);
+		final JButton paste = new JButton(IconsManager.PASTE);
+		paste.setRolloverIcon(IconsManager.ONFOCUSPASTE);
+		final JButton find = new JButton(IconsManager.FIND);
+		find.setRolloverIcon(IconsManager.ONFOCUSFIND);
+		final JButton home = new JButton(IconsManager.HOME);
+		home.setRolloverIcon(IconsManager.ONFOCUSHOME);
+		final JButton garbage = new JButton(IconsManager.GARBAGE);
+		garbage.setRolloverIcon(IconsManager.ONFOCUSGARBAGE);
 		find.addActionListener(findAction);
 
+		toolBar.add(home);
 		toolBar.add(back);
+		toolBar.add(refresh);
 		toolBar.add(next);
 		toolBar.add(cut);
 		toolBar.add(copy);
 		toolBar.add(paste);
+		toolBar.add(garbage);
 		toolBar.add(find);
 		toolBar.setRollover(true);
+		toolBar.setFloatable(true);
 
 		/* ADRESSBAR */
 		JToolBar adressBar = new JToolBar();
