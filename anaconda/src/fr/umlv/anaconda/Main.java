@@ -22,24 +22,18 @@ public class Main {
 	final public static ModelListAdapter listModel =
 		new ModelListAdapter(model);
 	final public static JList list = new JList(listModel);
-	public static ArrayList selection_items = new ArrayList();
-	
-	
+	/* RECUPERATION DE LA SELECTION */
 	public static ArrayList getSelectionItems() {
-		selection_items.clear();
-		Object[] o = list.getSelectedValues();
-	
-		if ( o.length == 1) {
-			File file = (File) o[0];
-			if (Model.cmp.compare(file, model.getFolderParent()) == 0)
-				selection_items.add(0,((Model) tree.getLastSelectedPathComponent()).getFolder());
-		} 
-		else {
-			for (int i=0;i<o.length;i++) {
-				if (Model.cmp.compare( (File)o[i], model.getFolderParent()) != 0){
+		ArrayList selection_items = new ArrayList();
+		if (list.hasFocus()){
+			Object[] o = list.getSelectedValues();
+			for (int i=0;i<o.length;i++){
+				if (Model.cmp.compare(o[i], model.getFolderParent()) != 0)
 					selection_items.add(o[i]);
-				}
 			}
+		}
+		else if (tree.hasFocus()){
+			selection_items.add(((Model) tree.getLastSelectedPathComponent()).getFolder());
 		}
 		return selection_items;
 	}
@@ -69,13 +63,12 @@ public class Main {
 		for(int i = 0; i < iconesPath.length; i ++)
 			icones[i] = Main.class.getResource(iconesResourcePath + iconesPath[i]);
 	}
-	/**/
+	/* METHODE MAIN */
 	public static void main(String[] args) throws Exception {
 		final JFrame mainFrame = new JFrame("Anaconda");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(800, 600);
 		oldCurrentFolder = newCurrentFolder = model.getFolder();
-
 		/* CREATION DE L'ARBRE */
 		TreeSelectionModel treeSelection = new DefaultTreeSelectionModel();
 		treeSelection.setSelectionMode(
@@ -188,6 +181,47 @@ public class Main {
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(mainFrame.getWidth() / 3);
 		/**********************************/
+		/* LES ACTIONS */
+		final Action copyAction = new AbstractAction("Copier    Ctrl+C") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action cutAction = new AbstractAction("Couper   Ctrl+X") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action moveAction = new AbstractAction("Deplacer    Ctrl+Alt+X") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action selectAllAction = new AbstractAction("Selectionner tout") {
+			public void actionPerformed(ActionEvent e) {
+				list.setSelectionInterval(0, listModel.getSize() - 1);
+			}
+		};
+		final Action renameAction = new AbstractAction("Renommer") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
+		final Action deleteAction = new AbstractAction("Supprimer") {
+			public void actionPerformed(ActionEvent e) {
+				//TODO action du paste
+			}
+		};
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -221,16 +255,16 @@ public class Main {
 		file.add(propertiesItem);
 		file.add(quitter);
 		/* Edition */
-		JMenuItem cutItem = new JMenuItem("Couper   Ctrl+X");
-		JMenuItem copyItem = new JMenuItem("Copier    Ctrl+C");
-		JMenuItem pasteItem = new JMenuItem("Coller    Ctrl+V");
-		JMenuItem dupItem = new JMenuItem("Dupliquer    Ctrl+Alt+C");
-		JMenuItem moveItem = new JMenuItem("Deplacer    Ctrl+Alt+X");
-		JMenuItem selectAllItem = new JMenuItem("Selectionner tout");
-		JMenuItem renameItem = new JMenuItem("Renommer");
-		JMenuItem deleteItem = new JMenuItem("Supprimer");
-		edit.add(cutItem);
+		JMenuItem copyItem = new JMenuItem(copyAction);
+		JMenuItem cutItem = new JMenuItem(cutAction);
+		JMenuItem pasteItem = new JMenuItem(pasteAction);
+		JMenuItem dupItem = new JMenuItem(dupAction);
+		JMenuItem moveItem = new JMenuItem(moveAction);
+		JMenuItem selectAllItem = new JMenuItem(selectAllAction);
+		JMenuItem renameItem = new JMenuItem(renameAction);
+		JMenuItem deleteItem = new JMenuItem(deleteAction);
 		edit.add(copyItem);
+		edit.add(cutItem);
 		edit.add(pasteItem);
 		edit.add(dupItem);
 		edit.add(moveItem);
@@ -408,14 +442,31 @@ public class Main {
 		mainFrame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		/***********************************/
 		/* LISTERNER SUR L'ARBRE ET LA LISTE */
+		final JPopupMenu clickInFile = new JPopupMenu();
+		clickInFile.add(new JMenuItem("Nouveau Fichier    Ctrl+T"));
+		clickInFile.add(new JMenuItem("Nouveau Repertoire    Ctrl+R"));
+		clickInFile.add(new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E"));
+		final JPopupMenu clickOutFile = new JPopupMenu();
+		clickOutFile.add(new JMenuItem(copyAction));
+		clickOutFile.add(new JMenuItem(cutAction));
+		clickOutFile.add(new JMenuItem(pasteAction));
+		clickOutFile.add(new JMenuItem(dupAction));
+		clickOutFile.add(new JMenuItem(moveAction));
+		clickOutFile.add(new JMenuItem(selectAllAction));
+		clickOutFile.add(new JMenuItem(renameAction));
+		clickOutFile.add(new JMenuItem(deleteAction));
+		/***********************************************/
+		//pasteMenu.addActionListener(pasteAction);
+		//pasteItem.addActionListener(pasteAction);
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				selectAllAction.setEnabled(false);
+				pasteAction.setEnabled(true);
+				int index = tree.getRowForLocation(e.getX(), e.getY());
+				File file = (File) listModel.getElementAt(index);
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
-						if (e.getClickCount() == 1) {
-							File file =
-								((Model) tree.getLastSelectedPathComponent())
-									.getFolder();
+						if (file != null && e.getClickCount() == 1) {
 							oldCurrentFolder = model.getFolder();
 							back.setEnabled(true);
 							next.setEnabled(false);
@@ -437,12 +488,20 @@ public class Main {
 					case MouseEvent.BUTTON2 :
 						break;
 					case MouseEvent.BUTTON3 :
+						if (file == null) {
+							clickInFile.show(e.getComponent(), e.getX(), e.getY());
+						} else {
+							tree.setSelectionRow(index);
+							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
+						}
 						break;
 				}
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				selectAllAction.setEnabled(true);
+				pasteAction.setEnabled(false);
 				switch (e.getButton()) {
 					case MouseEvent.BUTTON1 :
 						if (e.getClickCount() == 2) {
@@ -485,48 +544,15 @@ public class Main {
 					case MouseEvent.BUTTON2 :
 						break;
 					case MouseEvent.BUTTON3 :
-						JPopupMenu popup = new JPopupMenu();
-						int index =
-							list.locationToIndex(new Point(e.getX(), e.getY()));
+						int index = list.locationToIndex(new Point(e.getX(), e.getY()));
 						File file = (File) listModel.getElementAt(index);
 						if (file == null) {
-							JMenuItem newFileItemPop =
-								new JMenuItem("Nouveau Fichier    Ctrl+T");
-							JMenuItem newFolderItemPop =
-								new JMenuItem("Nouveau Repertoire    Ctrl+R");
-							JMenuItem newFrameItemPop =
-								new JMenuItem("Nouvelle Fenetre d'exploration    Ctrl+E");
-							popup.add(newFileItemPop);
-							popup.add(newFolderItemPop);
-							popup.add(newFrameItemPop);
-
+							clickInFile.show(e.getComponent(), e.getX(), e.getY());
 						} else {
 							list.setSelectedIndex(index);
-							JMenuItem cutItemPop =
-								new JMenuItem("Couper   Ctrl+X");
-							JMenuItem copyItemPop =
-								new JMenuItem("Copier    Ctrl+C");
-							JMenuItem pasteItemPop =
-								new JMenuItem("Coller    Ctrl+V");
-							JMenuItem dupItemPop =
-								new JMenuItem("Dupliquer    Ctrl+Alt+C");
-							JMenuItem moveItemPop =
-								new JMenuItem("Deplacer    Ctrl+Alt+X");
-							JMenuItem selectAllItemPop =
-								new JMenuItem("Selectionner tout");
-							JMenuItem renameItemPop = new JMenuItem("Renommer");
-							JMenuItem deleteItemPop =
-								new JMenuItem("Supprimer");
-							popup.add(cutItemPop);
-							popup.add(copyItemPop);
-							popup.add(pasteItemPop);
-							pasteItemPop.setEnabled(file.isDirectory());
-							popup.add(dupItemPop);
-							popup.add(moveItemPop);
-							popup.add(renameItemPop);
-							popup.add(deleteItemPop);
+							pasteAction.setEnabled(file.isDirectory());
+							clickOutFile.show(e.getComponent(), e.getX(), e.getY());
 						}
-						popup.show(e.getComponent(), e.getX(), e.getY());
 						break;
 				}
 			}
