@@ -403,6 +403,7 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("ACTION".concat(e.toString()));
 	//			File file = new File(adrZone.getText());
 				File file = new File((String)adrZone.getEditor().getItem()); //TODO ?
 				if (file.exists()) {
