@@ -23,6 +23,7 @@ import fr.umlv.anaconda.exception.TooMuchFilesException;
  */
 public class Find extends Thread implements Command {
 
+	private static boolean searching = false;
 	private ArrayList list = null;
 	private File root_file = null;
 	private String name = null;
@@ -33,7 +34,15 @@ public class Find extends Thread implements Command {
 	}
 
 	public void run() {
-		launchFind();
+		if (searching == false) {
+			searching = true;
+			launchFind();
+			searching = false;
+		} else {
+			JOptionPane.showMessageDialog(
+				null,
+				" Une recherche est deja en cours ...");
+		}
 	}
 
 	public void set(File file, String name, FindModel model)
@@ -46,17 +55,20 @@ public class Find extends Thread implements Command {
 		root_file = (File) file;
 		this.name = name;
 	}
-	
-	public void launchFind(){
-		try{
-		find(root_file, name, model);
-		}catch(TooMuchFilesException e){
-			JOptionPane.showMessageDialog(null,"Veuillez cibler votre recherche");
+
+	public void launchFind() {
+		try {
+			find(root_file, name, model);
+		} catch (TooMuchFilesException e) {
+			JOptionPane.showMessageDialog(
+				null,
+				"Veuillez cibler votre recherche");
 		}
 	}
 
 	public void find(File root_file, String name, FindModel model)
 		throws TooMuchFilesException {
+
 		File[] children = root_file.listFiles();
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
@@ -67,8 +79,8 @@ public class Find extends Thread implements Command {
 					find(children[i], name, model);
 			}
 		}
-	}
 
+	}
 
 	public void undo() {
 
