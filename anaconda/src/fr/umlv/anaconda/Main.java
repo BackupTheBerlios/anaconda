@@ -22,9 +22,12 @@ import java.awt.event.*;
  */
 public class Main {
 	/**/
-
+	/******************************* PILE DE PRECEDENT SUIVANT******************************/
 	public static File oldCurrentFolder;
 	public static File newCurrentFolder;
+	public static Stack backFolderStack = new Stack();
+	public static Stack nextFolderStack = new Stack();
+	/****************************************************************/
 	final public static Model model = new Model();
 	final public static ModelTreeAdapter treeModel =
 		new ModelTreeAdapter(model);
@@ -437,6 +440,9 @@ public class Main {
 		next.setEnabled(false);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				oldCurrentFolder = (File) backFolderStack.pop();
+				nextFolderStack.push(model.getFolder());
+				next.setEnabled(true);
 				model.setFolder(oldCurrentFolder);
 				String fileName = oldCurrentFolder.getAbsolutePath();
 		/*		adrZone.getEditor().setItem(
@@ -449,12 +455,16 @@ public class Main {
 						+ ((fileName.endsWith(File.separator))
 								? ""
 								: File.separator));
-				back.setEnabled(false);
-				next.setEnabled(true);
+				if(backFolderStack.empty())
+					back.setEnabled(false);
+				
 			}
 		});
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				newCurrentFolder = (File) nextFolderStack.pop();
+				backFolderStack.push(model.getFolder());
+				back.setEnabled(true);
 				model.setFolder(newCurrentFolder);
 				String fileName = newCurrentFolder.getAbsolutePath();
 		/*		adrZone.getEditor().setItem(
@@ -467,7 +477,8 @@ public class Main {
 						+ ((fileName.endsWith(File.separator))
 								? ""
 								: File.separator));
-				back.setEnabled(true);
+				
+				if(nextFolderStack.empty())
 				next.setEnabled(false);
 			}
 		});
@@ -551,9 +562,10 @@ public class Main {
 							tree.setSelectionPath(path);
 							tree.scrollPathToVisible(path);
 							oldCurrentFolder = model.getFolder();
+						   	backFolderStack.push(oldCurrentFolder);
 							back.setEnabled(true);
 							next.setEnabled(false);
-							newCurrentFolder = file;
+						   
 							if (Model.cmp.compare(oldCurrentFolder, file) != 0) {
 								model.setFolder(file);
 								String fileName = file.getAbsolutePath();
@@ -597,10 +609,11 @@ public class Main {
 						if (e.getClickCount() == 2) {
 							File file = (File) list.getSelectedValue();
 							oldCurrentFolder = model.getFolder();
+							backFolderStack.push(oldCurrentFolder);
 							back.setEnabled(true);
 							next.setEnabled(false);
 							if (file.isDirectory()) {
-								newCurrentFolder = file;
+							
 								model.setFolder(file);
 								TreePath path = tree.getSelectionPath();
 								if(path != null) {
