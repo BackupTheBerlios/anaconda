@@ -235,7 +235,8 @@ public class Main {
         JLabel adr = new JLabel("adresse");
         JButton openAdr = new JButton("ouvrir");
         final JTextField adrZone = new JTextField(20);
-        adrZone.setText(model.getFolder().getAbsolutePath()/*+File.separator*/);
+        String fileName = model.getFolder().getAbsolutePath();
+        adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
        
         adressBar.add(delAdr);
         adressBar.add(adr);
@@ -254,7 +255,8 @@ public class Main {
         back.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                   model.setFolder(oldCurrentFolder);
-                  adrZone.setText(oldCurrentFolder.getAbsolutePath()/*+File.separator*/);
+                  String fileName = oldCurrentFolder.getAbsolutePath(); 
+				  adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                   back.setEnabled(false);
                   next.setEnabled(true);
                 }
@@ -262,7 +264,8 @@ public class Main {
         next.addActionListener( new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
                     model.setFolder(newCurrentFolder);
-                    adrZone.setText(newCurrentFolder.getAbsolutePath()/*+File.separator*/);
+					String fileName = newCurrentFolder.getAbsolutePath(); 
+					adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                     back.setEnabled(true);
                     next.setEnabled(false);
                 }
@@ -283,7 +286,8 @@ public class Main {
 								"Le fichier/repertoire <" + file.getAbsolutePath() + "> n'a pas ete trouve.",
 								"Fichier/repertoire non trouve",
 								JOptionPane.ERROR_MESSAGE);
-                    adrZone.setText(model.getFolder().getAbsolutePath()/*+File.separator*/);
+					String fileName = model.getFolder().getAbsolutePath(); 
+					adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                 }
             });
         openAdr.addActionListener((adrZone.getActionListeners())[0]);
@@ -310,7 +314,8 @@ public class Main {
                             newCurrentFolder = file;
                             if(Model.cmp.compare(oldCurrentFolder, file) != 0) {
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()/*+File.separator*/);
+								String fileName = file.getAbsolutePath(); 
+								adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                                 list.setSelectedIndex(0);
                             }
                         }
@@ -334,7 +339,8 @@ public class Main {
                             if(file.isDirectory()) {
                                 newCurrentFolder = file;
                                 model.setFolder(file);
-                                adrZone.setText(file.getAbsolutePath()/*+File.separator*/);
+								String fileName = file.getAbsolutePath(); 
+								adrZone.setText(fileName+((fileName.endsWith(File.separator))? "": File.separator));
                                 list.setSelectedIndex(0);
                             }
                         }
