@@ -1,8 +1,5 @@
 /*
- * Created on 22 f?vr. 2004
- * 
- * To change the template for this generated file go to Window - Preferences -
- * Java - Code Generation - Code and Comments
+ * Created on 22 fevr. 2004
  */
 package fr.umlv.anaconda;
 
@@ -13,6 +10,7 @@ import java.util.Date;
 
 import javax.swing.*;
 
+import fr.umlv.anaconda.appearance.Themes;
 import fr.umlv.anaconda.command.Find;
 import fr.umlv.anaconda.exception.DoNotExistFileException;
 import fr.umlv.anaconda.exception.TooMuchFilesException;
@@ -21,9 +19,6 @@ import fr.umlv.anaconda.tools.Tools;
 
 /**
  * @author FIGUEROA
- * 
- * To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Generation - Code and Comments
  */
 public class InfoPanel extends JPanel {
 
@@ -47,7 +42,8 @@ public class InfoPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("INFO PANEL"));
 		ImageIcon anacondaLogo = IconsManager.LOGO;
 		add(new JLabel(anacondaLogo));
-		setBackground(Color.WHITE);
+//		setBackground(Color.WHITE);
+		setBackground(Themes.getBgColor());
 		revalidate();
 	}
 
