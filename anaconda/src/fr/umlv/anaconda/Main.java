@@ -209,13 +209,13 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action cut
 				(new Cut()).run();
-				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action pasteAction = new AbstractAction("Coller    Ctrl+V") {
 			public void actionPerformed(ActionEvent e) {
 				//TODO action paste
 				(new Paste()).start();
+				refreshAction.actionPerformed(e);
 			}
 		};
 		final Action dupAction = new AbstractAction("Dupliquer    Ctrl+Alt+C") {
@@ -358,6 +358,9 @@ public class Main {
 		JButton copy = new JButton(new ImageIcon(icones[COPY_ICONE]));
 		JButton paste = new JButton(new ImageIcon(icones[PASTE_ICONE]));
 		JButton find = new JButton(new ImageIcon(icones[FIND_ICONE]));
+		cut.addActionListener(cutAction);
+		copy.addActionListener(copyAction);
+		paste.addActionListener(pasteAction);
 		find.addActionListener(findAction);
 
 		//back.setBackground(Color.WHITE);
