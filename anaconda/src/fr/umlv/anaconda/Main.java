@@ -441,7 +441,7 @@ public class Main {
 		});
 		adrZone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ACTION".concat(e.toString())); //TODO r?cup le bon ?venement
+//				System.out.println("ACTION".concat(e.toString())); //TODO r?cup le bon ?venement
 				File file = new File((String)adrZone.getEditor().getItem()); 
 				if (file.exists()) {
 					oldCurrentFolder = model.getFolder();
