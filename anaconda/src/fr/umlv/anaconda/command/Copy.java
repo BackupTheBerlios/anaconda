@@ -57,6 +57,6 @@ public class Copy extends AbstractAction  implements Command {
 
 	
 	public void actionPerformed(ActionEvent e) {
-		//run(Main.);
+		run(Main.);
 	}
 }
