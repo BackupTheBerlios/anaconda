@@ -219,6 +219,13 @@ public class Main {
 			}
 		};
 
+		final Action aboutAction = new AbstractAction("A propos"){
+			public void actionPerformed(ActionEvent e){
+					AllCommand.get("about").run();
+			}
+		};
+
+		
 		/* MENUBAR */
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("Fichier");
@@ -313,7 +320,10 @@ public class Main {
 		disp.add(subMenuLangue);
 		/* ? */
 		help.add(new JMenuItem("Aide"));
-		help.add(new JMenuItem("A propos"));
+		JMenuItem itemAbout = new JMenuItem("A propos");
+		itemAbout.addActionListener(aboutAction);
+		help.add(itemAbout);
+		
 
 		menuBar.add(file);
 		menuBar.add(edit);
