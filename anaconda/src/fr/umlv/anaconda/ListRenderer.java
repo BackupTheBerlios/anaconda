@@ -8,22 +8,32 @@ package fr.umlv.anaconda;
 
 import java.awt.Component;
 import java.io.File;
-import java.net.URLConnection;
-
+import java.util.ArrayList;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.SwingConstants;
 
 
 public class ListRenderer extends DefaultListCellRenderer {
-
+	
+	private static ArrayList imagesExt = new ArrayList();
+	static {
+		imagesExt.add(".jpg");
+		imagesExt.add(".jpeg");
+		imagesExt.add(".gif");
+		imagesExt.add(".bmp");
+		imagesExt.add(".png");
+	}
+	 
 	private ImageIcon father_icon = IconsManager.big_father_icon;
 	private ImageIcon folder_icon = IconsManager.big_folder_icon;
 	private ImageIcon image_icon = IconsManager.big_image_icon;
 	private ImageIcon exe_icon = IconsManager.big_exe_icon;
 	private ImageIcon file_icon = IconsManager.big_file_icon;
+
 
 	ModelListAdapter listModel = null;
 
@@ -81,6 +91,10 @@ public class ListRenderer extends DefaultListCellRenderer {
 				name = ((File) value).getAbsolutePath();
 		}
 		((JLabel) c).setText(name);
+		((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+		((JLabel) c).setVerticalAlignment(SwingConstants.CENTER);
+		((JLabel) c).setHorizontalTextPosition(SwingConstants.CENTER);
+		((JLabel) c).setVerticalTextPosition(SwingConstants.BOTTOM);
 		/** ********************* */
 		
 		//URLConnection url_connex = new URLConnection();
@@ -93,10 +107,15 @@ public class ListRenderer extends DefaultListCellRenderer {
 			else
 				 ((JLabel) c).setIcon(folder_icon);
 		} else {
-			if (name.endsWith(".jpg"))
-				 ((JLabel) c).setIcon(image_icon);
-			else if (name.endsWith(".exe"))
-				 ((JLabel) c).setIcon(exe_icon);
+			int extIndex = name.lastIndexOf('.');
+			if(extIndex != -1) {
+				if (imagesExt.contains(name.substring(extIndex)))
+					((JLabel) c).setIcon(image_icon);
+				else if (name.endsWith(".exe"))
+					 ((JLabel) c).setIcon(exe_icon);
+				else
+					 ((JLabel) c).setIcon(file_icon);
+			}
 			else
 				 ((JLabel) c).setIcon(file_icon);
 		}
