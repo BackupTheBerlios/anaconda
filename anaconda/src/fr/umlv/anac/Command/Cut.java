@@ -14,7 +14,7 @@ import fr.umlv.anac.Exception.DoNotExistFileException;
 import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
-public class CutPaste extends Paste {
+public class Cut implements Command {
 	private final static boolean deleted = true;
 	private ArrayList selection;
 	private File dest;
@@ -25,46 +25,29 @@ public class CutPaste extends Paste {
 	 * @param selection
 	 *            is the selection of files.
 	 */
-	public CutPaste(ArrayList selection) {
+	public void run(ArrayList selection) {
 		this.selection = new ArrayList();
 		this.selection.addAll(selection);
 		PressPaper.addToPressPaper(selection, deleted);
 	}
 
 	/**
-	 * Makes a paste of the selected file.
-	 */
-	public void paste(File dest)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException {
-		this.dest = dest;
-		if (!PressPaper.isEmpty()) {
-			super.paste(dest);
-			PressPaper.clear();
-		}
-	}
-
-	/**
-	 * Undoes the last command CutPaste.
-	 * 
-	 * @throws DoNotExistFileException
-	 * @throws IsNotDirectoryException
-	 * @throws CanNotWriteException
-	 * @throws CanNotReadException
-	 * @throws CanNotDeleteException
-	 * @throws ErrorPastingFileException
-	 */
+	* Undoes the last command CutPaste.
+	* 
+	* @throws DoNotExistFileException
+	* @throws IsNotDirectoryException
+	* @throws CanNotWriteException
+	* @throws CanNotReadException
+	* @throws CanNotDeleteException
+	* @throws ErrorPastingFileException
+	*/
 	public void undo()
 		throws
-			DoNotExistFileException,
 			IsNotDirectoryException,
 			CanNotWriteException,
 			CanNotReadException,
 			CanNotDeleteException,
+			DoNotExistFileException,
 			ErrorPastingFileException {
 		if (!dest.exists())
 			throw new DoNotExistFileException(dest);
@@ -77,7 +60,7 @@ public class CutPaste extends Paste {
 
 		for (int i = 0; i < tab_file.length; i++) {
 			File to_replace = tab_file[i];
-			
+
 			if (!to_replace.canRead())
 				throw new CanNotReadException(to_replace);
 			for (Iterator j = selection.iterator(); j.hasNext();) {
@@ -86,13 +69,28 @@ public class CutPaste extends Paste {
 				if (to_replace.getName().compareTo(file.getName()) == 0) {
 					String origin_path = file.getPath();
 					File origin_file = new File(origin_path);
-					copyTo(origin_file,to_replace);
-					if(!to_replace.delete())
+					Paste.copyTo(origin_file, to_replace);
+
+					if (!to_replace.delete())
 						throw new CanNotDeleteException(to_replace);
 				}
 
 			}
 
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.umlv.anac.Command.Command#run(java.io.File)
+	 */
+	public void run(File dest)
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
+		// TODO Raccord de méthode auto-généré
+
 	}
 }

@@ -8,23 +8,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
+import fr.umlv.anac.Exception.CanNotDeleteException;
 import fr.umlv.anac.Exception.CanNotReadException;
 import fr.umlv.anac.Exception.CanNotWriteException;
 import fr.umlv.anac.Exception.DoNotExistFileException;
 import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
-
-
-public class Paste {
+public class Paste implements Command {
 
 	/**
 	 * The 'paste' action. Calls the pasteFile method for each elements in
 	 * 'selectedFiles'.
 	 */
-	public void paste(File dest)
+	public void run(File dest)
 		throws
 			IsNotDirectoryException,
 			CanNotWriteException,
@@ -85,7 +85,7 @@ public class Paste {
 	 * @throws DoNotExistFileException
 	 * @throws ErrorPastingFileException
 	 */
-	public void copyTo(File to, File from)
+	public static void copyTo(File to, File from)
 		throws DoNotExistFileException, ErrorPastingFileException {
 		FileInputStream fileInputStream;
 		try {
@@ -102,6 +102,26 @@ public class Paste {
 		} catch (IOException e) {
 			throw new ErrorPastingFileException(from);
 		}
+	}
+
+	public void undo()
+		throws
+			DoNotExistFileException,
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			CanNotDeleteException {
+
+	}
+
+	public void run(ArrayList selectedfile)
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
+
 	}
 
 }

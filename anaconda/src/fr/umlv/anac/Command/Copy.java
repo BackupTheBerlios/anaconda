@@ -14,39 +14,20 @@ import fr.umlv.anac.Exception.DoNotExistFileException;
 import fr.umlv.anac.Exception.ErrorPastingFileException;
 import fr.umlv.anac.Exception.IsNotDirectoryException;
 
-
-public class CopyPaste extends Paste {
+public class Copy implements Command {
 	private final static boolean deleted = false;
 	private ArrayList selection;
 	private File dest;
 
 	/**
-	 * Create a new copy/paste command.
+	 * Make a copy of the selected files
 	 * 
 	 * @param selection
-	 *            is the selection of files.
 	 */
-	public CopyPaste(ArrayList selection) {
+	public void run(ArrayList selection) {
 		this.selection = new ArrayList();
 		this.selection.addAll(selection);
 		PressPaper.addToPressPaper(selection, deleted);
-	}
-
-	/**
-	 * Makes a paste of the selected file.
-	 */
-	public void paste(File dest)
-		throws
-			IsNotDirectoryException,
-			CanNotWriteException,
-			CanNotReadException,
-			DoNotExistFileException,
-			ErrorPastingFileException {
-		this.dest = dest;
-		if (!PressPaper.isEmpty()){
-			super.paste(dest);
-			PressPaper.clear();
-		}
 	}
 
 	/**
@@ -79,11 +60,22 @@ public class CopyPaste extends Paste {
 			if (!file.canRead())
 				throw new CanNotReadException(file);
 			for (Iterator j = selection.iterator(); j.hasNext();) {
-				String file_name = ((File)j.next()).getName();
-				if ( file.getName().compareTo(file_name) == 0 && !file.delete())
+				String file_name = ((File) j.next()).getName();
+				if (file.getName().compareTo(file_name) == 0 && !file.delete())
 					throw new CanNotDeleteException(file);
 			}
 
 		}
 	}
+
+	/** No use */
+	public void run(File dest)
+		throws
+			IsNotDirectoryException,
+			CanNotWriteException,
+			CanNotReadException,
+			DoNotExistFileException,
+			ErrorPastingFileException {
+	}
+
 }

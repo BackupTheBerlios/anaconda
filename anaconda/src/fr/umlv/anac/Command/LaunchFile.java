@@ -6,7 +6,7 @@ package fr.umlv.anac.Command;
 import java.io.File;
 
 
-public class LaunchFile {
+public class LaunchFile implements Command{
 	public LaunchFile(File file){
 		
 	}
