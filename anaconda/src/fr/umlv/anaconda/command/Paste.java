@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.anaconda.Main;
 import fr.umlv.anaconda.exception.*;
-import fr.umlv.anaconda.tools.PressPaper;
 import fr.umlv.anaconda.tools.Tools;
 
 public class Paste extends Thread implements Command {
